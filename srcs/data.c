@@ -1,0 +1,45 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   data.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/17 16:05:14 by fbenini-          #+#    #+#             */
+/*   Updated: 2025/11/17 16:11:53 by fbenini-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../includes/minishell.h"
+#define BLUE "\e[0;104m"
+#define GREEN "\e[1;32m"
+#define RESET "\e[0m"
+
+int	init_data(t_data *data, char **envvars)
+{
+	int		i;
+	char	*user;
+
+	data->envvars = envvars;
+	data->user = NULL;
+	i = 0;
+	while (envvars[i])
+	{
+		if (ft_strncmp(envvars[i], "USER=", 5) == 0)
+			data->user = envvars[i] + 5;
+		i++;
+	}
+	if (!data->user)
+		data->user = "marvin";
+	user = ft_strjoin(GREEN, data->user);
+	if (!user)
+		return (1);
+	data->prompt = ft_strjoin(user, RESET"@"BLUE"minishell"RESET"> ");
+	free(user);
+	if (!data->prompt)
+	{
+		free(user);
+		return (1);
+	}
+	return (0);
+}

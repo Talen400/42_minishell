@@ -1,24 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   data.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/17 12:30:11 by tlavared          #+#    #+#             */
-/*   Updated: 2025/11/17 16:43:42 by fbenini-         ###   ########.fr       */
+/*   Created: 2025/11/17 16:04:07 by fbenini-          #+#    #+#             */
+/*   Updated: 2025/11/17 16:43:14 by fbenini-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#ifndef DATA_H
+# define DATA_H
 
-int	main(int argc, char *argv[], char *envvars[])
-{
-	t_data	data;
+typedef struct s_data {
+	char	**envvars;
+	char	*user;
+	char	*prompt;
+}	t_data;
 
-	(void)argv;
-	(void)argc;
-	init_data(&data, envvars);
-	read_input(&data);
-	return (0);
-}
+int	init_data(t_data *data, char **envvars);
+
+#endif

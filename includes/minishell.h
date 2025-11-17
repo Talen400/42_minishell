@@ -6,7 +6,7 @@
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 12:31:03 by tlavared          #+#    #+#             */
-/*   Updated: 2025/11/17 13:36:23 by tlavared         ###   ########.fr       */
+/*   Updated: 2025/11/17 16:42:14 by fbenini-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,5 +23,9 @@
 # include <dirent.h>
 # include <string.h>
 # include <termios.h>
+# include "../libft/libft.h"
+# include "data.h"
+
+int	read_input(t_data *data);
 
 #endif

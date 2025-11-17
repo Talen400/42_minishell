@@ -22,10 +22,12 @@ LIBFT_DIR := ./libft
 
 # Libraries
 LIBFT := $(LIBFT_DIR)/libft.a
-LIBS := $(LIBFT)
+LIBS := $(LIBFT) -lreadline
 
 # Mandatory sources
 SRCS := $(SRC_DIR)/main.c \
+		$(SRC_DIR)/data.c \
+		$(SRC_DIR)/input.c
 
 OBJS := $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
