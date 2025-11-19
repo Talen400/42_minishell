@@ -6,7 +6,7 @@
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 17:06:46 by tlavared          #+#    #+#             */
-/*   Updated: 2025/11/18 17:59:37 by tlavared         ###   ########.fr       */
+/*   Updated: 2025/11/19 14:17:22 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,13 @@
 #define NUM_STATE 7
 #define NUM_TYPES 18
 
-enum e_char_type
+typedef enum e_char_type
 {
-	WHITE_SPACE,
-	LETTER,
-	DIGIT,
-	OPERATOR,
-	QUOTE,
-	PIPE,
-	REDIRECT,
-	OTHER,
-};
+	WHITE_SPACE = 0,
+	LETTER = 1,
+	DIGIT = 2,
+	OTHER = 3,
+} t_char_type;
 
 typedef struct s_token
 {
