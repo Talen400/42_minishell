@@ -6,7 +6,7 @@
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 12:30:11 by tlavared          #+#    #+#             */
-/*   Updated: 2025/11/18 21:45:53 by tlavared         ###   ########.fr       */
+/*   Updated: 2025/11/19 13:03:16 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ static int	(*get_table(void))[NUM_TYPES]
 	{0, 0, 2, 0},
 	{3, 3, 3, 3}
 	};
+
 	return (table);
 }
 
@@ -69,7 +70,7 @@ int	state_final(t_automato *aut, char *str)
 
 int	state_is_final(int state)
 {
-	return (state == 1 || state == 2);
+	return (state == 0);
 }
 
 int	automato(char *str)
@@ -85,8 +86,10 @@ int	automato(char *str)
 	while (aut.i <= aut.str_len)
 	{
 		aut.state = get_state(&aut, str[aut.i]);
+		printf("estado: %d\n", aut.state);
 		if (aut.state != 0 && aut.state != 3)
 			aut.lexeme_len += 1;
+		printf("lexeme_len: %d\n", aut.lexeme_len);
 		if (aut.state == -1)
 		{
 			printf("Error lexer\n");

@@ -1,3 +1,5 @@
 *.o
 minishell
 *.swp
+*.a
+.mandatory
