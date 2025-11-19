@@ -11,7 +11,7 @@ RESET = \033[0mc
 # Configuration
 NAME := minishell
 CC := cc
-CFLAGS	:= -Wextra -Wall -Werror
+CFLAGS	:= -g -Wextra -Wall -Werror
 
 # Directories
 SRC_DIR := ./srcs
@@ -22,10 +22,10 @@ LIBFT_DIR := ./libft
 
 # Libraries
 LIBFT := $(LIBFT_DIR)/libft.a
-LIBS := $(LIBFT)
+LIBS := $(LIBFT) -lreadline
 
 # Mandatory sources
-SRCS := $(SRC_DIR)/main.c \
+SRCS := $(SRC_DIR)/main.c 
 
 OBJS := $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
