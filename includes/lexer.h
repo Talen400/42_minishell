@@ -6,7 +6,7 @@
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 17:06:46 by tlavared          #+#    #+#             */
-/*   Updated: 2025/11/19 18:09:01 by tlavared         ###   ########.fr       */
+/*   Updated: 2025/11/19 18:24:42 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,8 @@
 # define LEXER_H
 
 # include "minishell.h"
-
-#define NUM_STATE 14
-#define NUM_TYPES 12
+# define NUM_STATE 14
+# define NUM_TYPES 12
 
 typedef enum e_char_type
 {
@@ -32,7 +31,7 @@ typedef enum e_char_type
 	QUOTE = 9,
 	DOUBLE_QUOTE = 10,
 	_NULL = 11
-} t_char_type;
+}	t_char_type;
 
 typedef struct s_automato
 {
@@ -53,13 +52,12 @@ typedef struct s_token
 }	t_token;
 
 // table_driven.c
-int	(*get_table(void))[NUM_TYPES];
 t_char_type	get_char_type(char c);
-int	get_state(t_automato *aut, char character);
+int			get_state(t_automato *aut, char character);
 
 // automato.c
-int	state_final(t_automato *aut, char *str);
-int	state_is_final(int state);
-int	automato(char *str);
+int			state_final(t_automato *aut, char *str);
+int			state_is_final(int state);
+int			automato(char *str);
 
 #endif
