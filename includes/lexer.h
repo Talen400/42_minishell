@@ -6,7 +6,7 @@
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 17:06:46 by tlavared          #+#    #+#             */
-/*   Updated: 2025/11/19 18:24:42 by tlavared         ###   ########.fr       */
+/*   Updated: 2025/11/19 20:27:02 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ typedef struct s_automato
 typedef struct s_token
 {
 	int				type;
-	char			*data;
+	char			*lexeme;
 	struct s_token	*next;
 }	t_token;
 
@@ -56,8 +56,16 @@ t_char_type	get_char_type(char c);
 int			get_state(t_automato *aut, char character);
 
 // automato.c
-int			state_final(t_automato *aut, char *str);
 int			state_is_final(int state);
-int			automato(char *str);
+int			state_final(t_automato *aut, char *str, t_token **tokens);
+int			automato(char *str, t_token **tokens);
+
+// token.c
+t_token		*create_node_token(char *lexeme, int type);
+void		add_front_token(t_token **list, char *lexeme, int type);
+void		token_clear_list(t_token **list);
+
+// debug.c
+void		print_tokens(t_token *tokens);
 
 #endif

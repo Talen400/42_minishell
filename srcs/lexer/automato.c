@@ -6,7 +6,7 @@
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 18:02:01 by tlavared          #+#    #+#             */
-/*   Updated: 2025/11/19 18:29:17 by tlavared         ###   ########.fr       */
+/*   Updated: 2025/11/19 19:58:21 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,25 +53,27 @@ static int	(*get_table(void))[NUM_TYPES]
 	return (table);
 }
 
-int	state_final(t_automato *aut, char *str)
+int	state_is_final(int state)
+{
+	return (state == WHITE_SPACE);
+}
+
+
+int	state_final(t_automato *aut, char *str, t_token **tokens)
 {
 	aut->lexeme = ft_substr(str, aut->i - aut->lexeme_len, aut->lexeme_len);
 	/* debug
 	printf("Lexemer: '%s' len: %d position(str): %d \n", aut->lexeme,
 		aut->lexeme_len, aut->i);
 	*/
+	add_front_token(tokens, aut->lexeme, aut->state);
 	aut->lexeme_len = 0;
-	free(aut->lexeme);
 	aut->lexeme = NULL;
 	return (SUCESS);
 }
 
-int	state_is_final(int state)
-{
-	return (state == WHITE_SPACE);
-}
 
-int	automato(char *str)
+int	automato(char *str, t_token **tokens)
 {
 	t_automato	aut;
 
@@ -91,7 +93,7 @@ int	automato(char *str)
 			break ;
 		}
 		if (state_is_final(aut.state))
-			if (state_final(&aut, str))
+			if (state_final(&aut, str, tokens))
 				return (FAILURE);
 		aut.i++;
 	}
