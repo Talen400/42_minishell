@@ -11,7 +11,7 @@ RESET = \033[0mc
 # Configuration
 NAME := minishell
 CC := cc
-CFLAGS	:= -Wextra -Wall -Werror
+CFLAGS	:= -g -Wextra -Wall -Werror
 
 # Directories
 SRC_DIR := ./srcs
@@ -27,7 +27,11 @@ LIBS := $(LIBFT) -lreadline
 # Mandatory sources
 SRCS := $(SRC_DIR)/main.c \
 		$(SRC_DIR)/data.c \
-		$(SRC_DIR)/input.c
+		$(SRC_DIR)/input.c \
+		$(SRC_DIR)/lexer/automato.c \
+		$(SRC_DIR)/lexer/table_driven.c \
+		$(SRC_DIR)/lexer/token.c \
+		$(SRC_DIR)/lexer/debug.c
 
 OBJS := $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
