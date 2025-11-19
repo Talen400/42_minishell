@@ -6,7 +6,7 @@
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 17:06:46 by tlavared          #+#    #+#             */
-/*   Updated: 2025/11/19 14:17:22 by tlavared         ###   ########.fr       */
+/*   Updated: 2025/11/19 18:09:01 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,22 +15,24 @@
 
 # include "minishell.h"
 
-#define NUM_STATE 7
-#define NUM_TYPES 18
+#define NUM_STATE 14
+#define NUM_TYPES 12
 
 typedef enum e_char_type
 {
 	WHITE_SPACE = 0,
-	LETTER = 1,
-	DIGIT = 2,
-	OTHER = 3,
+	WORD = 1,
+	PIPE = 2,
+	REDIRECT_INPUT = 3,
+	REDIRECT_OUTPUT = 4,
+	OR = 5,
+	AND = 6,
+	OPEN_P = 7,
+	CLOSE_P = 8,
+	QUOTE = 9,
+	DOUBLE_QUOTE = 10,
+	_NULL = 11
 } t_char_type;
-
-typedef struct s_token
-{
-	int		type;
-	char	*data;
-}	t_token;
 
 typedef struct s_automato
 {
@@ -43,10 +45,21 @@ typedef struct s_automato
 	int			(*table)[NUM_TYPES];
 }	t_automato;
 
-typedef struct s_node_token
+typedef struct s_token
 {
-	t_token	*token;
-	struct s_node_token	*next;
-}	t_node_token;
+	int				type;
+	char			*data;
+	struct s_token	*next;
+}	t_token;
+
+// table_driven.c
+int	(*get_table(void))[NUM_TYPES];
+t_char_type	get_char_type(char c);
+int	get_state(t_automato *aut, char character);
+
+// automato.c
+int	state_final(t_automato *aut, char *str);
+int	state_is_final(int state);
+int	automato(char *str);
 
 #endif

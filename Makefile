@@ -25,7 +25,9 @@ LIBFT := $(LIBFT_DIR)/libft.a
 LIBS := $(LIBFT) -lreadline
 
 # Mandatory sources
-SRCS := $(SRC_DIR)/main.c 
+SRCS := $(SRC_DIR)/main.c \
+		$(SRC_DIR)/lexer/automato.c \
+		$(SRC_DIR)/lexer/table_driven.c
 
 OBJS := $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
