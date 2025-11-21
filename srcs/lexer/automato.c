@@ -6,72 +6,76 @@
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 18:02:01 by tlavared          #+#    #+#             */
-/*   Updated: 2025/11/19 19:58:21 by tlavared         ###   ########.fr       */
+/*   Updated: 2025/11/20 21:46:54 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/lexer.h"
 
 /*
- * table-driven :
- * 			SPACE	WORD	|	&	<	>	(	)	'	"	_NULL   		
- * state 0		0		1	2	4	6	8	10	11	12	13	0
- * state 1		0		1	0	0	0	0	0	0	12	13	0
- * state 2		0		1	3	4	6	8	10	11	12	13	0	(| waiting)
- * state 3		0		1	2	4	6	8	10	11	12	13	0	(|| complet)
- * state 4		0		1	2	5	6	8	10	11	12	13	0	(& waiting)
- * state 5		0		1	2	4	6	8	10	11	12	13	0	(&& complet)
- * state 6		0		1	2	4	7	8	10	11	12	13	0	(< waiting)
- * state 7		0		1	2	4	6	8	10	11	12	13	0	(<< complet)
- * state 8		0		1	2	4	6	9	10	11	12	13	0	(< waiting)
- * state 9		0		1	2	4	6	8	10	11	12	13	0	(>> complet)
- * state 10		0		1	2	4	6	8	10	11	12	13	0	( '(' )
- * state 11		0		1	2	4	6	8	10	11	12	13	0	( ')' )
- * state 12		12		12	12	12	12	12	12	12	1	12	12	('...')
- * state 13		13		13	13	13	13	13	13	13	13	1	13	("...")
+ * TABLE DRIVE :
+ *
+ * ======================================
+ *
+ * states (complet tokens)
+ * 0: SPACE
+ * 1: WORD
+ * 2: OPERATOR
+ * 3: D_OPERATOR
+ * 4: S_QUOTE
+ * 5: D_QUOTE
+ *
+ *		 		SP	LET	|	&	<	>	(	)	'	"	$	\0
+ * state 0	=	0	1	2	2	2	2	2	2	4	5	8	0
+ * state 1	=	0	1	0	0	0	0	0	0	1	1	8	0
+ * state 2	=	0	0	3	3	3	3	0	0	0	0	0	0
+ * state 3	=	0	0	0	0	0	0	0	0	0	0	0	0
+ * state 4	=	4	4	4	4	4	4	4	4	6	4	4	0
+ * state 5	=	5	5	5	5	5	5	5	5	5	7	8	0
+ * state 6  =	0	0	0	0	0	0	0	0	0	0	0	0
+ * state 7  =	0	0	0	0	0	0	0	0	0	0	0	0
+ * state 8  =	0	8	0	0	0	0	0	0	0	0	8	0
  */
 
 static int	(*get_table(void))[NUM_TYPES]
 {
 	static int	table[NUM_STATE][NUM_TYPES] = {
-	{0, 1, 2, 4, 6, 8, 10, 11, 12, 13, 0},
-	{0, 1, 0, 0, 0, 0, 0, 0, 12, 13, 0},
-	{0, 1, 3, 4, 6, 8, 10, 11, 12, 13, 0},
-	{0, 1, 2, 4, 6, 8, 10, 11, 12, 13, 0},
-	{0, 1, 2, 5, 6, 8, 10, 11, 12, 13, 0},
-	{0, 1, 2, 4, 6, 8, 10, 11, 12, 13, 0},
-	{0, 1, 2, 4, 7, 8, 10, 11, 12, 13, 0},
-	{0, 1, 2, 4, 6, 8, 10, 11, 12, 13, 0},
-	{0, 1, 2, 4, 6, 9, 10, 11, 12, 13, 0},
-	{0, 1, 2, 4, 6, 8, 10, 11, 12, 13, 0},
-	{0, 1, 2, 4, 6, 8, 10, 11, 12, 13, 0},
-	{0, 1, 2, 4, 6, 8, 10, 11, 12, 13, 0},
-	{12, 12, 12, 12, 12, 12, 12, 12, 1, 12, 12},
-	{13, 13, 13, 13, 13, 13, 13, 13, 13, 1, 13},
+	{0, 1, 2, 2, 2, 2, 2, 2, 4, 5, 8, 0},
+	{0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 8, 0},
+	{0, 0, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0},
+	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+	{4, 4, 4, 4, 4, 4, 4, 4, 6, 4, 4, 0},
+	{5, 5, 5, 5, 5, 5, 5, 5, 5, 7, 5, 0},
+	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+	{0, 8, 0, 0, 0, 0, 0, 0, 0, 0, 8, 0}
 	};
 
 	return (table);
 }
 
-int	state_is_final(int state)
-{
-	return (state == WHITE_SPACE);
-}
-
-
 int	state_final(t_automato *aut, char *str, t_token **tokens)
 {
+	int	type_token;
+
 	aut->lexeme = ft_substr(str, aut->i - aut->lexeme_len, aut->lexeme_len);
-	/* debug
-	printf("Lexemer: '%s' len: %d position(str): %d \n", aut->lexeme,
-		aut->lexeme_len, aut->i);
-	*/
-	add_front_token(tokens, aut->lexeme, aut->state);
+	type_token = get_type_token(aut->prev_state, aut->lexeme);
+	add_front_token(tokens, aut->lexeme, type_token);
 	aut->lexeme_len = 0;
 	aut->lexeme = NULL;
 	return (SUCESS);
 }
 
+int	ft_handler(const char *str)
+{
+	printf("%s", str);
+	return (FAILURE);
+}
+
+/*
+ * test : 
+ * ((echo << "here" && (cat Makefile | wc -l)) >> code.txt) || ( echo ":>" > teste.txt)
+ */
 
 int	automato(char *str, t_token **tokens)
 {
@@ -84,17 +88,20 @@ int	automato(char *str, t_token **tokens)
 	aut.table = get_table();
 	while (aut.i <= aut.str_len)
 	{
+		aut.prev_state = aut.state;
+		printf("state: %d\n", aut.state);
 		aut.state = get_state(&aut, str[aut.i]);
-		if (aut.state != WHITE_SPACE)
-			aut.lexeme_len += 1;
+		printf("state: %d, str[i]: %c \n", aut.state, str[aut.i]);
 		if (aut.state == -1)
+			return (ft_handler("Error lexer \n"));
+		else if (aut.state != 0)
+			aut.lexeme_len += 1;
+		if (aut.state == 0 && aut.prev_state != 0)
 		{
-			printf("Error lexer\n");
-			break ;
+			state_final(&aut, str, tokens);
+			if (get_char_type(str[aut.i] != WSPACE))
+				aut.i--;
 		}
-		if (state_is_final(aut.state))
-			if (state_final(&aut, str, tokens))
-				return (FAILURE);
 		aut.i++;
 	}
 	return (SUCESS);
