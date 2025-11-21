@@ -6,7 +6,7 @@
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 17:06:46 by tlavared          #+#    #+#             */
-/*   Updated: 2025/11/19 20:27:02 by tlavared         ###   ########.fr       */
+/*   Updated: 2025/11/20 21:49:25 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,29 +14,47 @@
 # define LEXER_H
 
 # include "minishell.h"
-# define NUM_STATE 14
+# define NUM_STATE 9
 # define NUM_TYPES 12
 
-typedef enum e_char_type
+enum e_char_type
 {
-	WHITE_SPACE = 0,
-	WORD = 1,
-	PIPE = 2,
-	REDIRECT_INPUT = 3,
-	REDIRECT_OUTPUT = 4,
-	OR = 5,
-	AND = 6,
-	OPEN_P = 7,
-	CLOSE_P = 8,
-	QUOTE = 9,
-	DOUBLE_QUOTE = 10,
-	_NULL = 11
-}	t_char_type;
+	WSPACE,
+	LETTER,
+	PIPE,
+	AND,
+	LESS,
+	GREATER,
+	OPEN_PAR,
+	CLOSE_PAR,
+	S_QUOTE,
+	D_QUOTE,
+	DOLLAR,
+	NUL
+};
+
+enum e_token_type
+{
+	TOKEN_WORD,
+	TOKEN_PIPE,
+	TOKEN_OR,
+	TOKEN_AND,
+	TOKEN_REDIR_IN,
+	TOKEN_HEREDOC,
+	TOKEN_REDIR_OUT,
+	TOKEN_APPEND,
+	TOKEN_OPEN_PAR,
+	TOKEN_CLOSE_PAR,
+	TOKEN_SQUOTE,
+	TOKEN_DQUOTE,
+	TOKEN_VARIABLE
+};
 
 typedef struct s_automato
 {
 	int			i;
 	int			state;
+	int			prev_state;
 	int			token_type;
 	int			str_len;
 	int			lexeme_len;
@@ -52,7 +70,7 @@ typedef struct s_token
 }	t_token;
 
 // table_driven.c
-t_char_type	get_char_type(char c);
+int			get_char_type(char c);
 int			get_state(t_automato *aut, char character);
 
 // automato.c
@@ -64,6 +82,9 @@ int			automato(char *str, t_token **tokens);
 t_token		*create_node_token(char *lexeme, int type);
 void		add_front_token(t_token **list, char *lexeme, int type);
 void		token_clear_list(t_token **list);
+
+// token_type.c
+int	get_type_token(int state, char *lexeme);
 
 // debug.c
 void		print_tokens(t_token *tokens);

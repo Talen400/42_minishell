@@ -6,37 +6,37 @@
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 17:59:14 by tlavared          #+#    #+#             */
-/*   Updated: 2025/11/19 18:27:32 by tlavared         ###   ########.fr       */
+/*   Updated: 2025/11/20 21:16:54 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/lexer.h"
 
-t_char_type	get_char_type(char c)
+int	get_char_type(char c)
 {
-	if (c == ' ')
-		return (WHITE_SPACE);
+	if (c == ' ' || c == '\t')
+		return (WSPACE);
 	if (c == '|')
 		return (PIPE);
-	if (c == '<')
-		return (REDIRECT_INPUT);
-	if (c == '>')
-		return (REDIRECT_OUTPUT);
 	if (c == '&')
 		return (AND);
+	if (c == '<')
+		return (LESS);
+	if (c == '>')
+		return (GREATER);
 	if (c == '(')
-		return (OPEN_P);
+		return (OPEN_PAR);
 	if (c == ')')
-		return (CLOSE_P);
+		return (CLOSE_PAR);
 	if (c == '\'')
-		return (QUOTE);
+		return (S_QUOTE);
 	if (c == '"')
-		return (DOUBLE_QUOTE);
-	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_'
-		|| (c >= '0' && c <= '9') || c == '-' || c == '.'
-		|| c == '$')
-		return (WORD);
-	return (-1);
+		return (D_QUOTE);
+	if (c == '$')
+		return (DOLLAR);
+	if (c == '\0')
+		return (NUL);
+	return (LETTER);
 }
 
 int	get_state(t_automato *aut, char character)

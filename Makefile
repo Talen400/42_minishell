@@ -29,7 +29,8 @@ SRCS := $(SRC_DIR)/main.c \
 		$(SRC_DIR)/lexer/automato.c \
 		$(SRC_DIR)/lexer/table_driven.c \
 		$(SRC_DIR)/lexer/token.c \
-		$(SRC_DIR)/lexer/debug.c
+		$(SRC_DIR)/lexer/debug.c \
+		$(SRC_DIR)/lexer/token_type.c
 
 OBJS := $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
