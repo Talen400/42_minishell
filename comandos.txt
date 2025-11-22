@@ -5,3 +5,5 @@ echo "test'*'*"
 echo "test**"
 echo test**
 echo ************************
+/'b'i'n'/e'c'h'o' oi
+

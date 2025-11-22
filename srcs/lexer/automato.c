@@ -6,7 +6,7 @@
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 18:02:01 by tlavared          #+#    #+#             */
-/*   Updated: 2025/11/22 07:47:50 by tlavared         ###   ########.fr       */
+/*   Updated: 2025/11/22 17:26:18 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,17 @@
  * 3: D_OPERATOR
  * 4: S_QUOTE
  * 5: D_QUOTE
+ * 6: END S_QUOTE
+ * 7: END D_QUOTE
+ * 8: EXPANSER
  *
  *		 		SP	LET	|	&	<	>	(	)	'	"	$	\0
  * state 0	=	0	1	2	2	2	2	2	2	4	5	8	0
- * state 1	=	0	1	0	0	0	0	0	0	1	1	8	0
+ * state 1	=	0	1	0	0	0	0	0	0	4	5	8	0
  * state 2	=	0	0	3	3	3	3	0	0	0	0	0	0
  * state 3	=	0	0	0	0	0	0	0	0	0	0	0	0
  * state 4	=	4	4	4	4	4	4	4	4	6	4	4	0
- * state 5	=	5	5	5	5	5	5	5	5	5	7	8	0
+ * state 5	=	5	5	5	5	5	5	5	5	5	7	5	0
  * state 6  =	0	0	0	0	0	0	0	0	0	0	0	0
  * state 7  =	0	0	0	0	0	0	0	0	0	0	0	0
  * state 8  =	0	8	0	0	0	0	0	0	0	0	8	0
@@ -41,7 +44,7 @@ static int	(*get_table(void))[NUM_TYPES]
 {
 	static int	table[NUM_STATE][NUM_TYPES] = {
 	{0, 1, 2, 2, 2, 2, 2, 2, 4, 5, 8, 0},
-	{0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 8, 0},
+	{0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 8, 0},
 	{0, 0, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0},
 	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 	{4, 4, 4, 4, 4, 4, 4, 4, 6, 4, 4, 0},
@@ -90,15 +93,20 @@ int	automato(char *str, t_token **tokens)
 	{
 		aut.prev_state = aut.state;
 		aut.state = get_state(&aut, str[aut.i]);
+		printf("state: %d, str[i]: %c\n", aut.state, str[aut.i]);
 		if (aut.state == -1)
 			return (ft_handler("Error lexer \n"));
 		else if (aut.state != 0)
 			aut.lexeme_len += 1;
 		if (aut.state == 0 && aut.prev_state != 0)
 		{
+			printf("Fecohou!\n");
 			state_final(&aut, str, tokens);
 			if (get_char_type(str[aut.i] != WSPACE))
+			{
 				aut.i--;
+				printf("volta!\n");
+			}
 		}
 		aut.i++;
 	}

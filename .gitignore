@@ -3,3 +3,6 @@ minishell
 *.swp
 *.a
 .mandatory
+test_lexer.sh
+readline.supp
+test_lexer.sh
