@@ -6,7 +6,7 @@
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 18:02:01 by tlavared          #+#    #+#             */
-/*   Updated: 2025/11/20 21:46:54 by tlavared         ###   ########.fr       */
+/*   Updated: 2025/11/22 07:47:50 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,9 +89,7 @@ int	automato(char *str, t_token **tokens)
 	while (aut.i <= aut.str_len)
 	{
 		aut.prev_state = aut.state;
-		printf("state: %d\n", aut.state);
 		aut.state = get_state(&aut, str[aut.i]);
-		printf("state: %d, str[i]: %c \n", aut.state, str[aut.i]);
 		if (aut.state == -1)
 			return (ft_handler("Error lexer \n"));
 		else if (aut.state != 0)
