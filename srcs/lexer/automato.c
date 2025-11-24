@@ -6,7 +6,7 @@
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 18:02:01 by tlavared          #+#    #+#             */
-/*   Updated: 2025/11/24 19:26:11 by tlavared         ###   ########.fr       */
+/*   Updated: 2025/11/24 19:40:16 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ int	state_final(t_automato *aut, char *str, t_token **tokens)
 
 	aut->lexeme = ft_substr(str, aut->i - aut->lexeme_len, aut->lexeme_len);
 	type_token = get_type_token(aut->prev_state, aut->lexeme);
-	printf("Lexeme formado! state: %d\n", aut->prev_state);
 	add_front_token(tokens, aut->lexeme, type_token);
 	aut->lexeme_len = 0;
 	aut->lexeme = NULL;
@@ -97,20 +96,15 @@ int	automato(char *str, t_token **tokens)
 	{
 		aut.prev_state = aut.state;
 		aut.state = get_state(&aut, str[aut.i]);
-		printf("state: %d, str[i]: %c\n", aut.state, str[aut.i]);
 		if (aut.state == -1)
 			return (ft_handler("Error lexer \n"));
 		else if (aut.state != 0)
 			aut.lexeme_len += 1;
 		if (aut.state == 0 && aut.prev_state != 0)
 		{
-			printf("Fecohou!\n");
 			state_final(&aut, str, tokens);
 			if (get_char_type(str[aut.i] != WSPACE))
-			{
 				aut.i--;
-				printf("volta!\n");
-			}
 		}
 		aut.i++;
 	}
