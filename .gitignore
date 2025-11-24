@@ -3,3 +3,4 @@ minishell
 *.swp
 *.a
 .mandatory
+test_lexer.sh

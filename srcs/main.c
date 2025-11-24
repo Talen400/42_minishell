@@ -13,28 +13,23 @@
 
 #include "../includes/lexer.h"
 
-int	main(int argc, char *argv[], char *envvars[])
+int	main(void)
 {
-	t_data	data;
-	/*
 	t_token	*tokens;
 	char	*test;
-	*/
 
-	(void)argv;
-	(void)argc;
-	init_data(&data, envvars);
-	read_input(&data);
-	/* Usage to generate tokens:
-	
-	test = readline("asd> ");
-	printf("prompt: %s\n", test);
-	tokens = NULL;
-	if (automato(test, &tokens))
-		return (FAILURE);
-	print_tokens(tokens);
-	token_clear_list(&tokens);
+	while (1)
+	{
+		test = readline("> ");
+		if (!ft_strncmp(test, "exit", 4))
+			break ;
+		tokens = NULL;
+		if (automato(test, &tokens))
+			return (FAILURE);
+		print_tokens(tokens);
+		token_clear_list(&tokens);
+		free(test);
+	}
 	free(test);
-	*/
 	return (SUCESS);
 }
