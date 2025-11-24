@@ -6,7 +6,7 @@
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 20:08:01 by tlavared          #+#    #+#             */
-/*   Updated: 2025/11/20 21:21:29 by tlavared         ###   ########.fr       */
+/*   Updated: 2025/11/24 19:09:29 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	get_type_token(int state, char *lexeme)
 		return (TOKEN_SQUOTE);
 	if (state == 7)
 		return (TOKEN_DQUOTE);
-	if (state == 8)
-		return (TOKEN_VARIABLE);
+	if (state == 8 || state == 9)
+		return (TOKEN_EXPANSER);
 	return (-1);
 }
