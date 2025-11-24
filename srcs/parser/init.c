@@ -1,0 +1,60 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/24 11:36:54 by fbenini-          #+#    #+#             */
+/*   Updated: 2025/11/24 11:58:18 by fbenini-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../includes/parser.h"
+
+static size_t	count_tokens(t_token **tokens)
+{
+	size_t	count;
+	t_token	*token;
+
+	count = 0;
+	token = *tokens;
+	while (token)
+	{
+		count++;
+		token = token->next;
+	}
+	return (count);
+};
+
+t_parser	*init_parser(char *str)
+{
+	t_parser	*res;
+	t_token		*tokens;
+
+	res = malloc(sizeof(t_parser));
+	if (!res)
+		return (NULL);
+	tokens = NULL;
+	automato(str, &tokens);
+	if (!tokens)
+	{
+		free(res);
+		return (NULL);
+	}
+	res->pos = 0;
+	res->tokens = &tokens;
+	res->count = count_tokens(&tokens);
+	return (res);
+}
+
+t_ast_node	*create_node(t_node_type type)
+{
+	t_ast_node	*res;
+
+	res = ft_calloc(1, sizeof(t_ast_node));
+	if (!res)
+		return (NULL);
+	res->type = type;
+	return (res);
+}
