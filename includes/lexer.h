@@ -6,7 +6,7 @@
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 17:06:46 by tlavared          #+#    #+#             */
-/*   Updated: 2025/11/24 19:09:37 by tlavared         ###   ########.fr       */
+/*   Updated: 2025/11/24 19:26:17 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include "minishell.h"
 # define NUM_STATE 10
-# define NUM_TYPES 13
+# define NUM_TYPES 14
 
 enum e_char_type
 {
