@@ -6,7 +6,7 @@
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 17:06:46 by tlavared          #+#    #+#             */
-/*   Updated: 2025/11/20 21:49:25 by tlavared         ###   ########.fr       */
+/*   Updated: 2025/11/24 19:26:17 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 # define LEXER_H
 
 # include "minishell.h"
-# define NUM_STATE 9
-# define NUM_TYPES 12
+# define NUM_STATE 10
+# define NUM_TYPES 14
 
 enum e_char_type
 {
@@ -30,7 +30,8 @@ enum e_char_type
 	S_QUOTE,
 	D_QUOTE,
 	DOLLAR,
-	NUL
+	LBRACE,
+	RBRACE
 };
 
 enum e_token_type
@@ -47,7 +48,7 @@ enum e_token_type
 	TOKEN_CLOSE_PAR,
 	TOKEN_SQUOTE,
 	TOKEN_DQUOTE,
-	TOKEN_VARIABLE
+	TOKEN_EXPANSER
 };
 
 typedef struct s_automato
