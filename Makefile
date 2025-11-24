@@ -32,7 +32,14 @@ SRCS := $(SRC_DIR)/main.c \
 		$(SRC_DIR)/lexer/table_driven.c \
 		$(SRC_DIR)/lexer/token.c \
 		$(SRC_DIR)/lexer/debug.c \
-		$(SRC_DIR)/lexer/token_type.c
+		$(SRC_DIR)/lexer/token_type.c \
+		$(SRC_DIR)/parser/helpers.c \
+		$(SRC_DIR)/parser/init.c \
+		$(SRC_DIR)/parser/parse_command.c \
+		$(SRC_DIR)/parser/parse_generic.c \
+		$(SRC_DIR)/parser/parse_logical.c \
+		$(SRC_DIR)/parser/parse_pipeline.c \
+		$(SRC_DIR)/parser/parse_sequence.c \
 
 OBJS := $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
