@@ -6,7 +6,7 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 10:46:49 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/11/24 19:47:44 by fbenini-         ###   ########.fr       */
+/*   Updated: 2025/11/25 18:24:38 by fbenini-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,5 +109,8 @@ t_ast_node					*parse_generic(t_parser *parser,
 t_ast_node					*parse_logical(t_parser *parser);
 t_ast_node					*parse_pipeline(t_parser *parser);
 t_ast_node					*parse_sequence(t_parser *parser);
+
+void						clear_parser(t_parser *parser);
+void						clear_ast(t_ast_node *head);
 
 #endif

@@ -40,6 +40,7 @@ SRCS := $(SRC_DIR)/main.c \
 		$(SRC_DIR)/parser/parse_logical.c \
 		$(SRC_DIR)/parser/parse_pipeline.c \
 		$(SRC_DIR)/parser/parse_sequence.c \
+		$(SRC_DIR)/parser/clear.c \
 
 OBJS := $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 

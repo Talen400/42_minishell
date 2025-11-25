@@ -6,7 +6,7 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 11:36:54 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/11/24 20:10:34 by fbenini-         ###   ########.fr       */
+/*   Updated: 2025/11/25 18:51:16 by fbenini-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,9 @@ t_parser	*init_parser(char *str)
 	}
 	res->pos = 0;
 	res->tokens = malloc(sizeof(t_token *));
-	if (!res->tokens)
-	{
-		free(res);
-		return (NULL);
-	}
+	res->head_of_tokens = malloc(sizeof(t_token *));
 	*res->tokens = tokens;
+	*res->head_of_tokens = tokens;
 	res->count = count_tokens(&tokens);
 	return (res);
 }

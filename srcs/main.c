@@ -78,6 +78,8 @@ int	main(void)
 		parser = init_parser(test);
 		ast = parse_sequence(parser);
 		print_ast(ast, 0);
+		clear_ast(ast);
+		clear_parser(parser);
 		// print_tokens(tokens);
 		// token_clear_list(&tokens);
 		free(test);
