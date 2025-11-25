@@ -93,19 +93,16 @@ int	automato(char *str, t_token **tokens)
 	{
 		aut.prev_state = aut.state;
 		aut.state = get_state(&aut, str[aut.i]);
-		printf("state: %d, str[i]: %c\n", aut.state, str[aut.i]);
 		if (aut.state == -1)
 			return (ft_handler("Error lexer \n"));
 		else if (aut.state != 0)
 			aut.lexeme_len += 1;
 		if (aut.state == 0 && aut.prev_state != 0)
 		{
-			printf("Fecohou!\n");
 			state_final(&aut, str, tokens);
 			if (get_char_type(str[aut.i] != WSPACE))
 			{
 				aut.i--;
-				printf("volta!\n");
 			}
 		}
 		aut.i++;
