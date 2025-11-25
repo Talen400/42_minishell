@@ -43,7 +43,13 @@ t_parser	*init_parser(char *str)
 		return (NULL);
 	}
 	res->pos = 0;
-	res->tokens = &tokens;
+	res->tokens = malloc(sizeof(t_token *));
+	if (!res->tokens)
+	{
+		free(res);
+		return (NULL);
+	}
+	*res->tokens = tokens;
 	res->count = count_tokens(&tokens);
 	return (res);
 }
@@ -67,5 +73,8 @@ t_ast_node	*create_node(t_node_type type)
 	if (!res)
 		return (NULL);
 	res->type = type;
+	res->u_data.cmd.argc = 0;
+	res->u_data.cmd.redirect_count = 0;
+	res->u_data.cmd.cmd = NULL;
 	return (res);
 }

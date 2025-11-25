@@ -14,23 +14,24 @@
 
 t_token	*parser_current(t_parser *parser)
 {
-	size_t	i;
-	t_token	*token;
+	t_token	**token;
 
-	if (parser->pos > parser->count)
-		return (NULL);
-	i = 0;
-	token = *parser->tokens;
-	while (token && i < parser->pos)
-	{
-		i++;
-		token = token->next;
-	}
-	return (token);
+	token = parser->tokens;
+	if (token)
+		return (*token);
+	return (NULL);
 }
 
 void	parser_advance(t_parser *parser)
 {
+	t_token	*new_token;
+	t_token	*tokens;
+
+	tokens = *parser->tokens;
 	if (parser->pos < parser->count)
+	{
+		new_token = tokens->next;
+		*parser->tokens = new_token;
 		parser->pos += 1;
+	}
 }

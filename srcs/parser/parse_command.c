@@ -18,9 +18,7 @@ static int	handle_redirect(t_ast_node *node, t_parser *parser,
 							t_token *token, int fd)
 {
 	t_redirect_node	*redir_node;
-	size_t			redir_cap;
 
-	redir_cap = 4;
 	redir_node = create_redir_node(token);
 	parser_advance(parser);
 	token = parser_current(parser);
@@ -33,25 +31,18 @@ static int	handle_redirect(t_ast_node *node, t_parser *parser,
 	redir_node->target = ft_strdup(token->lexeme);
 	redir_node->og_fd = fd;
 	parser_advance(parser);
-	if (node->u_data.cmd.redirect_count >= redir_cap)
-	{
-		redir_cap *= 2;
-		node->u_data.cmd.redirects = ft_realloc(node->u_data.cmd.redirects,
-				redir_cap);
-	}
 	node->u_data.cmd.redirects[node->u_data.cmd.redirect_count++] = redir_node;
 	node->u_data.cmd.redirects[node->u_data.cmd.redirect_count] = NULL;
 	return (SUCESS);
 }
 
-static void	handle_args(size_t *arg_cap, t_parser *parser,
-						t_ast_node *node, t_token *token)
+static void	handle_args(t_parser *parser, t_ast_node *node, t_token *token)
 {
-	if (node->u_data.cmd.argc >= *arg_cap)
+	if (node->u_data.cmd.argc >= node->u_data.cmd.arg_capacity)
 	{
-		*arg_cap *= 2;
+		node->u_data.cmd.arg_capacity *= 2;
 		node->u_data.cmd.args = ft_realloc(node->u_data.cmd.args,
-				*arg_cap + 1);
+				(node->u_data.cmd.arg_capacity + 1) * sizeof(char *));
 	}
 	node->u_data.cmd.args[node->u_data.cmd.argc++] = ft_strdup(token->lexeme);
 	node->u_data.cmd.args[node->u_data.cmd.argc] = NULL;
@@ -61,10 +52,8 @@ static void	handle_args(size_t *arg_cap, t_parser *parser,
 static void	loop_through_node(t_parser *parser, t_ast_node *node)
 {
 	t_token			*token;
-	size_t			arg_cap;
 
 	token = parser_current(parser);
-	arg_cap = 8;
 	while (token)
 	{
 		if (token->type == TOKEN_REDIR_OUT)
@@ -73,7 +62,7 @@ static void	loop_through_node(t_parser *parser, t_ast_node *node)
 				break ;
 		}
 		else if (token->type == TOKEN_WORD)
-			handle_args(&arg_cap, parser, node, token);
+			handle_args(parser, node, token);
 		else
 			break ;
 		token = parser_current(parser);
@@ -86,9 +75,12 @@ t_ast_node	*parse_command(t_parser *parser)
 	t_ast_node	*res;
 
 	token = parser_current(parser);
+	if (!token)
+		return (NULL);
 	res = create_node(NODE_CMD);
-	res->u_data.cmd.redirects = ft_calloc(4, sizeof(t_redirect_node));
+	res->u_data.cmd.redirects = ft_calloc(4, sizeof(t_redirect_node *));
 	res->u_data.cmd.args = ft_calloc(8, sizeof(char *));
+	res->u_data.cmd.arg_capacity = 8;
 	if (token->type == TOKEN_REDIR_IN)
 		handle_redirect(res, parser, token, STDIN_FILENO);
 	token = parser_current(parser);

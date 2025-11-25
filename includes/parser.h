@@ -38,6 +38,7 @@ typedef struct s_cmd_node
 	char					*cmd;
 	char					**args;
 	size_t					argc;
+	size_t					arg_capacity;
 	t_redirect_node			**redirects;
 	size_t					redirect_count;
 }							t_cmd_node;
@@ -80,13 +81,14 @@ typedef struct s_parser
 	size_t					pos;
 	size_t					count;
 	t_token					**tokens;
+	t_token					**head_of_tokens;
 }							t_parser;
 
 typedef t_ast_node			*(*t_parser_function)(t_parser *);
 
 typedef struct s_parser_rule {
 	int					token_type;
-	t_node_type			node_type;
+	int					node_type;
 	t_parser_function	next_function;
 }							t_parser_rule;
 

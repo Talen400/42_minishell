@@ -43,7 +43,7 @@ static t_ast_node	**insert_nodes(t_parser *parser, size_t *node_cap, t_parser_ru
 	size_t		count;
 
 	count = *node_count;
-	nodes = malloc(sizeof(t_ast_node *) * 8);
+	nodes = ft_calloc(8 + 1, sizeof(t_ast_node *));
 	nodes[count++] = left;
 	token = parser_current(parser);
 	while (token && token->type == rule->token_type)
@@ -55,11 +55,12 @@ static t_ast_node	**insert_nodes(t_parser *parser, size_t *node_cap, t_parser_ru
 		if (count >= *node_cap)
 		{
 			*node_cap *= 2;
-			ft_realloc(nodes, *node_cap);
+			ft_realloc(nodes, *node_cap + 1);
 		}
 		nodes[count++] = next;
 		token = parser_current(parser);
 	}
+	nodes[count] = NULL;
 	*node_count = count;
 	return (nodes);
 }
@@ -74,6 +75,8 @@ t_ast_node	*parse_generic(t_parser *parser, t_parser_rule *rule,
 	t_ast_node	**nodes;
 
 	left = parse_function(parser);
+	if (!left)
+		return (NULL);
 	token = parser_current(parser);
 	if (!token || token->type != rule->token_type)
 		return (left);
