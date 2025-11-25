@@ -6,7 +6,7 @@
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 17:59:14 by tlavared          #+#    #+#             */
-/*   Updated: 2025/11/24 19:03:00 by tlavared         ###   ########.fr       */
+/*   Updated: 2025/11/25 16:02:55 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ int	get_char_type(char c)
 		return (LBRACE);
 	if (c == '}')
 		return (RBRACE);
+	if (c == '\0')
+		return (NUL);
 	return (LETTER);
 }
 
