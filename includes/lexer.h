@@ -6,7 +6,7 @@
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 17:06:46 by tlavared          #+#    #+#             */
-/*   Updated: 2025/11/24 19:26:17 by tlavared         ###   ########.fr       */
+/*   Updated: 2025/11/25 16:02:31 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ enum e_char_type
 	D_QUOTE,
 	DOLLAR,
 	LBRACE,
-	RBRACE
+	RBRACE,
+	NUL
 };
 
 enum e_token_type
