@@ -14,7 +14,6 @@
 #include "../includes/lexer.h"
 #include "../includes/parser.h"
 
-
 void print_ast(t_ast_node *node, int indent) {
     if (!node) return;
     
