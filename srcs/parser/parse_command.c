@@ -25,6 +25,7 @@ static int	handle_redirect(t_ast_node *node, t_parser *parser,
 	if (!token || token->type != TOKEN_WORD)
 	{
 		free(redir_node->type);
+		free(redir_node->target);
 		free(redir_node);
 		return (FAILURE);
 	}
@@ -86,10 +87,7 @@ t_ast_node	*parse_command(t_parser *parser)
 	token = parser_current(parser);
 	if (!token || token->type != TOKEN_WORD)
 	{
-		free(res->u_data.cmd.cmd);
-		free(res->u_data.cmd.redirects);
-		free(res->u_data.cmd.args);
-		free(res);
+		clear_command_node(res, NODE_PIPE);
 		return (NULL);
 	}
 	res->u_data.cmd.cmd = ft_strdup(token->lexeme);

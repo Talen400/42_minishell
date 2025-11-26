@@ -112,5 +112,6 @@ t_ast_node					*parse_sequence(t_parser *parser);
 
 void						clear_parser(t_parser *parser);
 void						clear_ast(t_ast_node *head);
+void						clear_command_node(t_ast_node *node, t_node_type type);
 
 #endif

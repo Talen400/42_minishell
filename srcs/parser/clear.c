@@ -15,6 +15,8 @@
 
 void	clear_parser(t_parser *parser)
 {
+	if (!parser)
+		return ;
 	token_clear_list(parser->head_of_tokens);
 	free(parser->tokens);
 	free(parser->head_of_tokens);

@@ -16,9 +16,11 @@ t_token	*parser_current(t_parser *parser)
 {
 	t_token	**token;
 
-	token = parser->tokens;
-	if (token)
+	if (parser && parser->tokens)
+	{
+		token = parser->tokens;
 		return (*token);
+	}
 	return (NULL);
 }
 
