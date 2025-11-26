@@ -6,7 +6,7 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 10:46:49 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/11/25 18:24:38 by fbenini-         ###   ########.fr       */
+/*   Updated: 2025/11/26 20:05:17 by fbenini-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,23 +23,36 @@ typedef enum e_node_type
 	NODE_CMD,
 	NODE_PIPE,
 	NODE_LOGICAL,
-	NODE_SEQ,
 }							t_node_type;
 
-typedef struct s_redirect_node
+typedef enum e_expander_type
+{
+	LITERAL,	// cmd
+	PAREN,		// $(cmd) or $USER
+	QUOTED		// "cmd with $expansion"
+}							t_expander_type;
+
+typedef struct s_expandable_value
+{
+	t_expander_type			type;
+	char					*raw;
+	char					*processed;
+}							t_expandable_value;
+
+typedef struct s_redirect_value
 {
 	int						og_fd;
 	char					*type;
-	char					*target;
-}							t_redirect_node;
+	t_expandable_value		*target;
+}							t_redirect_value;
 
 typedef struct s_cmd_node
 {
-	char					*cmd;
-	char					**args;
+	t_expandable_value		*cmd;
+	t_expandable_value		**args;
 	size_t					argc;
 	size_t					arg_capacity;
-	t_redirect_node			**redirects;
+	t_redirect_value		**redirects;
 	size_t					redirect_count;
 }							t_cmd_node;
 
@@ -57,13 +70,6 @@ typedef struct s_logical_node
 	t_ast_node				*right;
 }							t_logical_node;
 
-typedef struct s_sequence_node
-{
-	t_ast_node				**commands;
-	size_t					count;
-	size_t					capacity;
-}							t_sequence_node;
-
 struct						s_ast_node
 {
 	t_node_type				type;
@@ -72,7 +78,6 @@ struct						s_ast_node
 		t_cmd_node			cmd;
 		t_pipe_node			pipe;
 		t_logical_node		logical;
-		t_sequence_node		sequence;
 	} u_data;
 };
 
@@ -95,7 +100,7 @@ typedef struct s_parser_rule {
 //  parser/init.c
 t_ast_node					*create_node(t_node_type type);
 t_parser					*init_parser(char *str);
-t_redirect_node				*create_redir_node(t_token *token);
+t_redirect_value			*create_redir_node(t_token *token);
 
 // parser/helpers.c
 t_token						*parser_current(t_parser *parser);

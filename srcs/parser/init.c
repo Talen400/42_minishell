@@ -6,7 +6,7 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 11:36:54 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/11/25 18:51:16 by fbenini-         ###   ########.fr       */
+/*   Updated: 2025/11/26 20:05:36 by fbenini-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,18 +44,18 @@ t_parser	*init_parser(char *str)
 	}
 	res->pos = 0;
 	res->tokens = malloc(sizeof(t_token *));
-	res->head_of_tokens = malloc(sizeof(t_token *));
 	*res->tokens = tokens;
+	res->head_of_tokens = malloc(sizeof(t_token *));
 	*res->head_of_tokens = tokens;
 	res->count = count_tokens(&tokens);
 	return (res);
 }
 
-t_redirect_node	*create_redir_node(t_token *token)
+t_redirect_value	*create_redir_node(t_token *token)
 {
-	t_redirect_node	*node;
+	t_redirect_value	*node;
 
-	node = ft_calloc(1, sizeof(t_redirect_node));
+	node = ft_calloc(1, sizeof(t_redirect_value));
 	if (!node)
 		return (NULL);
 	node->type = ft_strdup(token->lexeme);

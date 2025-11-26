@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../includes/parser.h"
+#include "../../includes/lexer.h"
 
 t_token	*parser_current(t_parser *parser)
 {

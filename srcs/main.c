@@ -21,11 +21,11 @@ void print_ast(t_ast_node *node, int indent) {
     
     switch (node->type) {
         case NODE_CMD:
-            printf("Command: %s", node->u_data.cmd.cmd);
+            printf("Command: %s", node->u_data.cmd.cmd->raw);
             if (node->u_data.cmd.argc > 0) {
                 printf(" [");
                 for (size_t i = 0; i < node->u_data.cmd.argc; i++) {
-                    printf("%s%s", node->u_data.cmd.args[i],
+                    printf("%s%s", node->u_data.cmd.args[i]->raw,
                            i < node->u_data.cmd.argc - 1 ? ", " : "");
                 }
                 printf("]");
@@ -36,7 +36,7 @@ void print_ast(t_ast_node *node, int indent) {
                     for (int j = 0; j < indent + 1; j++) printf("  ");
                     printf("Redirect: %s %s\n", 
                            node->u_data.cmd.redirects[i]->type,
-							node->u_data.cmd.redirects[i]->target);
+							node->u_data.cmd.redirects[i]->target->raw);
                 }
             } else {
                 printf("\n");
@@ -51,11 +51,6 @@ void print_ast(t_ast_node *node, int indent) {
             printf("Logical:\n");
             print_ast(node->u_data.logical.left, indent + 1);
             print_ast(node->u_data.logical.right, indent + 1);
-            break;
-        case NODE_SEQ:
-            printf("Sequence:\n");
-            for (size_t i = 0; i < node->u_data.sequence.count; i++)
-                print_ast(node->u_data.sequence.commands[i], indent + 1);
             break;
     }
 }

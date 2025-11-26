@@ -12,17 +12,6 @@
 
 #include "../../includes/parser.h"
 
-static t_ast_node	*handle_seq(t_ast_node **nodes, size_t count, size_t cap)
-{
-	t_ast_node	*node;
-
-	node = create_node(NODE_SEQ);
-	node->u_data.sequence.commands = nodes;
-	node->u_data.sequence.count = count;
-	node->u_data.pipe.capacity = cap;
-	return (node);
-}
-
 static t_ast_node	*handle_pipe(t_ast_node **nodes, size_t count, size_t cap)
 {
 	t_ast_node	*node;
@@ -88,8 +77,6 @@ t_ast_node	*parse_generic(t_parser *parser, t_parser_rule *rule,
 		free(nodes);
 		return (left);
 	}
-	if (rule->node_type == NODE_SEQ)
-		return (handle_seq(nodes, node_count, node_cap));
 	if (rule->node_type == NODE_PIPE)
 		return (handle_pipe(nodes, node_count, node_cap));
 	free(nodes);
