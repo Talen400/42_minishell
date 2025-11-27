@@ -24,9 +24,10 @@ static int	find_matching_parenthesis(t_token *start)
 	curr = start;
 	while (curr && depth > 0)
 	{
-		if (curr->type == TOKEN_OPEN_PAR || curr->type == TOKEN_EXPANSER)
+		if ((curr->type == TOKEN_OPEN_PAR || curr->type == TOKEN_EXPANSER)
+			&& count != 0)
 			depth++;
-		else if (curr->type == TOKEN_CLOSE_PAR)
+		if (curr->type == TOKEN_CLOSE_PAR)
 			depth--;
 		if (depth > 0)
 			count++;

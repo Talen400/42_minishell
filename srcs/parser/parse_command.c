@@ -68,17 +68,14 @@ static void	loop_through_node(t_parser *parser, t_ast_node *node)
 	token = parser_current(parser);
 	while (token)
 	{
-		if (token->type == TOKEN_REDIR_OUT)
-		{
-			if (handle_redirect(node, parser, token, STDOUT_FILENO) != SUCESS)
-				break ;
-		}
-		else if (is_token_arg(token))
+		if (is_token_arg(token))
 			handle_args(parser, node, token);
 		else
 			break ;
 		token = parser_current(parser);
 	}
+	if (token->type == TOKEN_REDIR_OUT)
+		handle_redirect(node, parser, token, STDOUT_FILENO);
 }
 
 t_ast_node	*parse_command(t_parser *parser)
