@@ -24,7 +24,7 @@ static int	find_matching_parenthesis(t_token *start)
 	curr = start;
 	while (curr && depth > 0)
 	{
-		if (curr->type == TOKEN_OPEN_PAR)
+		if (curr->type == TOKEN_OPEN_PAR || curr->type == TOKEN_EXPANSER)
 			depth++;
 		else if (curr->type == TOKEN_CLOSE_PAR)
 			depth--;
@@ -77,7 +77,6 @@ t_token	*merge_expander_token(t_parser *parser)
 	combined = ft_strdup(curr->lexeme);
 	count = find_matching_parenthesis(curr);
 	curr = curr->next;
-	parser->pos += 1;
 	i = 0;
 	while (curr && i < count - 1)
 	{
@@ -85,10 +84,26 @@ t_token	*merge_expander_token(t_parser *parser)
 			combined = join_and_free(combined, " ");
 		combined = join_and_free(combined, curr->lexeme);
 		curr = curr->next;
-		parser->pos += 1;
 		i++;
 	}
 	res = create_node_token(combined, TOKEN_EXPANSER);
-	*parser->tokens = curr;
 	return (res);
+}
+
+void	skip_matching_parens(t_parser *parser)
+{
+	int		count;
+	t_token	*token;
+	int		i;
+
+	token = *parser->tokens;
+	count = find_matching_parenthesis(token);
+	i = 0;
+	while (token && i < count)
+	{
+		token = token->next;
+		i++;
+	}
+	*parser->tokens = token;
+	parser->pos += i;
 }

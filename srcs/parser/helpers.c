@@ -24,8 +24,10 @@ t_token	*parser_current(t_parser *parser)
 	if (token->type == TOKEN_EXPANSER || token->type == TOKEN_OPEN_PAR)
 	{
 		merged = merge_expander_token(parser);
+		ft_printf("%d\n", parser->pos);
 		return (merged);
     }
+	ft_printf("%d\n", parser->pos);
 	return (token);
 }
 
@@ -35,7 +37,12 @@ void	parser_advance(t_parser *parser)
 	t_token	*tokens;
 
 	tokens = *parser->tokens;
-	if (parser->pos < parser->count)
+	if (tokens && tokens->type == TOKEN_EXPANSER)
+	{
+		skip_matching_parens(parser);
+		return ;
+	}
+	if (tokens && parser->pos < parser->count)
 	{
 		new_token = tokens->next;
 		*parser->tokens = new_token;
