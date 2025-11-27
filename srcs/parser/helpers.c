@@ -15,14 +15,18 @@
 
 t_token	*parser_current(t_parser *parser)
 {
-	t_token	**token;
+	t_token	*token;
+	t_token	*merged;
 
-	if (parser && parser->tokens)
+	if (!parser || !*parser->tokens)
+		return (NULL);
+	token = *parser->tokens;
+	if (token->type == TOKEN_EXPANSER || token->type == TOKEN_OPEN_PAR)
 	{
-		token = parser->tokens;
-		return (*token);
-	}
-	return (NULL);
+		merged = merge_expander_token(parser);
+		return (merged);
+    }
+	return (token);
 }
 
 void	parser_advance(t_parser *parser)

@@ -57,7 +57,7 @@ void print_ast(t_ast_node *node, int indent) {
 
 int	main(void)
 {
-	// t_token	*tokens;
+	t_token	*tokens;
 	char	*test;
 	t_parser	*parser;
 	t_ast_node	*ast;
@@ -67,16 +67,16 @@ int	main(void)
 		test = readline("> ");
 		if (!ft_strncmp(test, "exit", 4))
 			break ;
-		// tokens = NULL;
-		// if (automato(test, &tokens))
-		// 	return (FAILURE);
+		tokens = NULL;
+		if (automato(test, &tokens))
+			return (FAILURE);
 		parser = init_parser(test);
 		ast = parse_sequence(parser);
 		print_ast(ast, 0);
 		clear_ast(ast);
 		clear_parser(parser);
-		// print_tokens(tokens);
-		// token_clear_list(&tokens);
+		print_tokens(tokens);
+		token_clear_list(&tokens);
 		free(test);
 	}
 	free(test);
