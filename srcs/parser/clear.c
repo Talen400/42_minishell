@@ -23,6 +23,17 @@ void	clear_parser(t_parser *parser)
 	free(parser);
 }
 
+void clear_expandable_value(t_expandable_value *value)
+{
+	if (!value)
+		return ;
+	if (value->processed)
+		free(value->processed);
+	if (value->raw)
+		free(value->raw);
+	free(value);
+}
+
 void	clear_command_node(t_ast_node *node, t_node_type type)
 {
 	size_t	i;
@@ -30,20 +41,20 @@ void	clear_command_node(t_ast_node *node, t_node_type type)
 	i = 0;
 	while (node->u_data.cmd.args[i])
 	{
-		free(node->u_data.cmd.args[i]);
+		clear_expandable_value(node->u_data.cmd.args[i]);
 		i++;
 	}
 	free(node->u_data.cmd.args);
 	i = 0;
 	while (node->u_data.cmd.redirects[i])
 	{
-		free(node->u_data.cmd.redirects[i]->target);
+		clear_expandable_value(node->u_data.cmd.redirects[i]->target);
 		free(node->u_data.cmd.redirects[i]->type);
 		free(node->u_data.cmd.redirects[i]);
 		i++;
 	}
 	free(node->u_data.cmd.redirects);
-	free(node->u_data.cmd.cmd);
+	clear_expandable_value(node->u_data.cmd.cmd);
 	if (type == NODE_PIPE)
 		free(node);
 }

@@ -101,6 +101,7 @@ typedef struct s_parser_rule {
 t_ast_node					*create_node(t_node_type type);
 t_parser					*init_parser(char *str);
 t_redirect_value			*create_redir_node(t_token *token);
+t_expandable_value			*create_expandable_value(t_token *token);
 
 // parser/helpers.c
 t_token						*parser_current(t_parser *parser);

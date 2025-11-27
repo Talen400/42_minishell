@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../includes/parser.h"
+#include <stdlib.h>
 
 static size_t	count_tokens(t_token **tokens)
 {
@@ -60,6 +61,28 @@ t_redirect_value	*create_redir_node(t_token *token)
 		return (NULL);
 	node->type = ft_strdup(token->lexeme);
 	return (node);
+}
+
+t_expandable_value	*create_expandable_value(t_token *token)
+{
+	t_expandable_value	*res;
+
+	res = malloc(sizeof(t_expandable_value));
+	if (!res)
+		return (NULL);
+	res->type = LITERAL;
+	if (token->type == TOKEN_EXPANSER)
+		res->type = PAREN;
+	else if (token->type == TOKEN_DQUOTE)
+		res->type = QUOTED;
+	res->processed = NULL;
+	res->raw = ft_strdup(token->lexeme);
+	if (!res->raw)
+	{
+		free(res);
+		return (NULL);
+	}
+	return (res);
 }
 
 t_ast_node	*create_node(t_node_type type)
