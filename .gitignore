@@ -4,3 +4,4 @@ minishell
 *.a
 .mandatory
 test_lexer.sh
+libft.a
