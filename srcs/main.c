@@ -14,50 +14,8 @@
 #include "../includes/lexer.h"
 #include "../includes/parser.h"
 
-void print_ast(t_ast_node *node, int indent) {
-    if (!node) return;
-    
-    for (int i = 0; i < indent; i++) printf("  ");
-    
-    switch (node->type) {
-        case NODE_CMD:
-            printf("Command: %s", node->u_data.cmd.cmd->raw);
-            if (node->u_data.cmd.argc > 0) {
-                printf(" [");
-                for (size_t i = 0; i < node->u_data.cmd.argc; i++) {
-                    printf("%s%s", node->u_data.cmd.args[i]->raw,
-                           i < node->u_data.cmd.argc - 1 ? ", " : "");
-                }
-                printf("]");
-            }
-			if (node->u_data.cmd.redirect_count > 0) {
-                printf("\n");
-                for (size_t i = 0; i < node->u_data.cmd.redirect_count; i++) {
-                    for (int j = 0; j < indent + 1; j++) printf("  ");
-                    printf("Redirect: %s %s\n", 
-                           node->u_data.cmd.redirects[i]->type,
-							node->u_data.cmd.redirects[i]->target->raw);
-                }
-            } else {
-                printf("\n");
-            }
-            break;
-        case NODE_PIPE:
-            printf("Pipeline:\n");
-            for (size_t i = 0; i < node->u_data.pipe.count; i++)
-                print_ast(node->u_data.pipe.commands[i], indent + 1);
-            break;
-        case NODE_LOGICAL:
-            printf("Logical:\n");
-            print_ast(node->u_data.logical.left, indent + 1);
-            print_ast(node->u_data.logical.right, indent + 1);
-            break;
-    }
-}
-
 int	main(void)
 {
-	t_token	*tokens;
 	char	*test;
 	t_parser	*parser;
 	t_ast_node	*ast;
@@ -67,16 +25,11 @@ int	main(void)
 		test = readline("> ");
 		if (!ft_strncmp(test, "exit", 4))
 			break ;
-		tokens = NULL;
-		if (automato(test, &tokens))
-			return (FAILURE);
 		parser = init_parser(test);
 		ast = parse_sequence(parser);
 		print_ast(ast, 0);
 		clear_ast(ast);
 		clear_parser(parser);
-		print_tokens(tokens);
-		token_clear_list(&tokens);
 		free(test);
 	}
 	free(test);

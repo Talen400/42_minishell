@@ -6,7 +6,7 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 15:01:10 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/11/26 20:04:30 by fbenini-         ###   ########.fr       */
+/*   Updated: 2025/11/27 20:59:35 by fbenini-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ static void	loop_through_node(t_parser *parser, t_ast_node *node)
 			break ;
 		token = parser_current(parser);
 	}
-	if (token->type == TOKEN_REDIR_OUT)
+	if (token && token->type == TOKEN_REDIR_OUT)
 		handle_redirect(node, parser, token, STDOUT_FILENO);
 }
 

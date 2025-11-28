@@ -6,7 +6,7 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 10:46:49 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/11/26 20:05:17 by fbenini-         ###   ########.fr       */
+/*   Updated: 2025/11/27 20:58:08 by fbenini-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,5 +122,7 @@ void						clear_command_node(t_ast_node *node, t_node_type type);
 
 t_token						*merge_expander_token(t_parser *parser);
 void						skip_matching_parens(t_parser *parser);
+
+void						print_ast(t_ast_node *node, int indent);
 
 #endif
