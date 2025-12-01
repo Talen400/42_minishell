@@ -25,7 +25,7 @@ t_token	*parser_current(t_parser *parser)
 	{
 		merged = merge_expander_token(parser);
 		return (merged);
-    }
+	}
 	return (token);
 }
 

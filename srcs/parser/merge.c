@@ -61,7 +61,6 @@ static int	is_expander(t_token *token)
 	if (token->type == TOKEN_OPEN_PAR)
 		return (1);
 	return (0);
-		
 }
 
 t_token	*merge_expander_token(t_parser *parser)

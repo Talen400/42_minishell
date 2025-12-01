@@ -97,6 +97,16 @@ typedef struct s_parser_rule {
 	t_parser_function	next_function;
 }							t_parser_rule;
 
+typedef struct s_node_insert {
+	t_parser				*parser;
+	size_t					node_cap;
+	t_parser_rule			*rule;
+	size_t					node_count;
+	t_ast_node				*left;
+	t_parser_function		parse_function;
+	t_ast_node				**nodes;
+}							t_node_insert;
+
 //  parser/init.c
 t_ast_node					*create_node(t_node_type type);
 t_parser					*init_parser(char *str);

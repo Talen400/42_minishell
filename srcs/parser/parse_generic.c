@@ -23,62 +23,61 @@ static t_ast_node	*handle_pipe(t_ast_node **nodes, size_t count, size_t cap)
 	return (node);
 }
 
-static t_ast_node	**insert_nodes(t_parser *parser, size_t *node_cap, t_parser_rule *rule,
-								size_t *node_count, t_ast_node *left, t_parser_function parse_function)
+static t_ast_node	**insert_nodes(t_node_insert *args)
 {
-	t_ast_node	**nodes;
 	t_ast_node	*next;
 	t_token		*token;
 	size_t		count;
 
-	count = *node_count;
-	nodes = ft_calloc(8 + 1, sizeof(t_ast_node *));
-	nodes[count++] = left;
-	token = parser_current(parser);
-	while (token && token->type == rule->token_type)
+	count = args->node_count;
+	args->nodes = ft_calloc(8 + 1, sizeof(t_ast_node *));
+	args->nodes[count++] = args->left;
+	token = parser_current(args->parser);
+	while (token && token->type == args->rule->token_type)
 	{
-		parser_advance(parser);
-		next = parse_function(parser);
+		parser_advance(args->parser);
+		next = args->parse_function(args->parser);
 		if (!next)
 			break ;
-		if (count >= *node_cap)
+		if (count >= args->node_cap)
 		{
-			*node_cap *= 2;
-			ft_realloc(nodes, *node_cap + 1);
+			args->node_cap *= 2;
+			ft_realloc(args->nodes, args->node_cap + 1);
 		}
-		nodes[count++] = next;
-		token = parser_current(parser);
+		args->nodes[count++] = next;
+		token = parser_current(args->parser);
 	}
-	nodes[count] = NULL;
-	*node_count = count;
-	return (nodes);
+	args->nodes[count] = NULL;
+	args->node_count = count;
+	return (args->nodes);
 }
 
 t_ast_node	*parse_generic(t_parser *parser, t_parser_rule *rule,
 						t_parser_function parse_function)
 {
-	t_ast_node	*left;
-	t_token		*token;
-	size_t		node_cap;
-	size_t		node_count;
-	t_ast_node	**nodes;
+	t_token			*token;
+	t_node_insert	insert_args;
 
-	left = parse_function(parser);
-	if (!left)
+	insert_args.left = parse_function(parser);
+	insert_args.parser = parser;
+	insert_args.parse_function = parse_function;
+	insert_args.rule = rule;
+	if (!insert_args.left)
 		return (NULL);
 	token = parser_current(parser);
 	if (!token || token->type != rule->token_type)
-		return (left);
-	node_cap = 8;
-	node_count = 0;
-	nodes = insert_nodes(parser, &node_cap, rule, &node_count, left, parse_function);
-	if (node_count == 1)
+		return (insert_args.left);
+	insert_args.node_cap = 8;
+	insert_args.node_count = 0;
+	insert_args.nodes = insert_nodes(&insert_args);
+	if (insert_args.node_count == 1)
 	{
-		free(nodes);
-		return (left);
+		free(insert_args.nodes);
+		return (insert_args.left);
 	}
 	if (rule->node_type == NODE_PIPE)
-		return (handle_pipe(nodes, node_count, node_cap));
-	free(nodes);
-	return (left);
+		return (handle_pipe(insert_args.nodes,
+				insert_args.node_count, insert_args.node_cap));
+	free(insert_args.nodes);
+	return (insert_args.left);
 }

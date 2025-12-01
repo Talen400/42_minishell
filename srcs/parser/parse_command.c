@@ -16,10 +16,10 @@
 
 static int	is_token_arg(t_token *token)
 {
-	if (token->type == TOKEN_WORD ||
-		token->type == TOKEN_SQUOTE ||
-		token->type == TOKEN_DQUOTE ||
-		token->type == TOKEN_EXPANSER)
+	if (token->type == TOKEN_WORD
+		|| token->type == TOKEN_SQUOTE
+		|| token->type == TOKEN_DQUOTE
+		|| token->type == TOKEN_EXPANSER)
 		return (1);
 	return (0);
 }
@@ -74,7 +74,8 @@ static void	loop_through_node(t_parser *parser, t_ast_node *node)
 			break ;
 		token = parser_current(parser);
 	}
-	if (token && (token->type == TOKEN_REDIR_OUT || token->type == TOKEN_APPEND))
+	if (token && (token->type == TOKEN_REDIR_OUT
+			|| token->type == TOKEN_APPEND))
 		handle_redirect(node, parser, token, STDOUT_FILENO);
 }
 
