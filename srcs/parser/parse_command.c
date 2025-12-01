@@ -49,12 +49,6 @@ static int	handle_redirect(t_ast_node *node, t_parser *parser,
 
 static void	handle_args(t_parser *parser, t_ast_node *node, t_token *token)
 {
-	if (node->u_data.cmd.argc >= node->u_data.cmd.arg_capacity)
-	{
-		node->u_data.cmd.arg_capacity *= 2;
-		node->u_data.cmd.args = ft_realloc(node->u_data.cmd.args,
-				(node->u_data.cmd.arg_capacity + 1) * sizeof(char *));
-	}
 	node->u_data.cmd.args[
 		node->u_data.cmd.argc++] = create_expandable_value(token);
 	node->u_data.cmd.args[node->u_data.cmd.argc] = NULL;
@@ -63,9 +57,19 @@ static void	handle_args(t_parser *parser, t_ast_node *node, t_token *token)
 
 static void	loop_through_node(t_parser *parser, t_ast_node *node)
 {
-	t_token			*token;
+	t_token	*token;
+	size_t	arg_count;
 
 	token = parser_current(parser);
+	arg_count = 0;
+	while (token && is_token_arg(token))
+	{
+		token = token->next;
+		arg_count++;
+	}
+	token = parser_current(parser);
+	free(node->u_data.cmd.args);
+	node->u_data.cmd.args = ft_calloc(arg_count + 1, sizeof(t_expandable_value *));
 	while (token)
 	{
 		if (is_token_arg(token))
@@ -89,8 +93,7 @@ t_ast_node	*parse_command(t_parser *parser)
 		return (NULL);
 	res = create_node(NODE_CMD);
 	res->u_data.cmd.redirects = ft_calloc(4, sizeof(t_redirect_value *));
-	res->u_data.cmd.args = ft_calloc(8, sizeof(char *));
-	res->u_data.cmd.arg_capacity = 8;
+	res->u_data.cmd.args = ft_calloc(1, sizeof(t_expandable_value *));
 	if (token->type == TOKEN_REDIR_IN || token->type == TOKEN_HEREDOC)
 		handle_redirect(res, parser, token, STDIN_FILENO);
 	token = parser_current(parser);
