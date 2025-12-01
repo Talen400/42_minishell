@@ -74,7 +74,7 @@ static void	loop_through_node(t_parser *parser, t_ast_node *node)
 			break ;
 		token = parser_current(parser);
 	}
-	if (token && token->type == TOKEN_REDIR_OUT)
+	if (token && (token->type == TOKEN_REDIR_OUT || token->type == TOKEN_APPEND))
 		handle_redirect(node, parser, token, STDOUT_FILENO);
 }
 
@@ -90,7 +90,7 @@ t_ast_node	*parse_command(t_parser *parser)
 	res->u_data.cmd.redirects = ft_calloc(4, sizeof(t_redirect_value *));
 	res->u_data.cmd.args = ft_calloc(8, sizeof(char *));
 	res->u_data.cmd.arg_capacity = 8;
-	if (token->type == TOKEN_REDIR_IN)
+	if (token->type == TOKEN_REDIR_IN || token->type == TOKEN_HEREDOC)
 		handle_redirect(res, parser, token, STDIN_FILENO);
 	token = parser_current(parser);
 	if (!token)
