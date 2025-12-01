@@ -26,7 +26,7 @@ static size_t	count_tokens(t_token **tokens)
 		token = token->next;
 	}
 	return (count);
-};
+}
 
 t_parser	*init_parser(char *str)
 {

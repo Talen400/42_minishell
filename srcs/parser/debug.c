@@ -44,7 +44,7 @@ static void	print_cmd_node(t_ast_node *node, int indent)
 static void	print_pipe(t_ast_node *node, int indent)
 {
 	int	i;
-	
+
 	i = 0;
 	ft_printf("Pipeline: \n");
 	while (node->u_data.pipe.commands[i])

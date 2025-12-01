@@ -23,7 +23,7 @@ void	clear_parser(t_parser *parser)
 	free(parser);
 }
 
-void clear_expandable_value(t_expandable_value *value)
+void	clear_expandable_value(t_expandable_value *value)
 {
 	if (!value)
 		return ;
