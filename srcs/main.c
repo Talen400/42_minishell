@@ -13,20 +13,27 @@
 
 #include "../includes/lexer.h"
 #include "../includes/parser.h"
+#include "../includes/expander.h"
 
-int	main(void)
+int	main(int argc, char *argv[], char *envvars[])
 {
 	char	*test;
 	t_parser	*parser;
 	t_ast_node	*ast;
+	t_data		data;
 
+	(void)argc;
+	(void)argv;
+	init_data(&data, envvars);
 	while (1)
 	{
 		test = readline("> ");
 		if (!ft_strncmp(test, "exit", 4))
 			break ;
 		parser = init_parser(test);
+		get_wildcards_value(test);
 		ast = parse_sequence(parser);
+		expand_ast(ast, &data);
 		print_ast(ast, 0);
 		clear_ast(ast);
 		clear_parser(parser);

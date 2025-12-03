@@ -42,7 +42,9 @@ SRCS := $(SRC_DIR)/main.c \
 		$(SRC_DIR)/parser/parse_sequence.c \
 		$(SRC_DIR)/parser/clear.c \
 		$(SRC_DIR)/parser/merge.c \
-		$(SRC_DIR)/parser/debug.c
+		$(SRC_DIR)/parser/debug.c \
+		$(SRC_DIR)/expander/expander.c \
+		$(SRC_DIR)/expander/wildcards.c \
 
 OBJS := $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 

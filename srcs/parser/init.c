@@ -72,7 +72,12 @@ t_expandable_value	*create_expandable_value(t_token *token)
 		return (NULL);
 	res->type = LITERAL;
 	if (token->type == TOKEN_EXPANSER)
-		res->type = PAREN;
+	{
+		if (ft_strncmp(token->lexeme, "$(", 3) == 0)
+			res->type = PAREN;
+		else
+			res->type = SIMPLE_VAR;
+	}
 	else if (token->type == TOKEN_DQUOTE)
 		res->type = QUOTED;
 	res->processed = NULL;

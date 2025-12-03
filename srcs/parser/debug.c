@@ -6,7 +6,7 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 20:39:03 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/11/27 21:09:13 by fbenini-         ###   ########.fr       */
+/*   Updated: 2025/12/02 19:08:57 by fbenini-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,11 @@ static void	print_cmd_node(t_ast_node *node, int indent)
 	j = 0;
 	while (j++ < indent)
 		ft_printf("  ");
-	ft_printf("Command: %s [", node->u_data.cmd.cmd->raw);
+	ft_printf("Command: %s [", node->u_data.cmd.cmd->processed);
 	i = 0;
 	while (node->u_data.cmd.args[i++])
 	{
-		ft_printf("%s", node->u_data.cmd.args[i - 1]->raw);
+		ft_printf("%s", node->u_data.cmd.args[i - 1]->processed);
 		if (i - 1 < node->u_data.cmd.argc - 1)
 			ft_printf(", ");
 	}
@@ -35,9 +35,10 @@ static void	print_cmd_node(t_ast_node *node, int indent)
 		j = 0;
 		while (j++ < indent + 1)
 			ft_printf("  ");
-		ft_printf("Redirect: %s %s\n",
+		ft_printf("Redirect: %s %s %d\n",
 			node->u_data.cmd.redirects[i - 1]->type,
-			node->u_data.cmd.redirects[i - 1]->target->raw);
+			node->u_data.cmd.redirects[i - 1]->target->processed,
+			node->u_data.cmd.redirects[i - 1]->target->type);
 	}
 }
 

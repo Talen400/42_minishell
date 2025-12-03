@@ -6,7 +6,7 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 10:46:49 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/11/27 20:58:08 by fbenini-         ###   ########.fr       */
+/*   Updated: 2025/12/02 18:48:11 by fbenini-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,9 @@ typedef enum e_expander_type
 {
 	LITERAL,	// cmd
 	PAREN,		// $(cmd) or $USER
-	QUOTED		// "cmd with $expansion"
+	QUOTED,		// "cmd with $expansion"
+	SIMPLE_VAR,	// $SIMPLE_VAR
+	WILDCARD	// WILDCARDS *.c
 }							t_expander_type;
 
 typedef struct s_expandable_value
