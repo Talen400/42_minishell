@@ -26,6 +26,7 @@
 # include <termios.h>
 # include "../libft/libft.h"
 # include "data.h"
+# include "builtins.h"
 # define SUCESS 0
 # define FAILURE 1
 # define TRUE 1

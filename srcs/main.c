@@ -14,18 +14,28 @@
 #include "../includes/lexer.h"
 #include "../includes/parser.h"
 
-int	main(void)
+int	main(int argc, char *argv[], char *envvars[])
 {
 	char	*test;
 	t_parser	*parser;
 	t_ast_node	*ast;
+	t_data		data;
+	t_builtin_cmd	builtin_func;
+	char		*args[] = {"pwd", NULL};
 
+	(void)argc;
+	(void)argv;
+	init_data(&data, envvars);
 	while (1)
 	{
 		test = readline("> ");
 		if (!ft_strncmp(test, "exit", 4))
 			break ;
 		parser = init_parser(test);
+		builtin_func = get_builtin(test);
+		if (builtin_func)
+			builtin_func(args, &data);
+		(void)builtin_func;
 		ast = parse_sequence(parser);
 		print_ast(ast, 0);
 		clear_ast(ast);
