@@ -24,7 +24,7 @@ static void	print_cmd_node(t_ast_node *node, int indent)
 	i = 0;
 	while (node->u_data.cmd.args[i++])
 	{
-		ft_printf("%s", node->u_data.cmd.args[i - 1]->processed);
+		ft_printf("%d", node->u_data.cmd.args[i - 1]->processed);
 		if (i - 1 < node->u_data.cmd.argc - 1)
 			ft_printf(", ");
 	}
@@ -35,10 +35,9 @@ static void	print_cmd_node(t_ast_node *node, int indent)
 		j = 0;
 		while (j++ < indent + 1)
 			ft_printf("  ");
-		ft_printf("Redirect: %s %s %d\n",
+		ft_printf("Redirect: %s %s\n",
 			node->u_data.cmd.redirects[i - 1]->type,
-			node->u_data.cmd.redirects[i - 1]->target->processed,
-			node->u_data.cmd.redirects[i - 1]->target->type);
+			node->u_data.cmd.redirects[i - 1]->target->processed);
 	}
 }
 

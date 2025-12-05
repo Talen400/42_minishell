@@ -17,7 +17,7 @@
 
 int	main(int argc, char *argv[], char *envvars[])
 {
-	char	*test;
+	char		*test;
 	t_parser	*parser;
 	t_ast_node	*ast;
 	t_data		data;

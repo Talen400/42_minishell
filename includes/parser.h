@@ -18,25 +18,25 @@
 
 typedef struct s_ast_node	t_ast_node;
 
-typedef enum e_node_type
+enum e_node_type
 {
 	NODE_CMD,
 	NODE_PIPE,
 	NODE_LOGICAL,
-}							t_node_type;
+};
 
-typedef enum e_expander_type
+enum e_expander_type
 {
-	LITERAL,	// cmd
-	PAREN,		// $(cmd) or $USER
-	QUOTED,		// "cmd with $expansion"
-	SIMPLE_VAR,	// $SIMPLE_VAR
-	WILDCARD	// WILDCARDS *.c
-}							t_expander_type;
+	LITERAL, // cmd
+	PAREN, // $(cmd) or $USER
+	QUOTED, // "cmd with $expansion"
+	SIMPLE_VAR, // $SIMPLE_VAR
+	WILDCARD, // WILDCARDS *.c
+};
 
 typedef struct s_expandable_value
 {
-	t_expander_type			type;
+	int						type;
 	char					*raw;
 	char					*processed;
 }							t_expandable_value;
@@ -74,7 +74,7 @@ typedef struct s_logical_node
 
 struct						s_ast_node
 {
-	t_node_type				type;
+	int						type;
 	union
 	{
 		t_cmd_node			cmd;
@@ -93,13 +93,15 @@ typedef struct s_parser
 
 typedef t_ast_node			*(*t_parser_function)(t_parser *);
 
-typedef struct s_parser_rule {
+typedef struct s_parser_rule
+{
 	int					token_type;
 	int					node_type;
 	t_parser_function	next_function;
 }							t_parser_rule;
 
-typedef struct s_node_insert {
+typedef struct s_node_insert
+{
 	t_parser				*parser;
 	size_t					node_cap;
 	t_parser_rule			*rule;
@@ -110,7 +112,7 @@ typedef struct s_node_insert {
 }							t_node_insert;
 
 //  parser/init.c
-t_ast_node					*create_node(t_node_type type);
+t_ast_node					*create_node(int type);
 t_parser					*init_parser(char *str);
 t_redirect_value			*create_redir_node(t_token *token);
 t_expandable_value			*create_expandable_value(t_token *token);
@@ -130,7 +132,7 @@ t_ast_node					*parse_sequence(t_parser *parser);
 
 void						clear_parser(t_parser *parser);
 void						clear_ast(t_ast_node *head);
-void						clear_command_node(t_ast_node *node, t_node_type type);
+void						clear_command_node(t_ast_node *node, int type);
 
 t_token						*merge_expander_token(t_parser *parser);
 void						skip_matching_parens(t_parser *parser);
