@@ -13,6 +13,20 @@
 #include "../../includes/lexer.h"
 #include "../../includes/parser.h"
 
+static int	is_expander(t_token *token)
+{
+	if (!token)
+		return (0);
+	if (token->type == TOKEN_EXPANSER)
+	{
+		if (ft_strncmp(token->lexeme, "$(", 3) == 0)
+			return (1);
+	}
+	if (token->type == TOKEN_OPEN_PAR)
+		return (1);
+	return (0);
+}
+
 static int	find_matching_parenthesis(t_token *start)
 {
 	t_token	*curr;
@@ -22,6 +36,8 @@ static int	find_matching_parenthesis(t_token *start)
 	depth = 1;
 	count = 0;
 	curr = start;
+	if (!is_expander(start))
+		return (1);
 	while (curr && depth > 0)
 	{
 		if ((curr->type == TOKEN_OPEN_PAR || curr->type == TOKEN_EXPANSER)
@@ -47,20 +63,6 @@ static char	*join_and_free(char *s1, char *s2)
 		return (NULL);
 	free(s1);
 	return (res);
-}
-
-static int	is_expander(t_token *token)
-{
-	if (!token)
-		return (0);
-	if (token->type == TOKEN_EXPANSER)
-	{
-		if (ft_strncmp(token->lexeme, "$(", 3) == 0)
-			return (1);
-	}
-	if (token->type == TOKEN_OPEN_PAR)
-		return (1);
-	return (0);
 }
 
 t_token	*merge_expander_token(t_parser *parser)

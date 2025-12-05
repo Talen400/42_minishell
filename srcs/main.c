@@ -13,10 +13,11 @@
 
 #include "../includes/lexer.h"
 #include "../includes/parser.h"
+#include "../includes/expander.h"
 
 int	main(int argc, char *argv[], char *envvars[])
 {
-	char	*test;
+	char		*test;
 	t_parser	*parser;
 	t_ast_node	*ast;
 	t_data		data;
@@ -36,7 +37,9 @@ int	main(int argc, char *argv[], char *envvars[])
 		if (builtin_func)
 			builtin_func(args, &data);
 		(void)builtin_func;
+		get_wildcards_value(test);
 		ast = parse_sequence(parser);
+		expand_ast(ast, &data);
 		print_ast(ast, 0);
 		clear_ast(ast);
 		clear_parser(parser);

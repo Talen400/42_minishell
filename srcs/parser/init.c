@@ -68,13 +68,18 @@ t_expandable_value	*create_expandable_value(t_token *token)
 	t_expandable_value	*res;
 
 	res = malloc(sizeof(t_expandable_value));
-	if (!res)
-		return (NULL);
 	res->type = LITERAL;
 	if (token->type == TOKEN_EXPANSER)
-		res->type = PAREN;
+	{
+		if (ft_strncmp(token->lexeme, "$(", 3) == 0)
+			res->type = PAREN;
+		else
+			res->type = SIMPLE_VAR;
+	}
 	else if (token->type == TOKEN_DQUOTE)
 		res->type = QUOTED;
+	else if (token->type == TOKEN_WORD && ft_strchr(token->lexeme, '*'))
+		res->type = WILDCARD;
 	res->processed = NULL;
 	res->raw = ft_strdup(token->lexeme);
 	if (!res->raw)
@@ -85,7 +90,7 @@ t_expandable_value	*create_expandable_value(t_token *token)
 	return (res);
 }
 
-t_ast_node	*create_node(t_node_type type)
+t_ast_node	*create_node(int type)
 {
 	t_ast_node	*res;
 

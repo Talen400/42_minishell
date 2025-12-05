@@ -45,6 +45,8 @@ SRCS := $(SRC_DIR)/main.c \
 		$(SRC_DIR)/parser/debug.c \
 		$(SRC_DIR)/builtins/get_builtin.c \
 		$(SRC_DIR)/builtins/pwd.c \
+		$(SRC_DIR)/expander/expander.c \
+		$(SRC_DIR)/expander/wildcards.c \
 
 OBJS := $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 

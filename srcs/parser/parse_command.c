@@ -69,7 +69,8 @@ static void	loop_through_node(t_parser *parser, t_ast_node *node)
 	}
 	token = parser_current(parser);
 	free(node->u_data.cmd.args);
-	node->u_data.cmd.args = ft_calloc(arg_count + 1, sizeof(t_expandable_value *));
+	node->u_data.cmd.args = ft_calloc(arg_count + 1,
+			sizeof(t_expandable_value *));
 	while (token)
 	{
 		if (is_token_arg(token))

@@ -34,7 +34,7 @@ void	clear_expandable_value(t_expandable_value *value)
 	free(value);
 }
 
-void	clear_command_node(t_ast_node *node, t_node_type type)
+void	clear_command_node(t_ast_node *node, int type)
 {
 	size_t	i;
 

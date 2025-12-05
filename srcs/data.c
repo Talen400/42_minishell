@@ -6,7 +6,7 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 16:05:14 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/11/17 16:11:53 by fbenini-         ###   ########.fr       */
+/*   Updated: 2025/12/05 16:49:52 by fbenini-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,30 @@
 #define GREEN "\e[1;32m"
 #define RESET "\e[0m"
 
+static char	**init_envvars(char **envvars)
+{
+	size_t	i;
+	char	**res;
+
+	i = 0;
+	while (envvars[i])
+		i++;
+	res = ft_calloc(i + 1, sizeof(char *));
+	i = 0;
+	while (envvars[i])
+	{
+		res[i] = ft_strdup(envvars[i]);
+		i++;
+	}
+	return (res);
+}
+
 int	init_data(t_data *data, char **envvars)
 {
 	int		i;
 	char	*user;
 
-	data->envvars = envvars;
+	data->envvars = init_envvars(envvars);
 	data->user = NULL;
 	i = 0;
 	while (envvars[i])
