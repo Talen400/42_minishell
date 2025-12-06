@@ -6,7 +6,7 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/02 14:54:13 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/12/06 14:20:20 by tlavared         ###   ########.fr       */
+/*   Updated: 2025/12/06 17:13:44 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,9 @@ void	expand_ast(t_ast_node *root, t_data *data);
 /*
 char	**get_wildcards_value(char *pattern);
 */
+/*
 void	*wildcard(char *pattern);
+*/
+char	*wildcard(char *pattern);
 
 #endif

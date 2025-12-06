@@ -6,7 +6,7 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 12:02:33 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/12/06 15:42:41 by tlavared         ###   ########.fr       */
+/*   Updated: 2025/12/06 17:26:17 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,13 +94,14 @@ char	**get_wildcards_value(char *pattern)
  *
  */
 
-void	*get_wildcards_value_recursive(char *path, char **parts)
+void	*get_wildcards_value_recursive(char *path, char **parts, char **value)
 {
 	struct dirent	*dir_entry;
 	struct stat		st;
 	DIR				*dir;
 	char			*sub_path;
 	char			*tmp;
+	char			*tmp_value;
 	char			*match_path;
 
 	dir = opendir(path);
@@ -116,7 +117,12 @@ void	*get_wildcards_value_recursive(char *path, char **parts)
 				match_path = ft_strjoin(path, "/");
 				tmp = ft_strjoin(match_path, dir_entry->d_name);
 				free(match_path);
-				ft_printf("%s\n", tmp);
+				tmp_value = *value;
+				*value = ft_strjoin(tmp_value, " ");
+				free(tmp_value);
+				tmp_value = *value;
+				*value = ft_strjoin(tmp_value, tmp);
+				free(tmp_value);
 				free(tmp);
 			}
 			else
@@ -126,7 +132,7 @@ void	*get_wildcards_value_recursive(char *path, char **parts)
 				free(sub_path);
 				sub_path = tmp;
 				if (stat(sub_path, &st) == 0 && S_ISDIR(st.st_mode))
-					get_wildcards_value_recursive(sub_path, parts + 1);
+					get_wildcards_value_recursive(sub_path, parts + 1, value);
 				free(sub_path);
 			}
 		}
@@ -135,12 +141,14 @@ void	*get_wildcards_value_recursive(char *path, char **parts)
 	return (NULL);
 }
 
-void	*wildcard(char *pattern)
+char	*wildcard(char *pattern)
 {
 	char	**parts;
+	char	*value;
 
 	parts = ft_split(pattern, '/');
-	get_wildcards_value_recursive(".", parts);
+	value = ft_strdup("");
+	get_wildcards_value_recursive(".", parts, &value);
 	free_split(parts);
-	return (NULL);
+	return (value);
 }
