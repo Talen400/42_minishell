@@ -6,7 +6,7 @@
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 12:30:11 by tlavared          #+#    #+#             */
-/*   Updated: 2025/11/19 20:43:12 by tlavared         ###   ########.fr       */
+/*   Updated: 2025/12/06 14:21:36 by tlavared         ###   ########.fr       */
 /*   Updated: 2025/11/19 20:26:02 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -31,7 +31,7 @@ int	main(int argc, char *argv[], char *envvars[])
 		if (!ft_strncmp(test, "exit", 4))
 			break ;
 		parser = init_parser(test);
-		get_wildcards_value(test);
+		wildcard(test);
 		ast = parse_sequence(parser);
 		expand_ast(ast, &data);
 		print_ast(ast, 0);
