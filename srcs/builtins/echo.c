@@ -47,7 +47,7 @@ int	echo(char **args, t_data *data)
 	}
 	line_break = 1;
 	i = 1;
-	if (ft_strncmp(args[i++], "-n", 2) == 0)
+	if (ft_strncmp(args[i++], "-n\0", 3) == 0)
 		line_break = 0;
 	else
 		ft_putendl_fd(args[i - 1], STDOUT_FILENO);
