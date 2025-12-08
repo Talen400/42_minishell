@@ -6,7 +6,7 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/04 16:32:08 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/12/04 16:56:07 by fbenini-         ###   ########.fr       */
+/*   Updated: 2025/12/08 12:34:15 by fbenini-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	cd(char **args, t_data *data)
 	}
 	if (chdir(args[1]) != 0)
 	{
-		perror("cd: ");
+		perror("cd");
 		return (1);
 	}
 	return (0);

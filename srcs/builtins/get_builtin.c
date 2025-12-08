@@ -6,7 +6,7 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/04 13:25:45 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/12/04 13:53:04 by fbenini-         ###   ########.fr       */
+/*   Updated: 2025/12/08 12:17:43 by fbenini-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ t_builtin_cmd	get_builtin(char *cmd)
 	size_t					cmd_len;
 	static t_dict_builtin	commands[] = {
 	{"pwd", pwd},
+	{"echo", echo},
+	{"cd", cd}
 	};
 
 	i = 0;

@@ -6,7 +6,7 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 19:15:07 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/12/04 13:23:46 by fbenini-         ###   ########.fr       */
+/*   Updated: 2025/12/08 12:34:25 by fbenini-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	pwd(char **args, t_data *data)
 	cwd = getcwd(NULL, 0);
 	if (!cwd)
 	{
-		perror("pwd:");
+		perror("pwd");
 		return (1);
 	}
 	ft_putendl_fd(cwd, STDOUT_FILENO);

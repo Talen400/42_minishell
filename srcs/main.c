@@ -15,14 +15,42 @@
 #include "../includes/parser.h"
 #include "../includes/expander.h"
 
+static char	*create_str(t_expandable_value *value)
+{
+	if (!value->processed)
+		return (ft_strdup(value->raw));
+	return (ft_strdup(value->processed));
+}
+
+static void	exec_test(t_ast_node *node, t_data *data)
+{
+	char	**args;
+	int		i;
+	t_builtin_cmd	builtin_func;
+
+	if (node->type != NODE_CMD)
+		return ;
+	i = 0;
+	while (node->u_data.cmd.args[i])
+		i++;
+	args = ft_calloc(i + 1, sizeof(char *));
+	i = 0;
+	while (node->u_data.cmd.args[i])
+	{
+		args[i] = create_str(node->u_data.cmd.args[i]);
+		i++;
+	}
+	builtin_func = get_builtin(args[0]);
+	if (builtin_func)
+		builtin_func(args, data);
+}
+
 int	main(int argc, char *argv[], char *envvars[])
 {
 	char		*test;
 	t_parser	*parser;
 	t_ast_node	*ast;
 	t_data		data;
-	t_builtin_cmd	builtin_func;
-	char		*args[] = {"pwd", NULL};
 
 	(void)argc;
 	(void)argv;
@@ -33,13 +61,9 @@ int	main(int argc, char *argv[], char *envvars[])
 		if (!ft_strncmp(test, "exit", 4))
 			break ;
 		parser = init_parser(test);
-		builtin_func = get_builtin(test);
-		if (builtin_func)
-			builtin_func(args, &data);
-		(void)builtin_func;
-		get_wildcards_value(test);
 		ast = parse_sequence(parser);
 		expand_ast(ast, &data);
+		exec_test(ast, &data);
 		print_ast(ast, 0);
 		clear_ast(ast);
 		clear_parser(parser);

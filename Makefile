@@ -45,6 +45,8 @@ SRCS := $(SRC_DIR)/main.c \
 		$(SRC_DIR)/parser/debug.c \
 		$(SRC_DIR)/builtins/get_builtin.c \
 		$(SRC_DIR)/builtins/pwd.c \
+		$(SRC_DIR)/builtins/cd.c \
+		$(SRC_DIR)/builtins/echo.c \
 		$(SRC_DIR)/expander/expander.c \
 		$(SRC_DIR)/expander/wildcards.c \
 
