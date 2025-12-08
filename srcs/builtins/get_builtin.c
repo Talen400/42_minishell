@@ -6,7 +6,7 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/04 13:25:45 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/12/08 16:07:34 by fbenini-         ###   ########.fr       */
+/*   Updated: 2025/12/08 17:57:18 by fbenini-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ t_builtin_cmd	get_builtin(char *cmd)
 	{"echo", echo},
 	{"cd", cd},
 	{"env", env},
-	{"unset", unset}
+	{"unset", unset},
+	{"export", ft_export}
 	};
 
 	i = 0;

@@ -6,7 +6,7 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 16:04:07 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/12/08 16:06:23 by fbenini-         ###   ########.fr       */
+/*   Updated: 2025/12/08 17:50:06 by fbenini-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,5 +21,6 @@ typedef struct s_data {
 
 int		init_data(t_data *data, char **envvars);
 void	delete_env(t_data *data, char *key);
+void	update_env(t_data *data, char *key, char *new_value);
 
 #endif

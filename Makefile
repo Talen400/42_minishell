@@ -49,6 +49,7 @@ SRCS := $(SRC_DIR)/main.c \
 		$(SRC_DIR)/builtins/echo.c \
 		$(SRC_DIR)/builtins/unset.c \
 		$(SRC_DIR)/builtins/env.c \
+		$(SRC_DIR)/builtins/export.c \
 		$(SRC_DIR)/utils/env.c \
 		$(SRC_DIR)/expander/expander.c \
 		$(SRC_DIR)/expander/wildcards.c \

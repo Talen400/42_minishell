@@ -6,7 +6,7 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/05 16:40:08 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/12/05 16:57:51 by fbenini-         ###   ########.fr       */
+/*   Updated: 2025/12/08 18:07:13 by fbenini-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ void	update_env(t_data *data, char *key, char *new_value)
 	}
 	if (!res)
 		create_new_var(data, id, new_value);
-	free(new_value);
 }
 
 void	pop_from_env(t_data *data, size_t pos)
