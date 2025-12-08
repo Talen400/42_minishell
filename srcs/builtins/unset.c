@@ -1,25 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   data.h                                             :+:      :+:    :+:   */
+/*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/17 16:04:07 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/12/08 16:06:23 by fbenini-         ###   ########.fr       */
+/*   Created: 2025/12/08 16:04:03 by fbenini-          #+#    #+#             */
+/*   Updated: 2025/12/08 16:06:40 by fbenini-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef DATA_H
-# define DATA_H
+#include "../../includes/builtins.h"
+#include "../../includes/minishell.h"
 
-typedef struct s_data {
-	char	**envvars;
-	char	*user;
-	char	*prompt;
-}	t_data;
+int	unset(char **args, t_data *data)
+{
+	size_t	i;
 
-int		init_data(t_data *data, char **envvars);
-void	delete_env(t_data *data, char *key);
-
-#endif
+	i = 1;
+	while (args[i])
+	{
+		delete_env(data, args[i]);
+		i++;
+	}
+	return (0);
+}

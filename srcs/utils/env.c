@@ -22,6 +22,27 @@ static char	*join_and_free(char *s1, char *s2)
 	return (res);
 }
 
+static void	create_new_var(t_data *data, char *id, char *new_value)
+{
+	size_t	size;
+	char	**new;
+	size_t	i;
+
+	size = 0;
+	while (data->envvars[size])
+		size++;
+	new = ft_calloc(size + 2, sizeof(char *));
+	i = 0;
+	while (data->envvars[i])
+	{
+		new[i] = data->envvars[i];
+		i++;
+	}
+	new[i++] = join_and_free(id, new_value);
+	free(data->envvars);
+	data->envvars = new;
+}
+
 void	update_env(t_data *data, char *key, char *new_value)
 {
 	size_t	i;
@@ -31,9 +52,10 @@ void	update_env(t_data *data, char *key, char *new_value)
 
 	i = 0;
 	id = ft_strjoin(key, "=");
+	res = NULL;
 	while (data->envvars[i])
 	{
-		id_len = ft_strlen(data->envvars[i]);
+		id_len = ft_strlen(id);
 		if (ft_strncmp(data->envvars[i], id, id_len) == 0)
 		{
 			res = join_and_free(id, new_value);
@@ -43,5 +65,52 @@ void	update_env(t_data *data, char *key, char *new_value)
 		}
 		i++;
 	}
+	if (!res)
+		create_new_var(data, id, new_value);
 	free(new_value);
+}
+
+void	pop_from_env(t_data *data, size_t pos)
+{
+	size_t	i;
+	char	**new;
+	size_t	j;
+
+	i = 0;
+	while (data->envvars[i])
+		i++;
+	new = ft_calloc(i, sizeof(char *));
+	i = 0;
+	j = 0;
+	while (data->envvars[i])
+	{
+		if (i != pos)
+		{
+			new[j] = data->envvars[i];
+			j++;
+		}
+		else
+			free(data->envvars[i]);
+		i++;
+	}
+	free(data->envvars);
+	data->envvars = new;
+}
+
+void	delete_env(t_data *data, char *key)
+{
+	char	*id;
+	size_t	i;
+	size_t	id_len;
+
+	id = ft_strjoin(key, "=");
+	i = 0;
+	while (data->envvars[i])
+	{
+		id_len = ft_strlen(id);
+		if (ft_strncmp(data->envvars[i], id, id_len) == 0)
+			pop_from_env(data, i);
+		i++;
+	}
+	free(id);
 }
