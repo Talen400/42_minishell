@@ -1,38 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_builtin.c                                      :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/04 13:25:45 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/12/08 13:29:58 by fbenini-         ###   ########.fr       */
+/*   Created: 2025/12/08 13:27:26 by fbenini-          #+#    #+#             */
+/*   Updated: 2025/12/08 13:31:04 by fbenini-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/builtins.h"
 #include "../../includes/minishell.h"
 
-t_builtin_cmd	get_builtin(char *cmd)
+int	env(char **args, t_data *data)
 {
-	size_t					i;
-	size_t					len;
-	size_t					cmd_len;
-	static t_dict_builtin	commands[] = {
-	{"pwd", pwd},
-	{"echo", echo},
-	{"cd", cd},
-	{"env", env}
-	};
+	int	i;
 
+	(void)args;
 	i = 0;
-	len = sizeof(commands) / sizeof(t_dict_builtin);
-	while (i < len)
+	while (data->envvars[i])
 	{
-		cmd_len = ft_strlen(commands[i].id);
-		if (ft_strncmp(cmd, commands[i].id, cmd_len) == 0)
-			return (commands[i].function);
+		ft_putendl_fd(data->envvars[i], STDOUT_FILENO);
 		i++;
 	}
-	return (NULL);
+	return (0);
 }

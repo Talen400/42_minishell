@@ -6,7 +6,7 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/04 12:21:46 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/12/08 12:17:32 by fbenini-         ###   ########.fr       */
+/*   Updated: 2025/12/08 13:29:31 by fbenini-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ typedef int			(*t_builtin_cmd)(char **args, t_data *data);
 t_builtin_cmd		get_builtin(char *cmd);
 int					echo(char **args, t_data *data);
 int					cd(char **args, t_data *data);
+int					env(char **args, t_data *data);
 
 typedef struct s_dict_builtin {
 	char			*id;
