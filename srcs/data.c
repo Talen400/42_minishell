@@ -33,6 +33,20 @@ static char	**init_envvars(char **envvars)
 	return (res);
 }
 
+void	clear_data(t_data *data)
+{
+	int	i;
+
+	i = 0;
+	while (data->envvars[i])
+	{
+		free(data->envvars[i]);
+		i++;
+	}
+	free(data->envvars);
+	free(data->prompt);
+}
+
 int	init_data(t_data *data, char **envvars)
 {
 	int		i;

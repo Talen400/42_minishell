@@ -36,7 +36,7 @@ static void	create_arg(t_expandable_value *value, char **args, int *j)
 	if (value->type == WILDCARD)
 	{
 		splitted = ft_split(value->processed, ' ');
-		if (!splitted[1])
+		if (!splitted[0])
 			args[1] = ft_strdup(value->raw);
 		while (splitted[split_idx])
 		{

@@ -22,5 +22,6 @@ typedef struct s_data {
 int		init_data(t_data *data, char **envvars);
 void	delete_env(t_data *data, char *key);
 void	update_env(t_data *data, char *key, char *new_value);
+void	clear_data(t_data *data);
 
 #endif

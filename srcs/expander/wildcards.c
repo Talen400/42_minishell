@@ -137,6 +137,7 @@ void	*get_wildcards_value_recursive(char *path, char **parts, char **value)
 			}
 		}
 	}
+	free(path);
 	closedir(dir);
 	return (NULL);
 }

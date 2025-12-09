@@ -46,6 +46,7 @@ int	main(int argc, char *argv[], char *envvars[])
 		clear_parser(parser);
 		free(test);
 	}
+	clear_data(&data);
 	free(test);
 	return (SUCESS);
 }

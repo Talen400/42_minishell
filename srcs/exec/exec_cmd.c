@@ -70,24 +70,13 @@ static char	*get_path_of_cmd(char *cmd, t_data *data)
 	return (NULL);
 }
 
-int	exec_cmd(t_ast_node *node, t_data *data)
+int	exec_from_path(char **args, t_data *data)
 {
-	char			*path;
-	t_cmd_node		cmd;
-	char			**args;
-	t_builtin_cmd	builtin;
-	int				res;
-	pid_t			pid;
-	int				status;
+	char	*path;
+	int		status;
+	pid_t	pid;
 
 	status = 0;
-	if (node->type != NODE_CMD)
-		return (1);
-	cmd = node->u_data.cmd;
-	args = convert_expandable(cmd.args);
-	builtin = get_builtin(args[0]);
-	if (builtin)
-		return (builtin(args, data));
 	path = get_path_of_cmd(args[0], data);
 	if (!path)
 	{
@@ -99,14 +88,43 @@ int	exec_cmd(t_ast_node *node, t_data *data)
 	pid = fork();
 	if (pid == 0)
 	{
-		res = execve(path, args, data->envvars);
+		status = execve(path, args, data->envvars);
 		free(path);
 		free_splitted(args);
-		exit(res);;
+		exit(status);;
 	}
 	else if (pid > 0)
 		waitpid(pid, &status, 0);
 	else
 		perror("fork failed");
+	free(path);
+	free_splitted(args);
 	return (status);
+}
+
+int	exec_from_builtin(t_builtin_cmd builtin, char **args, t_data *data)
+{
+	int	status;
+
+	if (!builtin)
+		return (-1);
+	status = builtin(args, data);
+	free_splitted(args);
+	return (status);
+}
+
+int	exec_cmd(t_ast_node *node, t_data *data)
+{
+	t_cmd_node		cmd;
+	char			**args;
+	t_builtin_cmd	builtin;
+
+	if (node->type != NODE_CMD)
+		return (1);
+	cmd = node->u_data.cmd;
+	args = convert_expandable(cmd.args);
+	builtin = get_builtin(args[0]);
+	if (builtin)
+		return (exec_from_builtin(builtin, args, data));
+	return (exec_from_path(args, data));
 }
