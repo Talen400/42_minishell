@@ -31,7 +31,6 @@ int	main(int argc, char *argv[], char *envvars[])
 		if (!ft_strncmp(test, "exit", 4))
 			break ;
 		parser = init_parser(test);
-		ft_printf("%s \n", wildcard(test));
 		ast = parse_sequence(parser);
 		expand_ast(ast, &data);
 		print_ast(ast, 0);

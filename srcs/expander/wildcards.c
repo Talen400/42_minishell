@@ -141,14 +141,44 @@ void	*get_wildcards_value_recursive(char *path, char **parts, char **value)
 	return (NULL);
 }
 
+char	*get_path(char *pattern)
+{
+	int		path_len;
+	char	*file;
+	char	*res;
+	int		i;
+
+	file = ft_strchr(pattern, '*');
+	if (!file)
+		return (ft_strdup("."));
+	path_len = ft_strlen(pattern) - ft_strlen(file);
+	res = ft_calloc(path_len + 1, sizeof(char));
+	i = 0;
+	while (i < path_len - 1)
+	{
+		res[i] = pattern[i];
+		i++;
+	}
+	return (res);
+}
+
 char	*wildcard(char *pattern)
 {
 	char	**parts;
 	char	*value;
+	char	*path;
+	int		path_len;
 
-	parts = ft_split(pattern, '/');
+	path = get_path(pattern);
+	path_len = ft_strlen(path);
+	parts = ft_split(pattern + path_len, '/');
 	value = ft_strdup("");
-	get_wildcards_value_recursive(".", parts, &value);
+	if (path_len == 0)
+	{
+		free(path);
+		path = ft_strdup(".");
+	}
+	get_wildcards_value_recursive(path, parts, &value);
 	free_split(parts);
 	return (value);
 }
