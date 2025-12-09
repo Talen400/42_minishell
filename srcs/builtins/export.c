@@ -6,7 +6,7 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/08 17:45:32 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/12/08 18:11:49 by fbenini-         ###   ########.fr       */
+/*   Updated: 2025/12/09 20:57:15 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,18 @@ static char	*copy_key(char *arg)
 	return (res);
 }
 
-static void	export_aux(t_data *data, char *arg)
+/*
+ * But to export ARG="test"
+ *
+ * => ARG=test" (" leak in env)
+ */
+
+static void	export_aux(t_data *data, char *arg, char *new_value)
 {
 	char	*key;
-	char	*new_value;
+	//char	*new_value;
 
-	new_value = ft_strchr(arg, '=');
+	//new_value = ft_strchr(arg, '=');
 	key = copy_key(arg);
 	if (!new_value)
 		update_env(data, key, "");
@@ -58,7 +64,7 @@ int	ft_export(char **args, t_data *data)
 	while (args[i])
 	{
 		if (ft_strchr(args[i], '='))
-			export_aux(data, args[i]);
+			export_aux(data, args[i], args[i + 1]);
 		i++;
 	}
 	return (0);
