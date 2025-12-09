@@ -13,21 +13,24 @@
 #include "../../includes/minishell.h"
 #include <unistd.h>
 
-static void	run_echo(char **args, void (*f)(char *s, int fd))
+static void	run_echo(char **args, int skip)
 {
 	int	len;
+	int	printed;
 	int	i;
 
 	len = 1;
 	while (args[len])
 		len++;
 	len--;
-	i = 2;
+	i = 1 + skip;
+	printed = 0;
 	while (args[i])
 	{
-		f(args[i++], STDOUT_FILENO);
-		if (f == ft_putstr_fd && i <= len)
+		if (i <= len && printed > 0)
 			ft_putchar_fd(' ', STDOUT_FILENO);
+		ft_putstr_fd(args[i++], STDOUT_FILENO);
+		printed++;
 	}
 }
 
@@ -36,7 +39,7 @@ int	echo(char **args, t_data *data)
 	int	i;
 	int	line_break;
 
-	i = 1;
+	i = 0;
 	(void)data;
 	while (args[i])
 		i++;
@@ -49,11 +52,8 @@ int	echo(char **args, t_data *data)
 	i = 1;
 	if (ft_strncmp(args[i++], "-n\0", 3) == 0)
 		line_break = 0;
-	else
-		ft_putendl_fd(args[i - 1], STDOUT_FILENO);
+	run_echo(args, !line_break);
 	if (line_break)
-		run_echo(args, ft_putendl_fd);
-	else
-		run_echo(args, ft_putstr_fd);
+		ft_putchar_fd('\n', STDOUT_FILENO);
 	return (SUCESS);
 }
