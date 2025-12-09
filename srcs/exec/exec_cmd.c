@@ -6,13 +6,13 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 14:00:35 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/12/09 14:55:54 by fbenini-         ###   ########.fr       */
+/*   Updated: 2025/12/09 17:12:41 by fbenini-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include "../../includes/parser.h"
-#include <unistd.h>
+#include "../../includes/exec.h"
 
 static char	*get_path(t_data *data)
 {
@@ -30,7 +30,7 @@ static char	*get_path(t_data *data)
 	return (path + 5);
 }
 
-static void	free_splitted(char **splitted)
+void	free_splitted(char **splitted)
 {
 	int	i;
 
@@ -67,27 +67,6 @@ static char	*get_path_of_cmd(char *cmd, t_data *data)
 	if (access(cmd, F_OK) == 0)
 		return (ft_strdup(cmd));
 	return (NULL);
-}
-
-char	**convert_expandable(t_expandable_value **values)
-{
-	int		i;
-	char	**res;
-
-	i = 0;
-	while (values[i])
-		i++;
-	res = ft_calloc(i + 1, sizeof(char *));
-	i = 0;
-	while (values[i])
-	{
-		if (values[i]->processed)
-			res[i] = ft_strdup(values[i]->processed);
-		else
-			res[i] = ft_strdup(values[i]->raw);
-		i++;
-	}
-	return (res);
 }
 
 int	exec_cmd(t_ast_node *node, t_data *data)
