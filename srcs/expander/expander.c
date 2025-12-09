@@ -6,7 +6,7 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 18:55:11 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/12/02 15:09:24 by fbenini-         ###   ########.fr       */
+/*   Updated: 2025/12/06 17:27:02 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ void	expand_var(t_expandable_value *value, t_data *data)
 		value->processed = get_env(data, value->raw);
 	if (value->type == LITERAL)
 		value->processed = ft_strdup(value->raw);
+	if (value->type == WILDCARD)
+		value->processed = wildcard(value->raw);
 }
 
 void	expand_cmd(t_ast_node *node, t_data *data)
