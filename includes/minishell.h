@@ -25,6 +25,7 @@
 # include <dirent.h>
 # include <string.h>
 # include <termios.h>
+# include <sys/wait.h>
 # include "../libft/libft.h"
 # include "data.h"
 # include "builtins.h"

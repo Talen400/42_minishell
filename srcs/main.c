@@ -13,36 +13,25 @@
 
 #include "../includes/lexer.h"
 #include "../includes/parser.h"
+#include "../includes/minishell.h"
 #include "../includes/expander.h"
-
-static char	*create_str(t_expandable_value *value)
-{
-	if (!value->processed)
-		return (ft_strdup(value->raw));
-	return (ft_strdup(value->processed));
-}
+#include "../includes/exec.h"
 
 static void	exec_test(t_ast_node *node, t_data *data)
 {
-	char	**args;
-	int		i;
-	t_builtin_cmd	builtin_func;
+	pid_t	pid;
 
-	if (node->type != NODE_CMD)
-		return ;
-	i = 0;
-	while (node->u_data.cmd.args[i])
-		i++;
-	args = ft_calloc(i + 1, sizeof(char *));
-	i = 0;
-	while (node->u_data.cmd.args[i])
+	pid = fork();
+	if (pid == 0)
 	{
-		args[i] = create_str(node->u_data.cmd.args[i]);
-		i++;
+		if (node->type == NODE_CMD)
+			exec_cmd(node, data);
+		exit(0);
 	}
-	builtin_func = get_builtin(args[0]);
-	if (builtin_func)
-		builtin_func(args, data);
+	else if (pid > 0)
+		waitpid(pid, NULL, 0);
+	else
+		perror("fork failed");
 }
 
 int	main(int argc, char *argv[], char *envvars[])
@@ -64,7 +53,6 @@ int	main(int argc, char *argv[], char *envvars[])
 		ast = parse_sequence(parser);
 		expand_ast(ast, &data);
 		exec_test(ast, &data);
-		print_ast(ast, 0);
 		clear_ast(ast);
 		clear_parser(parser);
 		free(test);
