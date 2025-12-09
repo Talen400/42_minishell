@@ -6,7 +6,7 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 16:58:56 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/12/09 17:27:14 by fbenini-         ###   ########.fr       */
+/*   Updated: 2025/12/09 18:43:33 by fbenini-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ static void	create_arg(t_expandable_value *value, char **args, int *j)
 	if (value->type == WILDCARD)
 	{
 		splitted = ft_split(value->processed, ' ');
+		if (!splitted[1])
+			args[1] = ft_strdup(value->raw);
 		while (splitted[split_idx])
 		{
 			args[*j] = splitted[split_idx];
@@ -68,6 +70,8 @@ char	**convert_expandable(t_expandable_value **values)
 		i++;
 		count++;
 	}
+	if (count == 1)
+		count = 2;
 	res = ft_calloc(count + 1, sizeof(char *));
 	i = 0;
 	j = 0;
