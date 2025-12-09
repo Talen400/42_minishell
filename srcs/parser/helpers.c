@@ -6,7 +6,7 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 14:11:01 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/12/09 15:46:08 by fbenini-         ###   ########.fr       */
+/*   Updated: 2025/12/09 16:39:49 by fbenini-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ t_token	*parser_current(t_parser *parser)
 	if (!parser || !*parser->tokens)
 		return (NULL);
 	token = *parser->tokens;
-	if (token->type == TOKEN_EXPANSER || token->type == TOKEN_OPEN_PAR)
+	if (token->type == TOKEN_SUB_CMD || token->type == TOKEN_OPEN_PAR)
 	{
 		merged = merge_expander_token(parser);
 		return (merged);
@@ -35,7 +35,7 @@ void	parser_advance(t_parser *parser)
 	t_token	*tokens;
 
 	tokens = *parser->tokens;
-	if (tokens && (tokens->type == TOKEN_EXPANSER
+	if (tokens && (tokens->type == TOKEN_SUB_CMD
 		|| tokens->type == TOKEN_OPEN_PAR))
 	{
 		skip_matching_parens(parser);
