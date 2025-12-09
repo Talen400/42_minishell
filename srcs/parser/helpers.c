@@ -6,7 +6,7 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 14:11:01 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/11/24 17:44:34 by fbenini-         ###   ########.fr       */
+/*   Updated: 2025/12/09 15:46:08 by fbenini-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ void	parser_advance(t_parser *parser)
 	t_token	*tokens;
 
 	tokens = *parser->tokens;
-	if (tokens && tokens->type == TOKEN_EXPANSER)
+	if (tokens && (tokens->type == TOKEN_EXPANSER
+		|| tokens->type == TOKEN_OPEN_PAR))
 	{
 		skip_matching_parens(parser);
 		return ;
