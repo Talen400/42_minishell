@@ -6,13 +6,14 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 14:00:35 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/12/09 17:12:41 by fbenini-         ###   ########.fr       */
+/*   Updated: 2025/12/09 18:27:03 by fbenini-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include "../../includes/parser.h"
 #include "../../includes/exec.h"
+#include <time.h>
 
 static char	*get_path(t_data *data)
 {
@@ -71,15 +72,22 @@ static char	*get_path_of_cmd(char *cmd, t_data *data)
 
 int	exec_cmd(t_ast_node *node, t_data *data)
 {
-	char		*path;
-	t_cmd_node	cmd;
-	char		**args;
-	int			res;
+	char			*path;
+	t_cmd_node		cmd;
+	char			**args;
+	t_builtin_cmd	builtin;
+	int				res;
+	pid_t			pid;
+	int				status;
 
+	status = 0;
 	if (node->type != NODE_CMD)
 		return (1);
 	cmd = node->u_data.cmd;
 	args = convert_expandable(cmd.args);
+	builtin = get_builtin(args[0]);
+	if (builtin)
+		return (builtin(args, data));
 	path = get_path_of_cmd(args[0], data);
 	if (!path)
 	{
@@ -88,8 +96,17 @@ int	exec_cmd(t_ast_node *node, t_data *data)
 		free_splitted(args);
 		return (127);
 	}
-	res = execve(path, args, data->envvars);
-	free(path);
-	free_splitted(args);
-	return (res);
+	pid = fork();
+	if (pid == 0)
+	{
+		res = execve(path, args, data->envvars);
+		free(path);
+		free_splitted(args);
+		exit(res);;
+	}
+	else if (pid > 0)
+		waitpid(pid, &status, 0);
+	else
+		perror("fork failed");
+	return (status);
 }

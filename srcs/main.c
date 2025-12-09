@@ -19,19 +19,8 @@
 
 static void	exec_test(t_ast_node *node, t_data *data)
 {
-	pid_t	pid;
-
-	pid = fork();
-	if (pid == 0)
-	{
-		if (node->type == NODE_CMD)
-			exec_cmd(node, data);
-		exit(0);
-	}
-	else if (pid > 0)
-		waitpid(pid, NULL, 0);
-	else
-		perror("fork failed");
+	if (node->type == NODE_CMD)
+		exec_cmd(node, data);
 }
 
 int	main(int argc, char *argv[], char *envvars[])
