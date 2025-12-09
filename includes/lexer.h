@@ -6,7 +6,7 @@
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 17:06:46 by tlavared          #+#    #+#             */
-/*   Updated: 2025/11/25 16:02:31 by tlavared         ###   ########.fr       */
+/*   Updated: 2025/12/09 16:10:22 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,8 @@ enum e_token_type
 	TOKEN_CLOSE_PAR,
 	TOKEN_SQUOTE,
 	TOKEN_DQUOTE,
-	TOKEN_EXPANSER
+	TOKEN_EXPANSER,
+	TOKEN_SUB_CMD
 };
 
 typedef struct s_automato
