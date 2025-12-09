@@ -6,7 +6,7 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 12:02:33 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/12/06 17:26:17 by tlavared         ###   ########.fr       */
+/*   Updated: 2025/12/09 17:14:58 by fbenini-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,6 +137,7 @@ void	*get_wildcards_value_recursive(char *path, char **parts, char **value)
 			}
 		}
 	}
+	free(path);
 	closedir(dir);
 	return (NULL);
 }

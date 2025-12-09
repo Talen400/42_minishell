@@ -1,41 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cd.c                                               :+:      :+:    :+:   */
+/*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/04 16:32:08 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/12/09 18:22:05 by fbenini-         ###   ########.fr       */
+/*   Created: 2025/12/08 16:04:03 by fbenini-          #+#    #+#             */
+/*   Updated: 2025/12/08 16:06:40 by fbenini-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/data.h"
+#include "../../includes/builtins.h"
 #include "../../includes/minishell.h"
-#include <unistd.h>
 
-int	cd(char **args, t_data *data)
+int	unset(char **args, t_data *data)
 {
 	size_t	i;
 
-	i = 0;
-	(void)data;
+	i = 1;
 	while (args[i])
+	{
+		delete_env(data, args[i]);
 		i++;
-	if (i > 2)
-	{
-		ft_putendl_fd("cd: too many arguments", STDERR_FILENO);
-		return (1);
-	}
-	else if (i < 2)
-	{
-		ft_putendl_fd("cd: not enough arguments", STDERR_FILENO);
-		return (1);
-	}
-	if (chdir(args[1]) != 0)
-	{
-		perror("cd");
-		return (1);
 	}
 	return (0);
 }

@@ -13,7 +13,15 @@
 
 #include "../includes/lexer.h"
 #include "../includes/parser.h"
+#include "../includes/minishell.h"
 #include "../includes/expander.h"
+#include "../includes/exec.h"
+
+static void	exec_test(t_ast_node *node, t_data *data)
+{
+	if (node->type == NODE_CMD)
+		exec_cmd(node, data);
+}
 
 int	main(int argc, char *argv[], char *envvars[])
 {
@@ -33,11 +41,12 @@ int	main(int argc, char *argv[], char *envvars[])
 		parser = init_parser(test);
 		ast = parse_sequence(parser);
 		expand_ast(ast, &data);
-		print_ast(ast, 0);
+		exec_test(ast, &data);
 		clear_ast(ast);
 		clear_parser(parser);
 		free(test);
 	}
+	clear_data(&data);
 	free(test);
 	return (SUCESS);
 }

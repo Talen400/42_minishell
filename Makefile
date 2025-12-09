@@ -43,8 +43,18 @@ SRCS := $(SRC_DIR)/main.c \
 		$(SRC_DIR)/parser/clear.c \
 		$(SRC_DIR)/parser/merge.c \
 		$(SRC_DIR)/parser/debug.c \
+		$(SRC_DIR)/builtins/get_builtin.c \
+		$(SRC_DIR)/builtins/pwd.c \
+		$(SRC_DIR)/builtins/cd.c \
+		$(SRC_DIR)/builtins/echo.c \
+		$(SRC_DIR)/builtins/unset.c \
+		$(SRC_DIR)/builtins/env.c \
+		$(SRC_DIR)/builtins/export.c \
+		$(SRC_DIR)/utils/env.c \
 		$(SRC_DIR)/expander/expander.c \
 		$(SRC_DIR)/expander/wildcards.c \
+		$(SRC_DIR)/exec/exec_cmd.c \
+		$(SRC_DIR)/exec/convert.c \
 
 OBJS := $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
