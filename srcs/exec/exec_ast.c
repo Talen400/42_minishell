@@ -1,29 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   data.h                                             :+:      :+:    :+:   */
+/*   exec_ast.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/17 16:04:07 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/12/11 13:29:03 by fbenini-         ###   ########.fr       */
+/*   Created: 2025/12/11 13:16:34 by fbenini-          #+#    #+#             */
+/*   Updated: 2025/12/11 13:17:52 by fbenini-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef DATA_H
-# define DATA_H
+#include "../../includes/exec.h"
 
-typedef struct s_data {
-	char	**envvars;
-	char	*user;
-	char	*prompt;
-	int		is_running;
-	int		exit_status;
-}	t_data;
-
-int		init_data(t_data *data, char **envvars);
-void	delete_env(t_data *data, char *key);
-void	update_env(t_data *data, char *key, char *new_value);
-void	clear_data(t_data *data);
-
-#endif
+void	exec_ast(t_ast_node *root, t_data *data)
+{
+	if (!root || !data->is_running)
+		return ;
+	if (root->type == NODE_CMD)
+		exec_cmd(root, data);
+	if (root->type == NODE_PIPE)
+		exec_pipe(root, data);
+}

@@ -6,7 +6,7 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 16:05:14 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/12/05 16:49:52 by fbenini-         ###   ########.fr       */
+/*   Updated: 2025/12/11 13:29:58 by fbenini-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ int	init_data(t_data *data, char **envvars)
 
 	data->envvars = init_envvars(envvars);
 	data->user = NULL;
+	data->is_running = 1;
+	data->exit_status = 0;
 	i = 0;
 	while (envvars[i])
 	{
@@ -68,10 +70,5 @@ int	init_data(t_data *data, char **envvars)
 		return (1);
 	data->prompt = ft_strjoin(user, RESET"@"BLUE"minishell"RESET"> ");
 	free(user);
-	if (!data->prompt)
-	{
-		free(user);
-		return (1);
-	}
 	return (0);
 }

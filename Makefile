@@ -50,6 +50,7 @@ SRCS := $(SRC_DIR)/main.c \
 		$(SRC_DIR)/builtins/unset.c \
 		$(SRC_DIR)/builtins/env.c \
 		$(SRC_DIR)/builtins/export.c \
+		$(SRC_DIR)/builtins/exit.c \
 		$(SRC_DIR)/utils/env.c \
 		$(SRC_DIR)/expander/expander.c \
 		$(SRC_DIR)/expander/wildcards.c \
@@ -57,6 +58,7 @@ SRCS := $(SRC_DIR)/main.c \
 		$(SRC_DIR)/exec/helpers.c \
 		$(SRC_DIR)/exec/convert.c \
 		$(SRC_DIR)/exec/exec_pipe.c \
+		$(SRC_DIR)/exec/exec_ast.c \
 
 OBJS := $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 

@@ -6,7 +6,7 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/04 12:21:46 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/12/08 17:57:00 by fbenini-         ###   ########.fr       */
+/*   Updated: 2025/12/11 13:20:22 by fbenini-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int					cd(char **args, t_data *data);
 int					env(char **args, t_data *data);
 int					unset(char **args, t_data *data);
 int					ft_export(char **args, t_data *data);
+int					ft_exit(char **args, t_data *data);
 
 typedef struct s_dict_builtin {
 	char			*id;

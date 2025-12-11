@@ -6,7 +6,7 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 14:26:15 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/12/09 20:54:28 by fbenini-         ###   ########.fr       */
+/*   Updated: 2025/12/11 13:18:13 by fbenini-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 # include "minishell.h"
 # include "parser.h"
+
+void	exec_ast(t_ast_node *root, t_data *data);
 
 int		exec_cmd(t_ast_node *node, t_data *data);
 char	**convert_expandable(t_expandable_value **values);

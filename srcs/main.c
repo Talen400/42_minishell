@@ -17,13 +17,6 @@
 #include "../includes/expander.h"
 #include "../includes/exec.h"
 
-static void	exec_test(t_ast_node *node, t_data *data)
-{
-	if (node->type == NODE_CMD)
-		exec_cmd(node, data);
-	if (node->type == NODE_PIPE)
-		exec_pipe(node, data);
-}
 
 int	main(int argc, char *argv[], char *envvars[])
 {
@@ -35,20 +28,17 @@ int	main(int argc, char *argv[], char *envvars[])
 	(void)argc;
 	(void)argv;
 	init_data(&data, envvars);
-	while (1)
+	while (data.is_running)
 	{
 		test = readline("> ");
-		if (!ft_strncmp(test, "exit", 4))
-			break ;
 		parser = init_parser(test);
 		ast = parse_sequence(parser);
 		expand_ast(ast, &data);
-		exec_test(ast, &data);
+		exec_ast(ast, &data);
 		clear_ast(ast);
 		clear_parser(parser);
 		free(test);
 	}
 	clear_data(&data);
-	free(test);
-	return (SUCESS);
+	return (data.exit_status);
 }
