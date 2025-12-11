@@ -21,6 +21,8 @@ static void	exec_test(t_ast_node *node, t_data *data)
 {
 	if (node->type == NODE_CMD)
 		exec_cmd(node, data);
+	if (node->type == NODE_PIPE)
+		exec_pipe(node, data);
 }
 
 int	main(int argc, char *argv[], char *envvars[])

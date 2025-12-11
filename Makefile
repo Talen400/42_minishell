@@ -54,7 +54,9 @@ SRCS := $(SRC_DIR)/main.c \
 		$(SRC_DIR)/expander/expander.c \
 		$(SRC_DIR)/expander/wildcards.c \
 		$(SRC_DIR)/exec/exec_cmd.c \
+		$(SRC_DIR)/exec/helpers.c \
 		$(SRC_DIR)/exec/convert.c \
+		$(SRC_DIR)/exec/exec_pipe.c \
 
 OBJS := $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 

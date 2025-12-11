@@ -6,7 +6,7 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 18:55:11 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/12/06 17:27:02 by tlavared         ###   ########.fr       */
+/*   Updated: 2025/12/09 20:57:56 by fbenini-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,8 @@ void	expand_cmd(t_ast_node *node, t_data *data)
 
 void	expand_ast(t_ast_node *root, t_data *data)
 {
+	int	i;
+
 	if (!root)
 		return ;
 	if (root->type == NODE_LOGICAL)
@@ -78,4 +80,13 @@ void	expand_ast(t_ast_node *root, t_data *data)
 	}
 	if (root->type == NODE_CMD)
 		expand_cmd(root, data);
+	if (root->type == NODE_PIPE)
+	{
+		i = 0;
+		while (root->u_data.pipe.commands[i])
+		{
+			expand_cmd(root->u_data.pipe.commands[i], data);
+			i++;
+		}
+	}
 }
