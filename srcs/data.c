@@ -6,7 +6,7 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 16:05:14 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/12/11 13:29:58 by fbenini-         ###   ########.fr       */
+/*   Updated: 2025/12/12 15:04:04 by fbenini-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	init_data(t_data *data, char **envvars)
 	user = ft_strjoin(GREEN, data->user);
 	if (!user)
 		return (1);
-	data->prompt = ft_strjoin(user, RESET"@"BLUE"minishell"RESET"> ");
+	data->prompt = ft_strjoin(user, RESET"@"BLUE"minishell"RESET"\n > ");
 	free(user);
 	return (0);
 }
