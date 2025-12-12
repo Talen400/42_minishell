@@ -6,7 +6,7 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 20:39:27 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/12/09 21:13:57 by fbenini-         ###   ########.fr       */
+/*   Updated: 2025/12/12 13:59:34 by fbenini-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ static void	father_process(int *fd_in, int *fd_out, int is_last)
 	}
 }
 
-void	exec_pipe(t_ast_node *node, t_data *data)
+int	exec_pipe(t_ast_node *node, t_data *data)
 {
 	t_pipe_node	pipe_node;
 	int			fd[2];
@@ -99,7 +99,7 @@ void	exec_pipe(t_ast_node *node, t_data *data)
 	{
 		is_last = (pipe_node.commands[i + 1] == NULL);
 		if (!is_last && pipe(fd) == -1)
-			return (perror("pipe"));
+			return (perror("pipe"), 1);
 		pid = fork();
 		if (pid == -1)
 		{
@@ -109,7 +109,7 @@ void	exec_pipe(t_ast_node *node, t_data *data)
 				close(fd[0]);
 				close(fd[1]);
 			}
-			return ;
+			return (1);
 		}
 		if (pid == 0)
 			child_process(pipe_node.commands[i], data, &fd_in, fd, is_last);
@@ -120,4 +120,5 @@ void	exec_pipe(t_ast_node *node, t_data *data)
 	i = 0;
 	while (pipe_node.commands[i++])
 		wait(&status);
+	return (status);
 }

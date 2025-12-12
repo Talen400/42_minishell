@@ -6,7 +6,7 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/04 13:25:45 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/12/11 13:20:56 by fbenini-         ###   ########.fr       */
+/*   Updated: 2025/12/12 14:41:31 by fbenini-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ t_builtin_cmd	get_builtin(char *cmd)
 	len = sizeof(commands) / sizeof(t_dict_builtin);
 	while (i < len)
 	{
-		cmd_len = ft_strlen(commands[i].id);
+		cmd_len = ft_strlen(cmd);
 		if (ft_strncmp(cmd, commands[i].id, cmd_len) == 0)
 			return (commands[i].function);
 		i++;
