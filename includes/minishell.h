@@ -35,5 +35,6 @@
 # define FALSE 0
 
 char	*ft_readline(t_data *data);
+char	*get_prompt(char *user);
 
 #endif

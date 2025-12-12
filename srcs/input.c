@@ -6,7 +6,7 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 16:36:10 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/12/12 14:55:06 by fbenini-         ###   ########.fr       */
+/*   Updated: 2025/12/12 16:36:35 by fbenini-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,11 @@ int	read_input(t_data *data)
 char	*ft_readline(t_data *data)
 {
 	char	*line;
+	char	*prompt;
 
-	line = readline(data->prompt);
+	prompt = get_prompt(data->user);
+	line = readline(prompt);
+	free(prompt);
 	add_history(line);
 	return (line);
 }
