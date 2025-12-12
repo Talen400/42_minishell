@@ -20,7 +20,7 @@
 
 int	main(int argc, char *argv[], char *envvars[])
 {
-	char		*test;
+	char		*line;
 	t_parser	*parser;
 	t_ast_node	*ast;
 	t_data		data;
@@ -30,14 +30,14 @@ int	main(int argc, char *argv[], char *envvars[])
 	init_data(&data, envvars);
 	while (data.is_running)
 	{
-		test = readline("> ");
-		parser = init_parser(test);
+		line = ft_readline(&data);
+		parser = init_parser(line);
 		ast = parse_sequence(parser);
 		expand_ast(ast, &data);
 		exec_ast(ast, &data);
 		clear_ast(ast);
 		clear_parser(parser);
-		free(test);
+		free(line);
 	}
 	clear_data(&data);
 	return (data.exit_status);

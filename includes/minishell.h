@@ -34,5 +34,6 @@
 # define TRUE 1
 # define FALSE 0
 
-int	read_input(t_data *data);
+char	*ft_readline(t_data *data);
+
 #endif
