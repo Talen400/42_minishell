@@ -6,7 +6,7 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 18:55:11 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/12/06 17:27:02 by tlavared         ###   ########.fr       */
+/*   Updated: 2025/12/09 21:28:43 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ static char	*get_env(t_data *data, char *str)
 	int		i;
 	char	*res;
 	size_t	len;
-
 
 	i = 0;
 	res = NULL;
@@ -44,6 +43,8 @@ void	expand_var(t_expandable_value *value, t_data *data)
 		value->processed = ft_strdup(value->raw);
 	if (value->type == WILDCARD)
 		value->processed = wildcard(value->raw);
+	if (value->type == QUOTED)
+		value->processed = quote(value->raw);
 }
 
 void	expand_cmd(t_ast_node *node, t_data *data)
