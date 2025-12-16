@@ -6,7 +6,7 @@
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 18:02:01 by tlavared          #+#    #+#             */
-/*   Updated: 2025/12/09 16:15:58 by tlavared         ###   ########.fr       */
+/*   Updated: 2025/12/16 14:41:13 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,25 +36,25 @@
  * state 3	=	0	0	0	0	0	0	0	0	0	0	0	0	0	0
  * state 4	=	4	4	4	4	4	4	4	4	6	4	4	4	4	0
  * state 5	=	5	5	5	5	5	5	5	5	5	7	5	5	5	0
- * state 6  =	0	0	0	0	0	0	0	0	0	0	0	0	0	0
- * state 7  =	0	0	0	0	0	0	0	0	0	0	0	0	0	0
- * state 8  =	0	8	0	0	0	0	9	0	0	0	9	9	0	0
- * state 9	=	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+ * state 6  =	0	1	0	0	0	0	0	0	4	5	8	0	0	0
+ * state 7  =	0	1	0	0	0	0	0	0	4	5	8	0	0	0
+ * state 8  =	0	8	0	0	0	0	9	0	4	5	9	9	0	0
+ * state 9	=	0	1	0	0	0	0	0	0	4	5	8	0	0	0
  */
 
 static int	(*get_table(void))[NUM_TYPES]
 {
 	static int	table[NUM_STATE][NUM_TYPES] = {
 	{0, 1, 2, 2, 2, 2, 2, 2, 4, 5, 8, 0, 0, 0},
-	{0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0},
+	{0, 1, 0, 0, 0, 0, 0, 0, 4, 5, 8, 0, 0, 0},
 	{0, 0, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0},
 	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 	{4, 4, 4, 4, 4, 4, 4, 4, 6, 4, 4, 4, 5, 0},
 	{5, 5, 5, 5, 5, 5, 5, 5, 5, 7, 5, 4, 5, 0},
-	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-	{0, 8, 0, 0, 0, 0, 9, 0, 0, 0, 9, 9, 0, 0},
-	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+	{0, 1, 0, 0, 0, 0, 0, 0, 4, 5, 8, 0, 0, 0},
+	{0, 1, 0, 0, 0, 0, 0, 0, 4, 5, 8, 0, 0, 0},
+	{0, 8, 0, 0, 0, 0, 9, 0, 4, 5, 9, 9, 0, 0},
+	{0, 1, 0, 0, 0, 0, 0, 0, 4, 5, 8, 0, 0, 0}
 	};
 
 	return (table);
@@ -86,9 +86,11 @@ int	ft_handler(const char *str)
 int	automato(char *str, t_token **tokens)
 {
 	t_automato	aut;
+	int			is_space;
 
 	if (!str)
 		return (FAILURE);
+	is_space = FALSE;
 	ft_memset(&aut, 0, sizeof(aut));
 	aut.str_len = ft_strlen(str);
 	aut.table = get_table();
@@ -96,6 +98,7 @@ int	automato(char *str, t_token **tokens)
 	{
 		aut.prev_state = aut.state;
 		aut.state = get_state(&aut, str[aut.i]);
+		printf("[%d] prev: %d, state: %d, str: %c \n", aut.i, aut.prev_state, aut.state, str[aut.i]);
 		if (aut.state == -1)
 			return (ft_handler("Error lexer \n"));
 		else if (aut.state != 0)
