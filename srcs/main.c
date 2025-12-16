@@ -6,7 +6,7 @@
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 12:30:11 by tlavared          #+#    #+#             */
-/*   Updated: 2025/12/09 21:03:01 by tlavared         ###   ########.fr       */
+/*   Updated: 2025/12/16 15:52:36 by tlavared         ###   ########.fr       */
 /*   Updated: 2025/11/19 20:26:02 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -17,11 +17,13 @@
 #include "../includes/expander.h"
 #include "../includes/exec.h"
 
+/*
 static void	exec_test(t_ast_node *node, t_data *data)
 {
 	if (node->type == NODE_CMD)
 		exec_cmd(node, data);
 }
+*/
 
 int	main(int argc, char *argv[], char *envvars[])
 {
@@ -42,7 +44,7 @@ int	main(int argc, char *argv[], char *envvars[])
 		ast = parse_sequence(parser);
 		expand_ast(ast, &data);
 		print_ast(ast, 0);
-		exec_test(ast, &data);
+		//exec_test(ast, &data);
 		clear_ast(ast);
 		clear_parser(parser);
 		free(test);

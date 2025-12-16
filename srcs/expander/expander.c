@@ -6,7 +6,7 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 18:55:11 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/12/16 14:55:47 by tlavared         ###   ########.fr       */
+/*   Updated: 2025/12/16 15:50:19 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,16 +35,48 @@ static char	*get_env(t_data *data, char *str)
 	return (res);
 }
 
+int	ft_is_expanser(t_expandable_value *value, t_data *data)
+{
+	char	*str;
+	int		is_expand;
+
+	str = value->raw;
+	is_expand = FALSE;
+	while (*str)
+	{
+		if (*str == '"')
+			is_expand = TRUE;
+		else if (*str == '\'')
+			is_expand = TRUE;
+		else if (*str == '$')
+			is_expand = TRUE;
+		else if (*str == '*')
+			is_expand = TRUE;
+		else if (str[1] && str[0] == '$' && str[1] == '(')
+			is_expand = TRUE;
+		str++;
+	}
+	if (is_expand == TRUE)
+	{
+		ft_printf("Yes! %s \n", value->raw);
+		return (TRUE);
+	}
+	(void ) data;
+	return (FALSE);
+}
+
 void	expand_var(t_expandable_value *value, t_data *data)
 {
 	ft_printf("type: %d, content: %s \n", value->type, value->raw);
-	if (value->type == SIMPLE_VAR)
+	if (ft_is_expanser(value, data))
+		return ;
+	else if (value->type == SIMPLE_VAR)
 		value->processed = get_env(data, value->raw);
-	if (value->type == LITERAL)
+	else if (value->type == LITERAL)
 		value->processed = ft_strdup(value->raw);
-	if (value->type == WILDCARD)
+	else if (value->type == WILDCARD)
 		value->processed = wildcard(value->raw);
-	if (value->type == QUOTED)
+	else if (value->type == QUOTED)
 		value->processed = quote(value->raw);
 }
 
