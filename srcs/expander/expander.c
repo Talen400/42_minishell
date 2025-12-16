@@ -6,7 +6,7 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 18:55:11 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/12/09 21:28:43 by tlavared         ###   ########.fr       */
+/*   Updated: 2025/12/16 14:55:47 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ static char	*get_env(t_data *data, char *str)
 
 void	expand_var(t_expandable_value *value, t_data *data)
 {
+	ft_printf("type: %d, content: %s \n", value->type, value->raw);
 	if (value->type == SIMPLE_VAR)
 		value->processed = get_env(data, value->raw);
 	if (value->type == LITERAL)
