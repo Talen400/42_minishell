@@ -56,6 +56,7 @@ SRCS := $(SRC_DIR)/main.c \
 		$(SRC_DIR)/expander/quotes.c \
 		$(SRC_DIR)/exec/exec_cmd.c \
 		$(SRC_DIR)/exec/convert.c \
+		$(SRC_DIR)/expander/table_driven_expander.c
 
 OBJS := $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
