@@ -6,7 +6,7 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/02 14:54:13 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/12/17 15:23:12 by tlavared         ###   ########.fr       */
+/*   Updated: 2025/12/17 18:06:41 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,12 @@ typedef struct s_automato_expander
 {
 	char	*str;
 	char	*tmp;
+	int		len;
 	int		i;
 	int		j;
 	int		state;
 	int		prev_state;
+	int		is_expand;
 	int		(*table)[NUM_TYPE_EXPANDER];
 }	t_automato_expander;
 
