@@ -6,7 +6,7 @@
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/17 13:00:57 by tlavared          #+#    #+#             */
-/*   Updated: 2025/12/17 13:09:56 by tlavared         ###   ########.fr       */
+/*   Updated: 2025/12/17 15:30:18 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ int	get_char_type_expander(char c)
 		return (CLOSE_PAR_EXPANSER);
 	if (c == '*')
 		return (WILDCARD_EXPANSER);
+	if (c == '\0')
+		return (NUL);
 	return (LETTER_EXPANSER);
 }
 
