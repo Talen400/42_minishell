@@ -6,7 +6,7 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/11 17:02:40 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/12/18 18:34:51 by fbenini-         ###   ########.fr       */
+/*   Updated: 2025/12/18 18:59:30 by fbenini-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ static int	redirect_handler(t_redirect_value *redir,
 	if (open_fd < 0)
 	{
 		perror("minishell");
+		restore_std(args);
 		return (FAILURE);
 	}
 	if (type == STDIN_FILENO)
