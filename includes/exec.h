@@ -6,7 +6,7 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 14:26:15 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/12/18 13:55:45 by fbenini-         ###   ########.fr       */
+/*   Updated: 2025/12/18 17:32:40 by fbenini-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,18 @@ typedef struct s_pipe_args
 	int			is_last;
 }	t_pipe_args;
 
+typedef struct s_redirect_args
+{
+	int	og_stdout;
+	int	og_stdin;
+	int	dup_stdout;
+	int	dup_stdin;
+}	t_redirect_args;
+
 void	child_process(t_ast_node *node, t_data *data, t_pipe_args *args);
 void	father_process(t_pipe_args *args);
+
+int		handle_redirects(t_ast_node *node, t_redirect_args *args);
+void	restore_std(t_redirect_args *args);
 
 #endif

@@ -17,7 +17,6 @@
 #include "../includes/expander.h"
 #include "../includes/exec.h"
 
-
 int	main(int argc, char *argv[], char *envvars[])
 {
 	char		*line;

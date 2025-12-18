@@ -6,11 +6,10 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 20:50:24 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/12/09 20:56:04 by fbenini-         ###   ########.fr       */
+/*   Updated: 2025/12/18 16:26:41 by fbenini-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
 #include "../../includes/exec.h"
 
 static char	*get_path(t_data *data)

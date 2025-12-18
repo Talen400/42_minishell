@@ -6,11 +6,10 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 14:00:35 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/12/18 14:01:13 by fbenini-         ###   ########.fr       */
+/*   Updated: 2025/12/18 16:26:35 by fbenini-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
 #include "../../includes/parser.h"
 #include "../../includes/exec.h"
 #include <time.h>

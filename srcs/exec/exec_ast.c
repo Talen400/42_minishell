@@ -6,7 +6,7 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/11 13:16:34 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/12/18 14:02:37 by fbenini-         ###   ########.fr       */
+/*   Updated: 2025/12/18 18:33:12 by fbenini-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,15 @@ int	check_if_should_exec(int type, int status)
 
 int	exec_ast(t_ast_node *root, t_data *data)
 {
-	int	should_exec;
-	int	status;
+	int				should_exec;
+	int				status;
+	t_redirect_args	redir_args;
 
 	if (!root || !data->is_running)
 		return (1);
-	if (root->type == NODE_CMD)
-		return (exec_cmd(root, data));
-	if (root->type == NODE_PIPE)
-		return (exec_pipe(root, data));
+	redir_args.dup_stdin = -1;
+	redir_args.dup_stdout = -1;
+	status = 0;
 	if (root->type == NODE_LOGICAL)
 	{
 		status = exec_ast(root->u_data.logical.left, data);
@@ -37,7 +37,13 @@ int	exec_ast(t_ast_node *root, t_data *data)
 				status);
 		if (should_exec)
 			status = exec_ast(root->u_data.logical.right, data);
-		return (status);
 	}
-	return (0);
+	if (handle_redirects(root, &redir_args) == FAILURE)
+		return (1);
+	if (root->type == NODE_CMD)
+		status = exec_cmd(root, data);
+	if (root->type == NODE_PIPE)
+		status = exec_pipe(root, data);
+	restore_std(&redir_args);
+	return (status);
 }

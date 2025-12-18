@@ -6,12 +6,11 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 20:39:27 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/12/18 13:57:50 by fbenini-         ###   ########.fr       */
+/*   Updated: 2025/12/18 16:26:46 by fbenini-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/exec.h"
-#include "../../includes/minishell.h"
 
 static int	handle_fork_error(t_pipe_args *args)
 {
