@@ -6,7 +6,7 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 14:26:15 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/12/12 14:33:39 by fbenini-         ###   ########.fr       */
+/*   Updated: 2025/12/18 13:55:45 by fbenini-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,5 +26,18 @@ char	*get_path_of_cmd(char *cmd, t_data *data);
 int		exec_from_builtin(t_builtin_cmd builtin, char **args, t_data *data);
 
 int		exec_pipe(t_ast_node *node, t_data *data);
+
+typedef struct s_pipe_args
+{
+	t_pipe_node	pipe_node;
+	int			fd[2];
+	int			fd_in;
+	pid_t		pid;
+	int			status;
+	int			is_last;
+}	t_pipe_args;
+
+void	child_process(t_ast_node *node, t_data *data, t_pipe_args *args);
+void	father_process(t_pipe_args *args);
 
 #endif

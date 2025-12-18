@@ -6,7 +6,7 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/11 13:16:34 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/12/12 14:39:38 by fbenini-         ###   ########.fr       */
+/*   Updated: 2025/12/18 14:02:37 by fbenini-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	check_if_should_exec(int type, int status)
 
 int	exec_ast(t_ast_node *root, t_data *data)
 {
-	int	should_exec_right;
+	int	should_exec;
 	int	status;
 
 	if (!root || !data->is_running)
@@ -33,8 +33,9 @@ int	exec_ast(t_ast_node *root, t_data *data)
 	if (root->type == NODE_LOGICAL)
 	{
 		status = exec_ast(root->u_data.logical.left, data);
-		should_exec_right = check_if_should_exec(root->u_data.logical.op, status);
-		if (should_exec_right)
+		should_exec = check_if_should_exec(root->u_data.logical.op,
+				status);
+		if (should_exec)
 			status = exec_ast(root->u_data.logical.right, data);
 		return (status);
 	}

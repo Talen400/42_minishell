@@ -1,69 +1,80 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_cmd.c                                         :+:      :+:    :+:   */
+/*   pipe_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/09 14:00:35 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/12/18 14:01:13 by fbenini-         ###   ########.fr       */
+/*   Created: 2025/12/18 13:53:53 by fbenini-          #+#    #+#             */
+/*   Updated: 2025/12/18 13:55:05 by fbenini-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
-#include "../../includes/parser.h"
 #include "../../includes/exec.h"
-#include <time.h>
-
-static void	handle_child(char **args, t_data *data, char *path)
-{
-	int	status;
-
-	status = execve(path, args, data->envvars);
-	free(path);
-	free_splitted(args);
-	exit(status);
-}
 
 static int	exec_from_path(char **args, t_data *data)
 {
 	char	*path;
-	int		status;
-	pid_t	pid;
 
-	status = 0;
 	path = get_path_of_cmd(args[0], data);
 	if (!path)
 	{
 		ft_putstr_fd("minishell: Command not found: ", STDERR_FILENO);
 		ft_putendl_fd(args[0], STDERR_FILENO);
 		free_splitted(args);
-		return (127);
+		exit(127);
 	}
-	pid = fork();
-	if (pid == 0)
-		handle_child(args, data, path);
-	else if (pid > 0)
-		waitpid(pid, &status, 0);
-	else
-		perror("fork failed");
+	execve(path, args, data->envvars);
+	ft_putstr_fd("minishell: ", STDERR_FILENO);
+	perror(args[0]);
 	free(path);
 	free_splitted(args);
-	return (status);
+	exit(126);
 }
 
-int	exec_cmd(t_ast_node *node, t_data *data)
+static void	exec_cmd_pipe(t_ast_node *node, t_data *data)
 {
 	t_cmd_node		cmd;
 	char			**args;
 	t_builtin_cmd	builtin;
 
 	if (node->type != NODE_CMD)
-		return (1);
+		exit(1);
 	cmd = node->u_data.cmd;
 	args = convert_expandable(cmd.args);
+	if (!args || !args[0])
+		exit(1);
 	builtin = get_builtin(args[0]);
 	if (builtin)
-		return (exec_from_builtin(builtin, args, data));
-	return (exec_from_path(args, data));
+		exec_from_builtin(builtin, args, data);
+	else
+		exec_from_path(args, data);
+}
+
+void	child_process(t_ast_node *node, t_data *data, t_pipe_args *args)
+{
+	if (args->fd_in != STDIN_FILENO)
+	{
+		dup2(args->fd_in, STDIN_FILENO);
+		close(args->fd_in);
+	}
+	if (!args->is_last)
+	{
+		close(args->fd[0]);
+		dup2(args->fd[1], STDOUT_FILENO);
+		close(args->fd[1]);
+	}
+	exec_cmd_pipe(node, data);
+	exit(1);
+}
+
+void	father_process(t_pipe_args *args)
+{
+	if (args->fd_in != STDIN_FILENO)
+		close(args->fd_in);
+	if (!args->is_last)
+	{
+		close(args->fd[1]);
+		args->fd_in = args->fd[0];
+	}
 }
