@@ -6,7 +6,7 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/02 14:54:13 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/12/17 18:06:41 by tlavared         ###   ########.fr       */
+/*   Updated: 2025/12/19 17:08:18 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@
 
 typedef struct s_automato_expander
 {
-	char	*str;
+	char	*word;
 	char	*tmp;
 	int		len;
 	int		i;
@@ -51,8 +51,8 @@ enum e_char_type_expanser
 	D_QUOTE_EXPANSER, // "
 	S_QUOTE_EXPANSER, // '
 	DOLLAR_EXPANSER, // $
-	OPEN_PAR_EXPANSER,
-	CLOSE_PAR_EXPANSER,
+	OPEN_PAR_EXPANSER, // (
+	CLOSE_PAR_EXPANSER, // )
 	WILDCARD_EXPANSER, // *
 	NUl,
 };

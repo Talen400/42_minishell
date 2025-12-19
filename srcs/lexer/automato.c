@@ -6,7 +6,7 @@
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 18:02:01 by tlavared          #+#    #+#             */
-/*   Updated: 2025/12/17 13:38:17 by tlavared         ###   ########.fr       */
+/*   Updated: 2025/12/19 17:11:30 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,6 @@ int	automato(char *str, t_token **tokens)
 	{
 		aut.prev_state = aut.state;
 		aut.state = get_state(&aut, str[aut.i]);
-		ft_printf("[%d] prev: %d, state: %d, str: %c \n", aut.i, aut.prev_state, aut.state, str[aut.i]);
 		if (aut.state == -1)
 			return (ft_handler("Error lexer \n"));
 		else if (aut.state != 0)

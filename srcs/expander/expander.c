@@ -6,34 +6,12 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 18:55:11 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/12/17 13:39:41 by tlavared         ###   ########.fr       */
+/*   Updated: 2025/12/19 17:41:40 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/parser.h"
 #include "../../includes/expander.h"
-
-static char	*get_env(t_data *data, char *str)
-{
-	int		i;
-	char	*res;
-	size_t	len;
-
-	i = 0;
-	res = NULL;
-	len = ft_strlen(str);
-	while (data->envvars[i])
-	{
-		if (ft_strncmp(str + 1, data->envvars[i], len - 1) == 0)
-		{
-			res = ft_strdup(data->envvars[i] + len);
-			return (res);
-		}
-		i++;
-	}
-	res = ft_strdup("");
-	return (res);
-}
 
 /*
  *
@@ -45,21 +23,7 @@ static char	*get_env(t_data *data, char *str)
 
 void	expand_var(t_expandable_value *value, t_data *data)
 {
-	ft_printf("type: %d, content: %s \n", value->type, value->raw);
 	ft_is_expander(value, data);
-	(void ) get_env;
-	/*
-	if (ft_is_expanser(value, data))
-		return ;
-	else if (value->type == SIMPLE_VAR)
-		value->processed = get_env(data, value->raw);
-	else if (value->type == LITERAL)
-		value->processed = ft_strdup(value->raw);
-	else if (value->type == WILDCARD)
-		value->processed = wildcard(value->raw);
-	else if (value->type == QUOTED)
-		value->processed = quote(value->raw);
-	*/
 }
 
 void	expand_cmd(t_ast_node *node, t_data *data)
