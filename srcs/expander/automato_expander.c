@@ -6,7 +6,7 @@
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/17 13:03:57 by tlavared          #+#    #+#             */
-/*   Updated: 2025/12/19 17:57:31 by tlavared         ###   ########.fr       */
+/*   Updated: 2025/12/20 20:02:30 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,38 +17,32 @@
  *
  * ======================================
  *
- * states (complet tokens)
- * 0: S_QUOTE
+ * states
+ * 0: INIT
  * 1: D_QUOTE
- * 2: END S_QUOTE
- * 3: END D_QUOTE
- * 4: EXPANSER
- * 5: END EXPANSER
+ * 2: S_QUOTE
+ * 3: VAR
+ * 4: subshell
+ * 5: State tempory to $VAR
  *
  *		 		LET	"	'	$	(	)	*	\0
- * state 0	=	0	1	2	3	4	0	5	0
+ * state 0	=	0	1	2	0	0	0	0	0
  * state 1	=	1	0	1	3	1	1	1	0
  * state 2	=	2	2	0	2	2	2	2	0
- * state 3	=	3	1	2	3	4	0	5	0
- * state 4	=	0	0	0	0	0	0	0	0
- * state 5	=	0	0	0	0	0	0	0	0
  */
 
 static int	(*get_table_expander(void))[NUM_TYPE_EXPANDER]
 {
 	static int	table[NUM_STATE_EXPANDER][NUM_TYPE_EXPANDER] = {
-		{0, 1, 2, 3, 4, 0, 5, 0},
-		{1, 0, 1, 3, 1, 1, 1, 0},
-		{2, 2, 0, 2, 2, 2, 2, 0},
-		{3, 1, 2, 3, 4, 0, 5, 0},
-		{0, 0, 0, 0, 0, 0, 0, 0},
-		{0, 0, 0, 0, 0, 0, 0, 0}
+		{0, 1, 2, 0, 0, 0, 0, 0},
+		{1, 0, 1, 1, 1, 1, 1, 0},
+		{2, 2, 0, 2, 2, 2, 2, 0}
 	};
 
 	return (table);
 }
 
-static char	*get_env(t_data *data, char *str)
+static char	*get_env_expander(t_data *data, char *str)
 {
 	int		i;
 	char	*res;
@@ -59,7 +53,8 @@ static char	*get_env(t_data *data, char *str)
 	len = ft_strlen(str);
 	while (data->envvars[i])
 	{
-		if (ft_strncmp(str, data->envvars[i], len) == 0)
+		if (ft_strncmp(str, data->envvars[i], len) == 0
+				&& data->envvars[i][len] == '=')
 		{
 			res = ft_strdup(data->envvars[i] + len + 1);
 			return (res);
@@ -88,7 +83,7 @@ char	*append_char(char *str, char character)
 	return (join_free(str, ptr));
 }
 
-void	pop_automato(t_automato_expander *aut)
+void	check_state(t_automato_expander *aut)
 {
 	aut->prev_state = aut->state;
 	aut->state = get_state_expander(aut, aut->word[aut->i]);
@@ -107,13 +102,12 @@ char	*handle_dollar(t_automato_expander *aut, t_data *data)
 	while (aut->word[aut->i] && ((ft_isalnum(aut->word[aut->i])
 				|| aut->word[aut->i] == '_')))
 	{
-		pop_automato(aut);
 		aut->i++;
 		len++;
 	}
 	tmp = ft_substr(aut->word, start, len);
 	ft_printf("tmp: %s %d \n", tmp, ft_strlen(tmp));
-	result = get_env(data, tmp);
+	result = get_env_expander(data, tmp);
 	ft_printf("result: %s \n", result);
 	free(tmp);
 	return (result);
@@ -123,7 +117,7 @@ char	*handle_dollar(t_automato_expander *aut, t_data *data)
  * echo test'test'"test""$USER"'$USER'"$(echo $USER)" 
  */
 
-int	ft_is_expander(t_expandable_value *value, t_data *data)
+int	is_expander(t_expandable_value *value, t_data *data)
 {
 	t_automato_expander	aut;
 
@@ -134,7 +128,7 @@ int	ft_is_expander(t_expandable_value *value, t_data *data)
 	ft_printf("\n maquina de estado da expansão! Raw: %s \n", value->raw);
 	while (aut.word[aut.i])
 	{
-		pop_automato(&aut);
+		check_state(&aut);
 		ft_printf("[%d] prev: %d, state: %d, str: %c \n",
 				aut.i, aut.prev_state, aut.state, aut.word[aut.i]);
 		if ((aut.word[aut.i] == '\'' && (aut.state == 2 || aut.prev_state == 2))
@@ -143,7 +137,7 @@ int	ft_is_expander(t_expandable_value *value, t_data *data)
 			aut.i++;
 			continue ;
 		}
-		if (aut.word[aut.i] == '$' && aut.state == 3)
+		if (aut.word[aut.i] == '$' && aut.state != 2)
 		{
 			aut.tmp = handle_dollar(&aut, data);
 			value->processed = join_free(value->processed, aut.tmp);
@@ -152,6 +146,7 @@ int	ft_is_expander(t_expandable_value *value, t_data *data)
 		value->processed = append_char(value->processed, aut.word[aut.i]);
 		aut.i++;
 	}
-	(void ) data;
+	if (aut.word[aut.i] == '\0')
+		return (TRUE);
 	return (FALSE);
 }

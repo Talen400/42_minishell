@@ -6,7 +6,7 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 12:02:33 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/12/09 17:14:58 by fbenini-         ###   ########.fr       */
+/*   Updated: 2025/12/20 15:35:21 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,8 @@ void	*get_wildcards_value_recursive(char *path, char **parts, char **value)
 	char			*match_path;
 
 	dir = opendir(path);
+	if (!dir)
+		return (NULL);
 	while ((dir_entry = readdir(dir)) != NULL)
 	{
 		if (!ft_strcmp(dir_entry->d_name, ".")
@@ -137,7 +139,6 @@ void	*get_wildcards_value_recursive(char *path, char **parts, char **value)
 			}
 		}
 	}
-	free(path);
 	closedir(dir);
 	return (NULL);
 }

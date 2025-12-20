@@ -6,7 +6,7 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 18:55:11 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/12/19 17:41:40 by tlavared         ###   ########.fr       */
+/*   Updated: 2025/12/20 18:44:19 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,18 @@
 
 void	expand_var(t_expandable_value *value, t_data *data)
 {
-	ft_is_expander(value, data);
+	char	*tmp;
+
+	if (is_expander(value, data))
+	{
+		if (value->type == WILDCARD)
+		{
+			tmp = value->processed;
+			ft_printf("WILDCARD! %s \n", tmp);
+			value->processed = wildcard(tmp);
+			free(tmp);
+		}
+	}
 }
 
 void	expand_cmd(t_ast_node *node, t_data *data)

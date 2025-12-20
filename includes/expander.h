@@ -6,7 +6,7 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/02 14:54:13 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/12/19 17:08:18 by tlavared         ###   ########.fr       */
+/*   Updated: 2025/12/20 20:02:09 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
  */
 
 # define NUM_TYPE_EXPANDER 8
-# define NUM_STATE_EXPANDER 6
+# define NUM_STATE_EXPANDER 3
 
 /*
  * i = pointer of str;
@@ -67,7 +67,7 @@ char	*wildcard(char *pattern);
 int	get_char_type_expander(char c);
 
 // automato_expander.c
-int	ft_is_expander(t_expandable_value *value, t_data *data);
+int	is_expander(t_expandable_value *value, t_data *data);
 
 // table_driven_expander.c
 int	get_state_expander(t_automato_expander *aut, char character);
