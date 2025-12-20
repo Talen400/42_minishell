@@ -6,7 +6,7 @@
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/17 13:03:57 by tlavared          #+#    #+#             */
-/*   Updated: 2025/12/20 20:02:30 by tlavared         ###   ########.fr       */
+/*   Updated: 2025/12/20 20:08:03 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,10 @@ char	*handle_dollar(t_automato_expander *aut, t_data *data)
 	}
 	tmp = ft_substr(aut->word, start, len);
 	ft_printf("tmp: %s %d \n", tmp, ft_strlen(tmp));
-	result = get_env_expander(data, tmp);
+	if (*tmp == '\0')
+		result = ft_strdup("$");
+	else
+		result = get_env_expander(data, tmp);
 	ft_printf("result: %s \n", result);
 	free(tmp);
 	return (result);
