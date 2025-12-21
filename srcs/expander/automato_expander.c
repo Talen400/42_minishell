@@ -6,7 +6,7 @@
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/17 13:03:57 by tlavared          #+#    #+#             */
-/*   Updated: 2025/12/20 20:08:03 by tlavared         ###   ########.fr       */
+/*   Updated: 2025/12/21 15:36:01 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,12 +106,10 @@ char	*handle_dollar(t_automato_expander *aut, t_data *data)
 		len++;
 	}
 	tmp = ft_substr(aut->word, start, len);
-	ft_printf("tmp: %s %d \n", tmp, ft_strlen(tmp));
 	if (*tmp == '\0')
 		result = ft_strdup("$");
 	else
 		result = get_env_expander(data, tmp);
-	ft_printf("result: %s \n", result);
 	free(tmp);
 	return (result);
 }
@@ -128,12 +126,9 @@ int	is_expander(t_expandable_value *value, t_data *data)
 	aut.word = value->raw;
 	value->processed = ft_strdup("");
 	aut.table = get_table_expander();
-	ft_printf("\n maquina de estado da expansão! Raw: %s \n", value->raw);
 	while (aut.word[aut.i])
 	{
 		check_state(&aut);
-		ft_printf("[%d] prev: %d, state: %d, str: %c \n",
-				aut.i, aut.prev_state, aut.state, aut.word[aut.i]);
 		if ((aut.word[aut.i] == '\'' && (aut.state == 2 || aut.prev_state == 2))
 				|| (aut.word[aut.i] == '\"' && (aut.state == 1 || aut.prev_state == 1)))
 		{

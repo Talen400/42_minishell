@@ -6,7 +6,7 @@
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/21 15:32:37 by tlavared          #+#    #+#             */
-/*   Updated: 2025/12/21 15:32:54 by tlavared         ###   ########.fr       */
+/*   Updated: 2025/12/21 15:36:30 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ void	expand_var(t_expandable_value *value, t_data *data)
 		if (value->type == WILDCARD)
 		{
 			tmp = value->processed;
-			ft_printf("WILDCARD! %s \n", tmp);
 			value->processed = wildcard(tmp);
 			free(tmp);
 		}
