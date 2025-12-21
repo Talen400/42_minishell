@@ -6,7 +6,7 @@
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/21 18:10:39 by tlavared          #+#    #+#             */
-/*   Updated: 2025/12/21 18:11:24 by tlavared         ###   ########.fr       */
+/*   Updated: 2025/12/21 18:13:52 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ void	check_state(t_automato_expander *aut)
 	aut->prev_state = aut->state;
 	aut->state = get_state_expander(aut, aut->word[aut->i]);
 }
-
 
 /*
  * echo test'test'"test""$USER"'$USER'"$(echo $USER)" 
