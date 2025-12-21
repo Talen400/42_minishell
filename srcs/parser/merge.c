@@ -6,7 +6,7 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 19:33:33 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/11/26 19:37:57 by fbenini-         ###   ########.fr       */
+/*   Updated: 2025/12/09 16:48:03 by fbenini-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static int	is_expander(t_token *token)
 {
 	if (!token)
 		return (0);
-	if (token->type == TOKEN_EXPANSER)
+	if (token->type == TOKEN_SUB_CMD)
 	{
 		if (ft_strncmp(token->lexeme, "$(", 3) == 0)
 			return (1);
@@ -40,7 +40,7 @@ static int	find_matching_parenthesis(t_token *start)
 		return (1);
 	while (curr && depth > 0)
 	{
-		if ((curr->type == TOKEN_OPEN_PAR || curr->type == TOKEN_EXPANSER)
+		if ((curr->type == TOKEN_OPEN_PAR || curr->type == TOKEN_SUB_CMD)
 			&& count != 0)
 			depth++;
 		if (curr->type == TOKEN_CLOSE_PAR)
@@ -88,7 +88,8 @@ t_token	*merge_expander_token(t_parser *parser)
 		curr = curr->next;
 		i++;
 	}
-	res = create_node_token(combined, TOKEN_EXPANSER);
+	res = create_node_token(combined, TOKEN_SUB_CMD);
+	res->next = curr;
 	return (res);
 }
 

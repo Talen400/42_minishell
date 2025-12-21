@@ -6,7 +6,7 @@
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 12:30:11 by tlavared          #+#    #+#             */
-/*   Updated: 2025/12/06 17:20:54 by tlavared         ###   ########.fr       */
+/*   Updated: 2025/12/21 15:33:56 by tlavared         ###   ########.fr       */
 /*   Updated: 2025/11/19 20:26:02 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -34,6 +34,7 @@ int	main(int argc, char *argv[], char *envvars[])
 		ast = parse_sequence(parser);
 		expand_ast(ast, &data);
 		exec_ast(ast, &data);
+		print_ast(ast, 0);
 		clear_ast(ast);
 		clear_parser(parser);
 		free(line);

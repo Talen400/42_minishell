@@ -6,7 +6,7 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 11:36:54 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/11/26 20:05:36 by fbenini-         ###   ########.fr       */
+/*   Updated: 2025/12/09 15:57:09 by fbenini-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,11 +82,6 @@ t_expandable_value	*create_expandable_value(t_token *token)
 		res->type = WILDCARD;
 	res->processed = NULL;
 	res->raw = ft_strdup(token->lexeme);
-	if (!res->raw)
-	{
-		free(res);
-		return (NULL);
-	}
 	return (res);
 }
 

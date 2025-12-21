@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wildcards.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/03 12:02:33 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/12/12 15:12:23 by fbenini-         ###   ########.fr       */
+/*   Created: 2025/12/21 15:33:16 by tlavared          #+#    #+#             */
+/*   Updated: 2025/12/21 15:33:23 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,8 @@ void	*get_wildcards_value_recursive(char *path, char **parts, char **value)
 	char			*match_path;
 
 	dir = opendir(path);
+	if (!dir)
+		return (NULL);
 	while ((dir_entry = readdir(dir)) != NULL)
 	{
 		if (!ft_strcmp(dir_entry->d_name, ".")
