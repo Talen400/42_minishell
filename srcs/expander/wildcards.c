@@ -5,36 +5,19 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
+<<<<<<< HEAD
 /*   Created: 2025/12/21 15:33:16 by tlavared          #+#    #+#             */
 /*   Updated: 2025/12/21 15:33:23 by tlavared         ###   ########.fr       */
+=======
+/*   Created: 2025/12/03 12:02:33 by fbenini-          #+#    #+#             */
+/*   Updated: 2025/12/21 18:08:26 by tlavared         ###   ########.fr       */
+>>>>>>> freature/expander_automato
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/expander.h"
-#include "../../includes/minishell.h"
 
-int	ft_strcmp(const char *s1, const char *s2)
-{
-	size_t	i;
-
-	i = 0;
-	while (s1[i] && s2[i] && s1[i] == s2[i])
-		i++;
-	return ((unsigned char ) s1[i] - (unsigned char ) s2[i]);
-}
-
-void	free_split(char **split)
-{
-	int	i;
-
-	if (split)
-	{
-		i = -1;
-		while (split[++i])
-			free(split[i]);
-		free(split);
-	}
-}
+void	*get_wildcards_value_recursive(char *path, char **parts, char **value);
 
 static int	match_pattern(char *str, char *pattern)
 {
@@ -54,38 +37,6 @@ static int	match_pattern(char *str, char *pattern)
 		return (match_pattern(str + 1, pattern + 1));
 	return (0);
 }
-/*
- 
- *
- * 
- * Previuos version:
- *
-
-char	**get_wildcards_value(char *pattern)
-{
-	struct dirent	*dir_entry;
-	DIR				*dir;
-	int				len;
-	char			**res;
-
-	dir = opendir(".");
-	dir_entry = readdir(dir);
-	len = 0;
-	while (dir_entry)
-	{
-		if (match_pattern(dir_entry->d_name, pattern))
-		{
-			ft_printf("%s \n", dir_entry->d_name);
-			len++;
-		}
-		dir_entry = readdir(dir);
-	}
-	ft_printf("%d \n", len);
-	closedir(dir);
-	res = ft_calloc(len + 1, sizeof(char *));
-	return (res);
-}
-*/
 
 /*
  *  
@@ -94,50 +45,41 @@ char	**get_wildcards_value(char *pattern)
  *
  */
 
+static void	handle_wildcard_match(char *path, char *name, char **parts,
+		char **value)
+{
+	struct stat	st;
+	char		*full_path;
+
+	full_path = join_free(ft_strjoin(path, "/"), ft_strdup(name));
+	if (!parts[1])
+	{
+		*value = join_free(*value, ft_strdup(" "));
+		*value = join_free(*value, ft_strdup(full_path));
+	}
+	else if (stat(full_path, &st) == 0 && S_ISDIR(st.st_mode))
+		get_wildcards_value_recursive(full_path, parts + 1, value);
+	free(full_path);
+}
+
 void	*get_wildcards_value_recursive(char *path, char **parts, char **value)
 {
 	struct dirent	*dir_entry;
-	struct stat		st;
 	DIR				*dir;
-	char			*sub_path;
-	char			*tmp;
-	char			*tmp_value;
-	char			*match_path;
 
 	dir = opendir(path);
 	if (!dir)
 		return (NULL);
-	while ((dir_entry = readdir(dir)) != NULL)
+	dir_entry = readdir(dir);
+	while (dir_entry != NULL)
 	{
-		if (!ft_strcmp(dir_entry->d_name, ".")
-				|| !ft_strcmp(dir_entry->d_name, ".."))
-			continue ;
-		if (match_pattern(dir_entry->d_name, parts[0]))
+		if (ft_strcmp(dir_entry->d_name, ".") != 0
+			|| ft_strcmp(dir_entry->d_name, "..") != 0)
 		{
-			if (parts[1] == NULL)
-			{
-				match_path = ft_strjoin(path, "/");
-				tmp = ft_strjoin(match_path, dir_entry->d_name);
-				free(match_path);
-				tmp_value = *value;
-				*value = ft_strjoin(tmp_value, " ");
-				free(tmp_value);
-				tmp_value = *value;
-				*value = ft_strjoin(tmp_value, tmp);
-				free(tmp_value);
-				free(tmp);
-			}
-			else
-			{
-				sub_path = ft_strjoin(path, "/");
-				tmp = ft_strjoin(sub_path, dir_entry->d_name);
-				free(sub_path);
-				sub_path = tmp;
-				if (stat(sub_path, &st) == 0 && S_ISDIR(st.st_mode))
-					get_wildcards_value_recursive(sub_path, parts + 1, value);
-				free(sub_path);
-			}
+			if (match_pattern(dir_entry->d_name, parts[0]))
+				handle_wildcard_match(path, dir_entry->d_name, parts, value);
 		}
+		dir_entry = readdir(dir);
 	}
 	closedir(dir);
 	return (NULL);

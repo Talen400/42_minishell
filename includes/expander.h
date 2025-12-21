@@ -6,7 +6,7 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/02 14:54:13 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/12/20 20:02:09 by tlavared         ###   ########.fr       */
+/*   Updated: 2025/12/21 18:00:37 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,5 +71,15 @@ int	is_expander(t_expandable_value *value, t_data *data);
 
 // table_driven_expander.c
 int	get_state_expander(t_automato_expander *aut, char character);
+
+// utils_expander.c
+char	*get_env_expander(t_data *data, char *str);
+char	*join_free(char *s1, char *s2);
+char	*append_char(char *str, char character);
+char	*handle_dollar(t_automato_expander *aut, t_data *data);
+
+// wildcard_utils.c
+int	ft_strcmp(const char *s1, const char *s2);
+void	free_split(char **split);
 
 #endif
