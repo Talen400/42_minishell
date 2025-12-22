@@ -61,6 +61,11 @@ SRCS := $(SRC_DIR)/main.c \
 		$(SRC_DIR)/exec/pipe_utils.c \
 		$(SRC_DIR)/exec/exec_ast.c \
 		$(SRC_DIR)/exec/redirects.c \
+		$(SRC_DIR)/autocomplete/init.c \
+		$(SRC_DIR)/autocomplete/match.c \
+		$(SRC_DIR)/autocomplete/completion.c \
+		$(SRC_DIR)/autocomplete/insert.c \
+		$(SRC_DIR)/autocomplete/scan.c \
 
 OBJS := $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
