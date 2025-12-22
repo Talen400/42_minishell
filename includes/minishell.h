@@ -6,7 +6,7 @@
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 12:31:03 by tlavared          #+#    #+#             */
-/*   Updated: 2025/12/06 14:09:40 by tlavared         ###   ########.fr       */
+/*   Updated: 2025/12/21 21:51:14 by tlavared         ###   ########.fr       */
 /*   Updated: 2025/11/18 15:55:22 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -34,6 +34,7 @@
 # define TRUE 1
 # define FALSE 0
 
+int		minishell(char *line, t_data *data);
 char	*ft_readline(t_data *data);
 char	*get_prompt(char *user);
 

@@ -6,7 +6,7 @@
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/20 15:13:51 by tlavared          #+#    #+#             */
-/*   Updated: 2025/12/21 17:33:09 by tlavared         ###   ########.fr       */
+/*   Updated: 2025/12/21 20:37:51 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ char	*join_free(char *s1, char *s2)
 {
 	char	*joined;
 
+	if (!s1 || !s2)
+		return (NULL);
 	joined = ft_strjoin(s1, s2);
 	free(s1);
 	free(s2);

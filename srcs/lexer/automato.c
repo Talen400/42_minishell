@@ -6,7 +6,7 @@
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 18:02:01 by tlavared          #+#    #+#             */
-/*   Updated: 2025/12/19 17:11:30 by tlavared         ###   ########.fr       */
+/*   Updated: 2025/12/21 21:47:45 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,10 +72,23 @@ int	state_final(t_automato *aut, char *str, t_token **tokens)
 	return (SUCESS);
 }
 
-int	ft_handler(const char *str)
+static void	handle_subshell_token(t_automato *aut, char *str)
 {
-	printf("%s", str);
-	return (FAILURE);
+	int	depth;
+
+	depth = 1;
+	aut->lexeme_len++;
+	aut->i++;
+	while (str[aut->i] && depth > 0)
+	{
+		if (str[aut->i] == '(')
+			depth++;
+		else if (str[aut->i] == ')')
+			depth--;
+		aut->lexeme_len++;
+		if (depth > 0)
+			aut->i++;
+	}
 }
 
 /*
@@ -97,7 +110,7 @@ int	automato(char *str, t_token **tokens)
 		aut.prev_state = aut.state;
 		aut.state = get_state(&aut, str[aut.i]);
 		if (aut.state == -1)
-			return (ft_handler("Error lexer \n"));
+			return (FAILURE);
 		else if (aut.state != 0)
 			aut.lexeme_len += 1;
 		if (aut.state == 0 && aut.prev_state != 0)
@@ -105,6 +118,12 @@ int	automato(char *str, t_token **tokens)
 			state_final(&aut, str, tokens);
 			if (get_char_type(str[aut.i] != WSPACE))
 				aut.i--;
+		}
+		// To subshell
+		if (aut.prev_state == 8 && str[aut.i] == '(')
+		{
+			handle_subshell_token(&aut, str);
+			aut.state = 1;
 		}
 		aut.i++;
 	}

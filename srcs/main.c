@@ -6,7 +6,7 @@
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 12:30:11 by tlavared          #+#    #+#             */
-/*   Updated: 2025/12/21 15:38:05 by tlavared         ###   ########.fr       */
+/*   Updated: 2025/12/21 21:28:14 by tlavared         ###   ########.fr       */
 /*   Updated: 2025/11/19 20:26:02 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -17,28 +17,45 @@
 #include "../includes/expander.h"
 #include "../includes/exec.h"
 
+int	minishell(char *line, t_data *data)
+{
+	t_parser	*parser;
+	t_ast_node	*ast;
+
+	if (!line || !*line)
+		return (0);
+	parser = init_parser(line);
+	if (!parser)
+		return (1);
+	ast = parse_sequence(parser);
+	if (!ast)
+	{
+		clear_parser(parser);
+		return (1);
+	}
+	expand_ast(ast, data);
+	data->exit_status = exec_ast(ast, data);
+	clear_ast(ast);
+	clear_parser(parser);
+	return (data->exit_status);
+}
+
 int	main(int argc, char *argv[], char *envvars[])
 {
 	char		*line;
-	t_parser	*parser;
-	t_ast_node	*ast;
 	t_data		data;
 
-	(void)argc;
-	(void)argv;
 	init_data(&data, envvars);
 	while (data.is_running)
 	{
 		line = ft_readline(&data);
-		parser = init_parser(line);
-		ast = parse_sequence(parser);
-		expand_ast(ast, &data);
-		exec_ast(ast, &data);
-		//print_ast(ast, 0);
-		clear_ast(ast);
-		clear_parser(parser);
+		if (!line)
+			break ;
+		data.exit_status = minishell(line, &data);
 		free(line);
 	}
 	clear_data(&data);
+	(void) argc;
+	(void) argv;
 	return (data.exit_status);
 }
