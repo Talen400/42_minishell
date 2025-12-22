@@ -6,7 +6,7 @@
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 12:30:11 by tlavared          #+#    #+#             */
-/*   Updated: 2025/12/21 21:28:14 by tlavared         ###   ########.fr       */
+/*   Updated: 2025/12/22 01:41:00 by tlavared         ###   ########.fr       */
 /*   Updated: 2025/11/19 20:26:02 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -34,6 +34,7 @@ int	minishell(char *line, t_data *data)
 		return (1);
 	}
 	expand_ast(ast, data);
+	//print_ast(ast, 0);
 	data->exit_status = exec_ast(ast, data);
 	clear_ast(ast);
 	clear_parser(parser);

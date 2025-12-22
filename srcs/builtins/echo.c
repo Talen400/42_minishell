@@ -6,7 +6,7 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/08 12:06:04 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/12/08 12:33:45 by fbenini-         ###   ########.fr       */
+/*   Updated: 2025/12/22 02:11:04 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ int	echo(char **args, t_data *data)
 	int	i;
 	int	line_break;
 
-	i = 0;
 	(void)data;
+	i = 0;
 	while (args[i])
 		i++;
 	if (i < 2)

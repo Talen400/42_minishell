@@ -6,7 +6,7 @@
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/21 18:10:39 by tlavared          #+#    #+#             */
-/*   Updated: 2025/12/22 01:24:17 by tlavared         ###   ########.fr       */
+/*   Updated: 2025/12/22 02:06:21 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,13 +72,9 @@ char	*extract_subshell(t_automato_expander *aut)
 		}
 	}
 	if (depth != 0)
-	{
-		ft_printf("minishell: systax error: unclosed $(\n");
 		return (ft_strdup(""));
-	}
 	aut->i++;
 	cmd = ft_substr(aut->word, start, len);
-	ft_printf("subshell_cmd: '%s' \n", cmd);
 	return (cmd);
 }
 
@@ -90,7 +86,8 @@ char	*execute_subshell(char *cmd, t_data *data)
 	char	*result;
 	char	buffer[4096];
 	int		nbytes;
-	
+	int		len;
+
 	if (pipe(fds) == -1)
 		return (ft_strdup(""));
 	pid = fork();
@@ -110,10 +107,15 @@ char	*execute_subshell(char *cmd, t_data *data)
 		result = join_free(result, ft_strdup(buffer));
 	}
 	close(fds[0]);
-	ft_printf("Entrou! %s \n", result);
 	waitpid(pid, &status, 0);
-	if (result && result[0] != '\0' && result[ft_strlen(result) - 1] == '\n')
-		result[ft_strlen(result) - 1] = '\0';
+	len = ft_strlen(result);
+	dprintf(2, "DEBUG: subshell raw output: [%s] (len=%zu)\n", result, ft_strlen(result));
+	while (len > 0 && result[len - 1] == '\n')
+	{
+		result[len - 1] = '\0';
+		len--;
+	}
+	dprintf(2, "DEBUG: subshell final result: [%s] (len=%zu)\n", result, ft_strlen(result));
 	return (result);
 }
 
@@ -129,8 +131,8 @@ void	automato_expander(t_expandable_value *value, t_data *data,
 	while (aut->word[aut->i])
 	{
 		check_state(aut);
-		ft_printf("[%d] prev: %d, state: %d, str: %c \n",
-			aut->i, aut->prev_state, aut->state, aut->word[aut->i]);
+	//	ft_printf("[%d] prev: %d, state: %d, str: %c \n",
+	//		aut->i, aut->prev_state, aut->state, aut->word[aut->i]);
 		if ((aut->word[aut->i] == '\'' && (aut->state == 2
 					|| aut->prev_state == 2))
 			|| (aut->word[aut->i] == '\"' && (aut->state == 1
@@ -149,8 +151,7 @@ void	automato_expander(t_expandable_value *value, t_data *data,
 		}
 		if (aut->word[aut->i] == '$' && aut->state != 2)
 		{
-			subshell_cmd = handle_dollar(aut, data);
-			aut->tmp = execute_subshell(subshell_cmd, data);
+			aut->tmp = handle_dollar(aut, data);
 			value->processed = join_free(value->processed, aut->tmp);
 			continue ;
 		}
@@ -167,7 +168,7 @@ int	is_expander(t_expandable_value *value, t_data *data)
 	aut.word = value->raw;
 	value->processed = ft_strdup("");
 	aut.table = get_table_expander();
-	ft_printf("\n maquina de estado da expansão! Raw: %s \n", value->raw);
+	//ft_printf("\n maquina de estado da expansão! Raw: %s \n", value->raw);
 	automato_expander(value, data, &aut);
 	if (aut.word[aut.i] == '\0')
 		return (TRUE);

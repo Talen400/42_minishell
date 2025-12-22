@@ -6,7 +6,7 @@
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/20 15:13:51 by tlavared          #+#    #+#             */
-/*   Updated: 2025/12/21 20:37:51 by tlavared         ###   ########.fr       */
+/*   Updated: 2025/12/22 01:36:20 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,12 +72,10 @@ char	*handle_dollar(t_automato_expander *aut, t_data *data)
 		len++;
 	}
 	tmp = ft_substr(aut->word, start, len);
-	ft_printf("tmp: %s %d \n", tmp, ft_strlen(tmp));
 	if (*tmp == '\0')
 		result = ft_strdup("$");
 	else
 		result = get_env_expander(data, tmp);
-	ft_printf("result: %s \n", result);
 	free(tmp);
 	return (result);
 }
