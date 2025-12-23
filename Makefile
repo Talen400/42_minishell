@@ -33,6 +33,7 @@ SRCS := $(SRC_DIR)/main.c \
 		$(SRC_DIR)/lexer/token.c \
 		$(SRC_DIR)/lexer/debug.c \
 		$(SRC_DIR)/lexer/token_type.c \
+		$(SRC_DIR)/lexer/utils_lexer.c \
 		$(SRC_DIR)/parser/helpers.c \
 		$(SRC_DIR)/parser/init.c \
 		$(SRC_DIR)/parser/parse_command.c \
@@ -64,7 +65,9 @@ SRCS := $(SRC_DIR)/main.c \
 		$(SRC_DIR)/expander/table_driven_expander.c \
 		$(SRC_DIR)/expander/automato_expander.c \
 		$(SRC_DIR)/expander/utils_expander.c \
-		$(SRC_DIR)/expander/wildcard_utils.c
+		$(SRC_DIR)/expander/wildcard_utils.c \
+		$(SRC_DIR)/expander/subshell_expander.c \
+		$(SRC_DIR)/expander/helpers_expander.c \
 
 OBJS := $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
