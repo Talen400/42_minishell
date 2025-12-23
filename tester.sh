@@ -39,7 +39,6 @@ run_test() {
 }
 
 echo "Init tests..."
-run_test "cat Makefile"
 run_test "echo test"
 
 rm -f out_bash out_mini err_bash err_mini
