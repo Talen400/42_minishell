@@ -6,7 +6,7 @@
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 18:02:01 by tlavared          #+#    #+#             */
-/*   Updated: 2025/12/21 21:47:45 by tlavared         ###   ########.fr       */
+/*   Updated: 2025/12/23 15:04:19 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,28 +72,10 @@ int	state_final(t_automato *aut, char *str, t_token **tokens)
 	return (SUCESS);
 }
 
-static void	handle_subshell_token(t_automato *aut, char *str)
-{
-	int	depth;
-
-	depth = 1;
-	aut->lexeme_len++;
-	aut->i++;
-	while (str[aut->i] && depth > 0)
-	{
-		if (str[aut->i] == '(')
-			depth++;
-		else if (str[aut->i] == ')')
-			depth--;
-		aut->lexeme_len++;
-		if (depth > 0)
-			aut->i++;
-	}
-}
-
 /*
  * test : 
- * ((echo << "here" && (cat Makefile | wc -l)) >> code.txt) || ( echo ":>" > teste.txt)
+ * ((echo << "here" && (cat Makefile | wc -l)) >> code.txt)
+ * || ( echo ":>" > teste.txt)
  */
 
 int	automato(char *str, t_token **tokens)
@@ -107,24 +89,12 @@ int	automato(char *str, t_token **tokens)
 	aut.table = get_table();
 	while (aut.i <= aut.str_len)
 	{
-		aut.prev_state = aut.state;
-		aut.state = get_state(&aut, str[aut.i]);
-		if (aut.state == -1)
+		if (update_state(&aut, str[aut.i]))
 			return (FAILURE);
-		else if (aut.state != 0)
-			aut.lexeme_len += 1;
 		if (aut.state == 0 && aut.prev_state != 0)
-		{
-			state_final(&aut, str, tokens);
-			if (get_char_type(str[aut.i] != WSPACE))
-				aut.i--;
-		}
-		// To subshell
+			handle_state_final(&aut, str, tokens);
 		if (aut.prev_state == 8 && str[aut.i] == '(')
-		{
-			handle_subshell_token(&aut, str);
-			aut.state = 1;
-		}
+			handle_subshell(&aut, str);
 		aut.i++;
 	}
 	return (SUCESS);

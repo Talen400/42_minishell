@@ -6,7 +6,7 @@
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 17:06:46 by tlavared          #+#    #+#             */
-/*   Updated: 2025/12/09 16:10:22 by tlavared         ###   ########.fr       */
+/*   Updated: 2025/12/23 14:41:28 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,13 @@ void		token_clear_list(t_token **list);
 
 // token_type.c
 int	get_type_token(int state, char *lexeme);
+
+// utils_lexer.c
+
+void	handle_subshell_token(t_automato *aut, char *str);
+int	update_state(t_automato *aut, char c);
+void	handle_state_final(t_automato *aut, char *str, t_token **tokens);
+void	handle_subshell(t_automato *aut, char *str);
 
 // debug.c
 void		print_tokens(t_token *tokens);

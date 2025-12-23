@@ -6,29 +6,14 @@
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 20:08:01 by tlavared          #+#    #+#             */
-/*   Updated: 2025/12/09 16:11:13 by tlavared         ###   ########.fr       */
+/*   Updated: 2025/12/23 14:51:01 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/lexer.h"
 
-int	get_type_token(int state, char *lexeme)
+static int	get_type_token_2(int state, char *lexeme)
 {
-	if (state == 1)
-		return (TOKEN_WORD);
-	if (state == 2)
-	{
-		if (lexeme[0] == '|')
-			return (TOKEN_PIPE);
-		if (lexeme[0] == '<')
-			return (TOKEN_REDIR_IN);
-		if (lexeme[0] == '>')
-			return (TOKEN_REDIR_OUT);
-		if (lexeme[0] == '(')
-			return (TOKEN_OPEN_PAR);
-		if (lexeme[0] == ')')
-			return (TOKEN_CLOSE_PAR);
-	}
 	if (state == 3)
 	{
 		if (lexeme[0] == '|' && lexeme[1] == '|')
@@ -51,4 +36,24 @@ int	get_type_token(int state, char *lexeme)
 		return (TOKEN_EXPANSER);
 	}
 	return (-1);
+}
+
+int	get_type_token(int state, char *lexeme)
+{
+	if (state == 1)
+		return (TOKEN_WORD);
+	if (state == 2)
+	{
+		if (lexeme[0] == '|')
+			return (TOKEN_PIPE);
+		if (lexeme[0] == '<')
+			return (TOKEN_REDIR_IN);
+		if (lexeme[0] == '>')
+			return (TOKEN_REDIR_OUT);
+		if (lexeme[0] == '(')
+			return (TOKEN_OPEN_PAR);
+		if (lexeme[0] == ')')
+			return (TOKEN_CLOSE_PAR);
+	}
+	return (get_type_token_2(state, lexeme));
 }

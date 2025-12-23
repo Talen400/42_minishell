@@ -6,15 +6,28 @@
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 17:59:14 by tlavared          #+#    #+#             */
-/*   Updated: 2025/11/25 16:02:55 by tlavared         ###   ########.fr       */
+/*   Updated: 2025/12/23 14:49:14 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/lexer.h"
 
+static int	is_space(char c)
+{
+	return (c == ' ' || c == '\t' || c == '\n' || c == '\v' || c == '\f'
+		|| c == '\r');
+}
+
+static int	get_char_type_2(char c)
+{
+	if (c == '\0')
+		return (NUL);
+	return (LETTER);
+}
+
 int	get_char_type(char c)
 {
-	if (c == ' ' || c == '\t')
+	if (is_space(c))
 		return (WSPACE);
 	if (c == '|')
 		return (PIPE);
@@ -38,9 +51,7 @@ int	get_char_type(char c)
 		return (LBRACE);
 	if (c == '}')
 		return (RBRACE);
-	if (c == '\0')
-		return (NUL);
-	return (LETTER);
+	return (get_char_type_2(c));
 }
 
 int	get_state(t_automato *aut, char character)

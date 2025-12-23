@@ -6,7 +6,7 @@
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 20:25:06 by tlavared          #+#    #+#             */
-/*   Updated: 2025/11/19 20:26:50 by tlavared         ###   ########.fr       */
+/*   Updated: 2025/12/23 13:27:32 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ void	print_tokens(t_token *tokens)
 	node = tokens;
 	while (node)
 	{
-		printf("type: %d | lexeme: %s\n", node->type, node->lexeme);
+		// dprint remove
+		dprintf(2, "type: %d | lexeme: %s\n", node->type, node->lexeme);
 		node = node->next;
 	}
 }
