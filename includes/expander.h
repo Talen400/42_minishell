@@ -6,7 +6,7 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/02 14:54:13 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/12/21 19:55:17 by tlavared         ###   ########.fr       */
+/*   Updated: 2025/12/23 14:25:22 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,12 @@
 typedef struct s_automato_expander
 {
 	char	*word;
+	char	*subshell_cmd;
 	char	*tmp;
 	int		len;
 	int		i;
-	int		j;
 	int		state;
 	int		prev_state;
-	int		is_expand;
 	int		(*table)[NUM_TYPE_EXPANDER];
 }	t_automato_expander;
 
@@ -81,5 +80,15 @@ char	*handle_dollar(t_automato_expander *aut, t_data *data);
 // wildcard_utils.c
 int	ft_strcmp(const char *s1, const char *s2);
 void	free_split(char **split);
+
+// subshell.c
+char	*extract_subshell(t_automato_expander *aut);
+char	*execute_subshell(char *cmd, t_data *data);
+
+// helpers.c
+
+int	skip_quote(t_automato_expander *aut);
+int	is_subshell(t_automato_expander *aut);
+int	is_dollar_expansion(t_automato_expander *aut);
 
 #endif
