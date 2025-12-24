@@ -2,6 +2,7 @@
 
 GREEN='\033[0;32m'
 RED='\033[0;31m'
+MAGENTA='\033[0;35m'
 NC='\033[0m'
 
 MINISHELL="./minishell"
@@ -31,7 +32,7 @@ run_test() {
 	else
 		echo -e "${RED}[KO]${NC} \"$cmd\""
 
-		[ $mem_err -eq 1 ] && echo -e "	${RED}Memory Error/Leak detected!${NC}"
+		[ $mem_err -eq 1 ] && echo -e "	${MAGENTA}Memory Error/Leak detected!${NC}"
 		# show the status
 		if [ $status_bash -ne $status_mini ]; then
 			echo -e "	${RED}Status Diff:${NC} Bash ($status_bash) vs Mini ($status_mini)"
