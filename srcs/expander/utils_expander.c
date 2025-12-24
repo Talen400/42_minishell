@@ -49,10 +49,12 @@ char	*join_free(char *s1, char *s2)
 
 char	*append_char(char *str, char character)
 {
-	char	*ptr;
+	char	*new_char;
 
-	ptr = ft_substr(&character, 0, 1);
-	return (join_free(str, ptr));
+	new_char = malloc(2);
+	new_char[0] = character;
+	new_char[1] = '\0';
+	return (join_free(str, new_char));
 }
 
 char	*handle_dollar(t_automato_expander *aut, t_data *data)
