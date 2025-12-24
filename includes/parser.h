@@ -134,9 +134,6 @@ void						clear_parser(t_parser *parser);
 void						clear_ast(t_ast_node *head);
 void						clear_command_node(t_ast_node *node, int type);
 
-t_token						*merge_expander_token(t_parser *parser);
-void						skip_matching_parens(t_parser *parser);
-
 void						print_ast(t_ast_node *node, int indent);
 
 #endif

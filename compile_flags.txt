@@ -1,0 +1,2 @@
+-I/home/felipe/Desktop/42_minishell/includes
+-I/home/felipe/Desktop/42_minishell/libft
