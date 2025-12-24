@@ -1,41 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cd.c                                               :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/04 16:32:08 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/12/09 18:22:05 by fbenini-         ###   ########.fr       */
+/*   Created: 2025/12/03 19:15:07 by fbenini-          #+#    #+#             */
+/*   Updated: 2025/12/08 12:34:25 by fbenini-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/data.h"
 #include "../../includes/minishell.h"
-#include <unistd.h>
+#include "../../includes/builtins.h"
+#include "../../libft/libft.h"
 
-int	cd(char **args, t_data *data)
+int	pwd(char **args, t_data *data)
 {
-	size_t	i;
+	int		i;
+	char	*cwd;
 
-	i = 0;
+	i = 1;
 	(void)data;
 	while (args[i])
 		i++;
-	if (i > 2)
+	if (i > 1)
 	{
-		ft_putendl_fd("cd: too many arguments", STDERR_FILENO);
+		ft_putendl_fd("pwd: too many arguments", STDERR_FILENO);
 		return (1);
 	}
-	else if (i < 2)
+	cwd = getcwd(NULL, 0);
+	if (!cwd)
 	{
-		ft_putendl_fd("cd: not enough arguments", STDERR_FILENO);
+		perror("pwd");
 		return (1);
 	}
-	if (chdir(args[1]) != 0)
-	{
-		perror("cd");
-		return (1);
-	}
+	ft_putendl_fd(cwd, STDOUT_FILENO);
+	free(cwd);
 	return (0);
 }

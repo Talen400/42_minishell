@@ -6,7 +6,7 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 15:01:10 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/12/09 16:43:28 by fbenini-         ###   ########.fr       */
+/*   Updated: 2025/12/21 16:05:15 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,13 +68,13 @@ static void	loop_through_node(t_parser *parser, t_ast_node *node)
 	{
 		if (!is_token_arg(token))
 		{
-			ft_printf("%s\n", token->lexeme);
+			//ft_printf("%s\n", token->lexeme);
 			break ;
 		}
 		token = token->next;
 		arg_count++;
 	}
-	ft_printf("%d\n", arg_count);
+	//ft_printf("%d\n", arg_count);
 	token = parser_current(parser);
 	free(node->u_data.cmd.args);
 	node->u_data.cmd.args = ft_calloc(arg_count + 1,

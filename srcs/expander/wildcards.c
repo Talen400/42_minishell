@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   wildcards.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/03 12:02:33 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/12/03 16:40:24 by fbenini-         ###   ########.fr       */
+/*   Created: 2025/12/21 18:13:35 by tlavared          #+#    #+#             */
+/*   Updated: 2025/12/21 18:13:36 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/expander.h"
-#include "../../includes/minishell.h"
+
+void	*get_wildcards_value_recursive(char *path, char **parts, char **value);
 
 static int	match_pattern(char *str, char *pattern)
 {
@@ -32,23 +33,92 @@ static int	match_pattern(char *str, char *pattern)
 	return (0);
 }
 
-char	**get_wildcards_value(char *pattern)
+/*
+ *  
+ *  It recursively the patterns separated by "/"
+ *	
+ *
+ */
+
+static void	handle_wildcard_match(char *path, char *name, char **parts,
+		char **value)
+{
+	struct stat	st;
+	char		*full_path;
+
+	full_path = join_free(ft_strjoin(path, "/"), ft_strdup(name));
+	if (!parts[1])
+	{
+		*value = join_free(*value, ft_strdup(" "));
+		*value = join_free(*value, ft_strdup(full_path));
+	}
+	else if (stat(full_path, &st) == 0 && S_ISDIR(st.st_mode))
+		get_wildcards_value_recursive(full_path, parts + 1, value);
+	free(full_path);
+}
+
+void	*get_wildcards_value_recursive(char *path, char **parts, char **value)
 {
 	struct dirent	*dir_entry;
 	DIR				*dir;
-	int				len;
-	char			**res;
-	
-	dir = opendir(".");
+
+	dir = opendir(path);
+	if (!dir)
+		return (NULL);
 	dir_entry = readdir(dir);
-	len = 0;
-	while (dir_entry)
+	while (dir_entry != NULL)
 	{
-		if (match_pattern(dir_entry->d_name, pattern))
-			len++;
+		if (ft_strcmp(dir_entry->d_name, ".") != 0
+			|| ft_strcmp(dir_entry->d_name, "..") != 0)
+		{
+			if (match_pattern(dir_entry->d_name, parts[0]))
+				handle_wildcard_match(path, dir_entry->d_name, parts, value);
+		}
 		dir_entry = readdir(dir);
 	}
 	closedir(dir);
-	res = ft_calloc(len + 1, sizeof(char *));
+	return (NULL);
+}
+
+char	*get_path(char *pattern)
+{
+	int		path_len;
+	char	*file;
+	char	*res;
+	int		i;
+
+	file = ft_strchr(pattern, '*');
+	if (!file)
+		return (ft_strdup("."));
+	path_len = ft_strlen(pattern) - ft_strlen(file);
+	res = ft_calloc(path_len + 1, sizeof(char));
+	i = 0;
+	while (i < path_len - 1)
+	{
+		res[i] = pattern[i];
+		i++;
+	}
 	return (res);
+}
+
+char	*wildcard(char *pattern)
+{
+	char	**parts;
+	char	*value;
+	char	*path;
+	int		path_len;
+
+	path = get_path(pattern);
+	path_len = ft_strlen(path);
+	parts = ft_split(pattern + path_len, '/');
+	value = ft_strdup("");
+	if (path_len == 0)
+	{
+		free(path);
+		path = ft_strdup(".");
+	}
+	get_wildcards_value_recursive(path, parts, &value);
+	free_split(parts);
+	free(path);
+	return (value);
 }

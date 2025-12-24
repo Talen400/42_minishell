@@ -3,45 +3,37 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/01 18:55:11 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/12/02 15:09:24 by fbenini-         ###   ########.fr       */
+/*   Created: 2025/12/21 15:32:37 by tlavared          #+#    #+#             */
+/*   Updated: 2025/12/21 15:36:30 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/parser.h"
 #include "../../includes/expander.h"
 
-static char	*get_env(t_data *data, char *str)
-{
-	int		i;
-	char	*res;
-	size_t	len;
-
-
-	i = 0;
-	res = NULL;
-	len = ft_strlen(str);
-	while (data->envvars[i])
-	{
-		if (ft_strncmp(str + 1, data->envvars[i], len - 1) == 0)
-		{
-			res = ft_strdup(data->envvars[i] + len);
-			return (res);
-		}
-		i++;
-	}
-	res = ft_strdup("");
-	return (res);
-}
+/*
+ *
+ *
+ * Here is experimental automato expanser
+ *
+ *
+ */
 
 void	expand_var(t_expandable_value *value, t_data *data)
 {
-	if (value->type == SIMPLE_VAR)
-		value->processed = get_env(data, value->raw);
-	if (value->type == LITERAL)
-		value->processed = ft_strdup(value->raw);
+	char	*tmp;
+
+	if (is_expander(value, data))
+	{
+		if (value->type == WILDCARD)
+		{
+			tmp = value->processed;
+			value->processed = wildcard(tmp);
+			free(tmp);
+		}
+	}
 }
 
 void	expand_cmd(t_ast_node *node, t_data *data)
@@ -67,6 +59,8 @@ void	expand_cmd(t_ast_node *node, t_data *data)
 
 void	expand_ast(t_ast_node *root, t_data *data)
 {
+	int	i;
+
 	if (!root)
 		return ;
 	if (root->type == NODE_LOGICAL)
@@ -76,4 +70,13 @@ void	expand_ast(t_ast_node *root, t_data *data)
 	}
 	if (root->type == NODE_CMD)
 		expand_cmd(root, data);
+	if (root->type == NODE_PIPE)
+	{
+		i = 0;
+		while (root->u_data.pipe.commands[i])
+		{
+			expand_cmd(root->u_data.pipe.commands[i], data);
+			i++;
+		}
+	}
 }

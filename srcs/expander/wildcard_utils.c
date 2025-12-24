@@ -1,26 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   debug.c                                            :+:      :+:    :+:   */
+/*   wildcard_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/19 20:25:06 by tlavared          #+#    #+#             */
-/*   Updated: 2025/12/23 13:27:32 by tlavared         ###   ########.fr       */
+/*   Created: 2025/12/21 17:59:14 by tlavared          #+#    #+#             */
+/*   Updated: 2025/12/21 17:59:42 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/lexer.h"
+#include "../../includes/expander.h"
 
-void	print_tokens(t_token *tokens)
+int	ft_strcmp(const char *s1, const char *s2)
 {
-	t_token	*node;
+	size_t	i;
 
-	node = tokens;
-	while (node)
+	i = 0;
+	while (s1[i] && s2[i] && s1[i] == s2[i])
+		i++;
+	return ((unsigned char ) s1[i] - (unsigned char ) s2[i]);
+}
+
+void	free_split(char **split)
+{
+	int	i;
+
+	if (split)
 	{
-		// dprint remove
-		dprintf(2, "type: %d | lexeme: %s\n", node->type, node->lexeme);
-		node = node->next;
+		i = -1;
+		while (split[++i])
+			free(split[i]);
+		free(split);
 	}
 }

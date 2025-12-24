@@ -33,6 +33,7 @@ SRCS := $(SRC_DIR)/main.c \
 		$(SRC_DIR)/lexer/token.c \
 		$(SRC_DIR)/lexer/debug.c \
 		$(SRC_DIR)/lexer/token_type.c \
+		$(SRC_DIR)/lexer/utils_lexer.c \
 		$(SRC_DIR)/parser/helpers.c \
 		$(SRC_DIR)/parser/init.c \
 		$(SRC_DIR)/parser/parse_command.c \
@@ -43,8 +44,30 @@ SRCS := $(SRC_DIR)/main.c \
 		$(SRC_DIR)/parser/clear.c \
 		$(SRC_DIR)/parser/merge.c \
 		$(SRC_DIR)/parser/debug.c \
+		$(SRC_DIR)/builtins/get_builtin.c \
+		$(SRC_DIR)/builtins/pwd.c \
+		$(SRC_DIR)/builtins/cd.c \
+		$(SRC_DIR)/builtins/echo.c \
+		$(SRC_DIR)/builtins/unset.c \
+		$(SRC_DIR)/builtins/env.c \
+		$(SRC_DIR)/builtins/export.c \
+		$(SRC_DIR)/builtins/exit.c \
+		$(SRC_DIR)/utils/env.c \
 		$(SRC_DIR)/expander/expander.c \
 		$(SRC_DIR)/expander/wildcards.c \
+		$(SRC_DIR)/exec/exec_cmd.c \
+		$(SRC_DIR)/exec/helpers.c \
+		$(SRC_DIR)/exec/convert.c \
+		$(SRC_DIR)/exec/exec_pipe.c \
+		$(SRC_DIR)/exec/pipe_utils.c \
+		$(SRC_DIR)/exec/exec_ast.c \
+		$(SRC_DIR)/exec/redirects.c \
+		$(SRC_DIR)/expander/table_driven_expander.c \
+		$(SRC_DIR)/expander/automato_expander.c \
+		$(SRC_DIR)/expander/utils_expander.c \
+		$(SRC_DIR)/expander/wildcard_utils.c \
+		$(SRC_DIR)/expander/subshell_expander.c \
+		$(SRC_DIR)/expander/helpers_expander.c \
 
 OBJS := $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
