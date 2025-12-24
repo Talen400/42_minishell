@@ -41,7 +41,21 @@ char	*ft_readline(t_data *data)
 {
 	char	*line;
 	char	*prompt;
+	size_t	len;
 
+	// mode pipes to terminal to terminal
+	if (!isatty(STDIN_FILENO))
+	{
+		line = get_next_line(STDIN_FILENO);
+		if (line)
+		{
+			len = ft_strlen(line);
+			if (len > 0 && line[len - 1] == '\n')
+				line[len - 1] = '\0';
+		}
+		return (line);
+	}
+	// mode interative with terminal
 	prompt = get_prompt(data->user);
 	line = readline(prompt);
 	free(prompt);
