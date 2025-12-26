@@ -5,8 +5,13 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
+<<<<<<< Updated upstream
 /*   Created: 2025/12/03 12:02:33 by fbenini-          #+#    #+#             */
 /*   Updated: 2025/12/12 15:12:23 by fbenini-         ###   ########.fr       */
+=======
+/*   Created: 2025/12/21 18:13:35 by tlavared          #+#    #+#             */
+/*   Updated: 2025/12/26 03:55:12 by fbenini-         ###   ########.fr       */
+>>>>>>> Stashed changes
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,23 +148,19 @@ void	*get_wildcards_value_recursive(char *path, char **parts, char **value)
 
 char	*get_path(char *pattern)
 {
+	char	*last_slash;
+	char	*path;
 	int		path_len;
-	char	*file;
-	char	*res;
-	int		i;
 
-	file = ft_strchr(pattern, '*');
-	if (!file)
-		return (ft_strdup("."));
-	path_len = ft_strlen(pattern) - ft_strlen(file);
-	res = ft_calloc(path_len + 1, sizeof(char));
-	i = 0;
-	while (i < path_len - 1)
-	{
-		res[i] = pattern[i];
-		i++;
-	}
-	return (res);
+	if (!pattern)
+		return (ft_strdup(""));
+	last_slash = ft_strrchr(pattern, '/');
+	if (!last_slash)
+		return (ft_strdup(""));
+	path_len = last_slash - pattern + 1;
+	path = ft_calloc(path_len + 1, sizeof(char));
+	ft_memcpy(path, pattern, path_len);
+	return (path);
 }
 
 char	*wildcard(char *pattern)
