@@ -5,3 +5,4 @@ minishell
 .mandatory
 test_lexer.sh
 libft.a
+compile_flags.txt

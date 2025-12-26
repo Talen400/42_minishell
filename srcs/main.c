@@ -16,6 +16,7 @@
 #include "../includes/minishell.h"
 #include "../includes/expander.h"
 #include "../includes/exec.h"
+#include "../includes/signals.h"
 
 int	minishell(char *line, t_data *data)
 {
@@ -47,6 +48,7 @@ int	main(int argc, char *argv[], char *envvars[])
 	t_data		data;
 
 	init_data(&data, envvars);
+	setup_signals();
 	while (data.is_running)
 	{
 		line = ft_readline(&data);

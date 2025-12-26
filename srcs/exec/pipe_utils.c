@@ -6,11 +6,12 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 13:53:53 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/12/18 13:55:05 by fbenini-         ###   ########.fr       */
+/*   Updated: 2025/12/26 04:28:47 by fbenini-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/exec.h"
+#include "../../includes/signals.h"
 
 static int	exec_from_path(char **args, t_data *data)
 {
@@ -53,6 +54,7 @@ static void	exec_cmd_pipe(t_ast_node *node, t_data *data)
 
 void	child_process(t_ast_node *node, t_data *data, t_pipe_args *args)
 {
+	restore_sigint();
 	if (args->fd_in != STDIN_FILENO)
 	{
 		dup2(args->fd_in, STDIN_FILENO);

@@ -6,18 +6,20 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 14:00:35 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/12/18 16:26:35 by fbenini-         ###   ########.fr       */
+/*   Updated: 2025/12/26 04:23:53 by fbenini-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/parser.h"
 #include "../../includes/exec.h"
+#include "../../includes/signals.h"
 #include <time.h>
 
 static void	handle_child(char **args, t_data *data, char *path)
 {
 	int	status;
 
+	restore_sigint();
 	status = execve(path, args, data->envvars);
 	free(path);
 	free_splitted(args);

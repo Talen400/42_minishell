@@ -42,7 +42,6 @@ SRCS := $(SRC_DIR)/main.c \
 		$(SRC_DIR)/parser/parse_pipeline.c \
 		$(SRC_DIR)/parser/parse_sequence.c \
 		$(SRC_DIR)/parser/clear.c \
-		$(SRC_DIR)/parser/merge.c \
 		$(SRC_DIR)/parser/debug.c \
 		$(SRC_DIR)/builtins/get_builtin.c \
 		$(SRC_DIR)/builtins/pwd.c \
@@ -68,6 +67,8 @@ SRCS := $(SRC_DIR)/main.c \
 		$(SRC_DIR)/expander/wildcard_utils.c \
 		$(SRC_DIR)/expander/subshell_expander.c \
 		$(SRC_DIR)/expander/helpers_expander.c \
+		$(SRC_DIR)/signals/signals.c \
+		$(SRC_DIR)/signals/sigint.c \
 
 OBJS := $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
