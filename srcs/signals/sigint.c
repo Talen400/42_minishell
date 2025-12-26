@@ -13,16 +13,29 @@
 #include "../../includes/minishell.h"
 #include <readline/readline.h>
 #include <signal.h>
+#include <sys/wait.h>
+#include <unistd.h>
 
 // SIGINT (aka ctrl-C) helper functions
 
 static void	handle_sigint(int signal)
 {
+	pid_t	child_pid;
+	int		status;
+
+	child_pid = waitpid(-1, &status, WNOHANG);
+	(void)status;
 	(void)signal;
 	ft_putchar_fd('\n', STDOUT_FILENO);
-	rl_on_new_line();
+	if (child_pid == 0)
+		return ;
 	rl_replace_line("", 0);
-	rl_redisplay();
+	if (rl_line_buffer && rl_prompt)
+	{
+		ft_putstr_fd(rl_prompt, STDOUT_FILENO);
+		if (rl_line_buffer)
+			ft_putstr_fd(rl_line_buffer, STDOUT_FILENO);
+	}
 }
 
 void	setup_sigint(void)
