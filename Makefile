@@ -61,6 +61,7 @@ SRCS := $(SRC_DIR)/main.c \
 		$(SRC_DIR)/exec/pipe_utils.c \
 		$(SRC_DIR)/exec/exec_ast.c \
 		$(SRC_DIR)/exec/redirects.c \
+		$(SRC_DIR)/exec/heredoc.c \
 		$(SRC_DIR)/expander/table_driven_expander.c \
 		$(SRC_DIR)/expander/automato_expander.c \
 		$(SRC_DIR)/expander/utils_expander.c \

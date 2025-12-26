@@ -6,7 +6,7 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 14:26:15 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/12/18 17:32:40 by fbenini-         ###   ########.fr       */
+/*   Updated: 2025/12/26 23:00:46 by fbenini-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,5 +50,7 @@ void	father_process(t_pipe_args *args);
 
 int		handle_redirects(t_ast_node *node, t_redirect_args *args);
 void	restore_std(t_redirect_args *args);
+
+int		handle_heredoc(const char *eof);
 
 #endif

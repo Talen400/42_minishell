@@ -6,7 +6,7 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/11 17:02:40 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/12/18 18:59:30 by fbenini-         ###   ########.fr       */
+/*   Updated: 2025/12/26 23:04:06 by fbenini-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,18 +34,18 @@ t_redirect_value	*find_redirect(t_cmd_node *cmd, int type)
 static int	redirect_handler(t_redirect_value *redir,
 						t_redirect_args *args, int type)
 {
-	int	flag;
-	int	open_fd;
+	int		flag;
+	int		open_fd;
 
 	flag = O_RDWR;
 	if (type == STDOUT_FILENO)
 		flag = O_WRONLY | O_CREAT | O_TRUNC;
 	if (type == STDOUT_FILENO && ft_strncmp(redir->type, ">>\0", 3) == 0)
 		flag = O_WRONLY | O_CREAT | O_APPEND;
-	if (redir->target->processed)
-		open_fd = open(redir->target->processed, flag, 0777);
+	if (ft_strncmp(redir->type, "<<\0", 3) == 0)
+		open_fd = handle_heredoc(redir->target->processed);
 	else
-		open_fd = open(redir->target->raw, flag, 0777);
+		open_fd = open(redir->target->processed, flag, 0777);
 	if (open_fd < 0)
 	{
 		perror("minishell");
