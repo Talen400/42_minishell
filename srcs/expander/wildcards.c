@@ -6,7 +6,7 @@
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/21 18:13:35 by tlavared          #+#    #+#             */
-/*   Updated: 2025/12/21 18:13:36 by tlavared         ###   ########.fr       */
+/*   Updated: 2025/12/26 04:30:54 by fbenini-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,23 +82,19 @@ void	*get_wildcards_value_recursive(char *path, char **parts, char **value)
 
 char	*get_path(char *pattern)
 {
+	char	*last_slash;
+	char	*path;
 	int		path_len;
-	char	*file;
-	char	*res;
-	int		i;
 
-	file = ft_strchr(pattern, '*');
-	if (!file)
-		return (ft_strdup("."));
-	path_len = ft_strlen(pattern) - ft_strlen(file);
-	res = ft_calloc(path_len + 1, sizeof(char));
-	i = 0;
-	while (i < path_len - 1)
-	{
-		res[i] = pattern[i];
-		i++;
-	}
-	return (res);
+	if (!pattern)
+		return (ft_strdup(""));
+	last_slash = ft_strrchr(pattern, '/');
+	if (!last_slash)
+		return (ft_strdup(""));
+	path_len = last_slash - pattern + 1;
+	path = ft_calloc(path_len + 1, sizeof(char));
+	ft_memcpy(path, pattern, path_len);
+	return (path);
 }
 
 char	*wildcard(char *pattern)
