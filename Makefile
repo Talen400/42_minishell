@@ -69,6 +69,7 @@ SRCS := $(SRC_DIR)/main.c \
 		$(SRC_DIR)/expander/helpers_expander.c \
 		$(SRC_DIR)/signals/signals.c \
 		$(SRC_DIR)/signals/sigint.c \
+		$(SRC_DIR)/signals/sigquit.c \
 		$(SRC_DIR)/autocomplete/init.c \
 		$(SRC_DIR)/autocomplete/match.c \
 		$(SRC_DIR)/autocomplete/completion.c \
