@@ -14,27 +14,12 @@
 #include <readline/history.h>
 #include <readline/readline.h>
 
-int	read_input(t_data *data)
+char	*handle_fail(t_data *data)
 {
-	char	*line;
-
-	(void)data;
-	line = readline(data->prompt);
-	if (!line)
-		return (1);
-	add_history(line);
-	rl_redisplay();
-	while (line)
-	{
-		free(line);
-		line = readline(data->prompt);
-		if (!line)
-			return (1);
-		add_history(line);
-		rl_redisplay();
-	}
-	free(line);
-	return (0);
+	// handle for EOF aka Ctrl-D
+	ft_putstr_fd("exit\n", STDOUT_FILENO);
+	data->is_running = 0;
+	return (NULL);
 }
 
 char	*ft_readline(t_data *data)
@@ -58,6 +43,8 @@ char	*ft_readline(t_data *data)
 	// mode interative with terminal
 	prompt = get_prompt(data->user);
 	line = readline(prompt);
+	if (!line)
+		return (handle_fail(data));
 	free(prompt);
 	add_history(line);
 	return (line);
