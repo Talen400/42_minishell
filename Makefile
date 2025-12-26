@@ -69,6 +69,11 @@ SRCS := $(SRC_DIR)/main.c \
 		$(SRC_DIR)/expander/helpers_expander.c \
 		$(SRC_DIR)/signals/signals.c \
 		$(SRC_DIR)/signals/sigint.c \
+		$(SRC_DIR)/autocomplete/init.c \
+		$(SRC_DIR)/autocomplete/match.c \
+		$(SRC_DIR)/autocomplete/completion.c \
+		$(SRC_DIR)/autocomplete/insert.c \
+		$(SRC_DIR)/autocomplete/scan.c \
 
 OBJS := $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 

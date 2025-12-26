@@ -3,18 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/17 12:30:11 by tlavared          #+#    #+#             */
-/*   Updated: 2025/12/22 01:41:00 by tlavared         ###   ########.fr       */
-/*   Updated: 2025/11/19 20:26:02 by tlavared         ###   ########.fr       */
+/*   Created: 2025/12/19 15:28:15 by fbenini-          #+#    #+#             */
+/*   Updated: 2025/12/26 04:33:25 by fbenini-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/lexer.h"
 #include "../includes/parser.h"
 #include "../includes/minishell.h"
 #include "../includes/expander.h"
+#include "../includes/autocomplete.h"
 #include "../includes/exec.h"
 #include "../includes/signals.h"
 
@@ -49,6 +48,7 @@ int	main(int argc, char *argv[], char *envvars[])
 
 	init_data(&data, envvars);
 	setup_signals();
+	init_readline();
 	while (data.is_running)
 	{
 		line = ft_readline(&data);
