@@ -93,6 +93,7 @@ int	is_expander(t_expandable_value *value, t_data *data)
 	value->processed = ft_strdup("");
 	aut.table = get_table_expander();
 	automato_expander(value, data, &aut);
+	free(aut.subshell_cmd);
 	if (aut.word[aut.i] == '\0')
 		return (TRUE);
 	return (FALSE);
