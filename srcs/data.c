@@ -55,20 +55,6 @@ static char	**init_envvars(char **envvars)
 	return (res);
 }
 
-void	clear_data(t_data *data)
-{
-	int	i;
-
-	i = 0;
-	while (data->envvars[i])
-	{
-		free(data->envvars[i]);
-		i++;
-	}
-	free(data->envvars);
-	free(data->user);
-}
-
 char	*get_prompt(char *user)
 {
 	char	*res;
@@ -87,6 +73,21 @@ char	*get_prompt(char *user)
 	return (res);
 }
 
+static pid_t	get_pid(void)
+{
+	pid_t	pid;
+
+	pid = fork();
+	if (pid == -1)
+	{
+		perror("fork");
+		return (-1);
+	}
+	else if (pid == 0)
+		exit(0);
+	return (pid);
+}
+
 int	init_data(t_data *data, char **envvars)
 {
 	int		i;
@@ -95,6 +96,7 @@ int	init_data(t_data *data, char **envvars)
 	data->user = NULL;
 	data->is_running = 1;
 	data->exit_status = 0;
+	data->pid = get_pid();
 	i = 0;
 	while (envvars[i])
 	{

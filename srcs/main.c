@@ -17,6 +17,20 @@
 #include "../includes/exec.h"
 #include "../includes/signals.h"
 
+static void	clear_data(t_data *data)
+{
+	int	i;
+
+	i = 0;
+	while (data->envvars[i])
+	{
+		free(data->envvars[i]);
+		i++;
+	}
+	free(data->envvars);
+	free(data->user);
+}
+
 int	minishell(char *line, t_data *data)
 {
 	t_parser	*parser;
