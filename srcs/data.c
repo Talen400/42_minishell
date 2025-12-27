@@ -17,6 +17,20 @@
 #define RESET "\e[0m"
 #define GRAY "\033[1m"
 
+static char	*handle_shlvl(char *og_value)
+{
+	int		value;
+	char	*value_str;
+	char	*res;
+
+	value = ft_atoi(og_value + 6);
+	value += 1;
+	value_str = ft_itoa(value);
+	res = ft_strjoin("SHLVL=", value_str);
+	free(value_str);
+	return (res);
+}
+
 static char	**init_envvars(char **envvars)
 {
 	size_t	i;
@@ -29,6 +43,12 @@ static char	**init_envvars(char **envvars)
 	i = 0;
 	while (envvars[i])
 	{
+		if (ft_strncmp(envvars[i], "SHLVL=", 6) == 0)
+		{
+			res[i] = handle_shlvl(envvars[i]);
+			i++;
+			continue ;
+		}
 		res[i] = ft_strdup(envvars[i]);
 		i++;
 	}
