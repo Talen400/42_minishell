@@ -6,7 +6,7 @@
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/21 18:10:39 by tlavared          #+#    #+#             */
-/*   Updated: 2025/12/23 14:27:06 by tlavared         ###   ########.fr       */
+/*   Updated: 2026/01/03 17:32:11 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,9 @@ void	automato_expander(t_expandable_value *value, t_data *data,
 	while (aut->word[aut->i])
 	{
 		get_state_helper(aut);
-		if (skip_quote(aut))
+		dprintf(2, "[%d] prev: %d, state: %d, str: %c \n",
+  		aut->i, aut->prev_state, aut->state, aut->word[aut->i]);
+  		if (skip_quote(aut))
 		{
 			aut->i++;
 			continue ;
@@ -70,7 +72,9 @@ void	automato_expander(t_expandable_value *value, t_data *data,
 		{
 			aut->subshell_cmd = extract_subshell(aut);
 			aut->tmp = execute_subshell(aut->subshell_cmd, data);
+			//aut->tmp = ft_strdup("SUB_OK");
 			value->processed = join_free(value->processed, aut->tmp);
+			free(aut->subshell_cmd);
 			continue ;
 		}
 		if (is_dollar_expansion(aut))
@@ -93,7 +97,6 @@ int	is_expander(t_expandable_value *value, t_data *data)
 	value->processed = ft_strdup("");
 	aut.table = get_table_expander();
 	automato_expander(value, data, &aut);
-	free(aut.subshell_cmd);
 	if (aut.word[aut.i] == '\0')
 		return (TRUE);
 	return (FALSE);

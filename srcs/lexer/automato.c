@@ -6,7 +6,7 @@
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 18:02:01 by tlavared          #+#    #+#             */
-/*   Updated: 2025/12/23 15:04:19 by tlavared         ###   ########.fr       */
+/*   Updated: 2026/01/03 16:03:10 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,58 @@ int	state_final(t_automato *aut, char *str, t_token **tokens)
 	return (SUCESS);
 }
 
+
+int	print_syntax_error(char *token)
+{
+	ft_putstr_fd("minishell: syntax error near unexpected token '", 2);
+	ft_putstr_fd(token, 2);
+	ft_putstr_fd("'\n", 2);
+	return (FAILURE);
+}
+
+int	is_logical_or_pipe(int type)
+{
+	return (type == TOKEN_PIPE
+			|| type == TOKEN_AND || type == TOKEN_OR);
+}
+
+int	check_syntax(t_token *tokens)
+{
+	t_token	*tmp;
+	int		depth;
+
+	tmp = tokens;
+	if (!tmp)
+		return (SUCESS);
+	if (tmp->type == TOKEN_PIPE
+			|| tmp->type == TOKEN_AND || tmp->type == TOKEN_OR)
+		return (print_syntax_error(tmp->lexeme));
+	depth = 0;
+	while (tmp)
+	{
+		if (tmp->type == -1)
+			return (print_syntax_error(tmp->lexeme));
+		if (tmp->type == TOKEN_OPEN_PAR)
+			depth++;
+		else if (tmp->type == TOKEN_CLOSE_PAR)
+		{
+			depth--;
+			if (depth < 0)
+				return (print_syntax_error(")"));
+		}
+		if (is_logical_or_pipe(tmp->type))
+		{
+			if (!tmp->next || is_logical_or_pipe(tmp->next->type)
+				|| tmp->next->type == TOKEN_OPEN_PAR)
+				return (print_syntax_error(tmp->lexeme));
+		}
+		tmp = tmp->next;
+	}
+	if (depth != 0)
+			return (print_syntax_error("unclosed parenthesis"));
+	return (SUCESS);
+}
+
 /*
  * test : 
  * ((echo << "here" && (cat Makefile | wc -l)) >> code.txt)
@@ -96,6 +148,13 @@ int	automato(char *str, t_token **tokens)
 		if (aut.prev_state == 8 && str[aut.i] == '(')
 			handle_subshell(&aut, str);
 		aut.i++;
+	}
+	//print_tokens(*tokens);
+	if (check_syntax(*tokens))
+	{
+		token_clear_list(tokens);
+		*tokens = NULL;
+		return (FAILURE);
 	}
 	return (SUCESS);
 }

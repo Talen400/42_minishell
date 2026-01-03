@@ -6,7 +6,7 @@
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/20 15:13:51 by tlavared          #+#    #+#             */
-/*   Updated: 2025/12/22 01:36:20 by tlavared         ###   ########.fr       */
+/*   Updated: 2026/01/03 17:34:04 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,18 @@ char	*handle_dollar(t_automato_expander *aut, t_data *data)
 	char	*tmp;
 	char	*result;
 
+
 	aut->i++;
+	if (aut->word[aut->i] == '?')
+	{
+		aut->i++;
+		return (ft_itoa(data->exit_status));
+	}
+	if (aut->word[aut->i] == '$')
+	{
+		aut->i++;
+		return (ft_itoa(getpid()));
+	}
 	start = aut->i;
 	len = 0;
 	while (aut->word[aut->i] && ((ft_isalnum(aut->word[aut->i])
