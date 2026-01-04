@@ -6,7 +6,7 @@
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/21 18:10:39 by tlavared          #+#    #+#             */
-/*   Updated: 2026/01/03 17:32:11 by tlavared         ###   ########.fr       */
+/*   Updated: 2026/01/04 18:56:59 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@
  * state 0	=	0	1	2	0	0	0	0	0
  * state 1	=	1	0	1	3	1	1	1	0
  * state 2	=	2	2	0	2	2	2	2	0
- * state 2	=	3	3	3	3	3	0	3	0
  */
 
 static int	(*get_table_expander(void))[NUM_TYPE_EXPANDER]
@@ -35,8 +34,7 @@ static int	(*get_table_expander(void))[NUM_TYPE_EXPANDER]
 	static int	table[NUM_STATE_EXPANDER][NUM_TYPE_EXPANDER] = {
 	{0, 1, 2, 0, 0, 0, 0, 0},
 	{1, 0, 1, 1, 1, 1, 1, 0},
-	{2, 2, 0, 2, 2, 2, 2, 0},
-	{3, 3, 3, 3, 3, 0, 3, 0}
+	{2, 2, 0, 2, 2, 2, 2, 0}
 	};
 
 	return (table);
@@ -61,20 +59,9 @@ void	automato_expander(t_expandable_value *value, t_data *data,
 	while (aut->word[aut->i])
 	{
 		get_state_helper(aut);
-		dprintf(2, "[%d] prev: %d, state: %d, str: %c \n",
-  		aut->i, aut->prev_state, aut->state, aut->word[aut->i]);
-  		if (skip_quote(aut))
+		if (skip_quote(aut))
 		{
 			aut->i++;
-			continue ;
-		}
-		if (is_subshell(aut))
-		{
-			aut->subshell_cmd = extract_subshell(aut);
-			aut->tmp = execute_subshell(aut->subshell_cmd, data);
-			//aut->tmp = ft_strdup("SUB_OK");
-			value->processed = join_free(value->processed, aut->tmp);
-			free(aut->subshell_cmd);
 			continue ;
 		}
 		if (is_dollar_expansion(aut))

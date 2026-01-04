@@ -6,7 +6,7 @@
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/23 13:34:59 by tlavared          #+#    #+#             */
-/*   Updated: 2026/01/03 17:24:29 by tlavared         ###   ########.fr       */
+/*   Updated: 2026/01/04 18:55:16 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ char	*extract_subshell(t_automato_expander *aut)
 	int		len;
 	char	*cmd;
 
-	aut->i += 2;
+	aut->i++;
 	start = aut->i;
 	len = find_subshell_len(aut);
 	if (len < 0)

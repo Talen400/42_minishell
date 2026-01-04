@@ -52,6 +52,7 @@ commands=(
     "echo test"
     "echo 'test'"
     "echo \"test\""
+	"e\'c\'h\'o\' test"
     "echo \$USER"
     "echo \$USER\$USER"
     "echo \$USER \$USER"

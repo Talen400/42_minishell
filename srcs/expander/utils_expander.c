@@ -6,7 +6,7 @@
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/20 15:13:51 by tlavared          #+#    #+#             */
-/*   Updated: 2026/01/03 17:34:04 by tlavared         ###   ########.fr       */
+/*   Updated: 2026/01/04 19:03:46 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,15 +57,18 @@ char	*append_char(char *str, char character)
 	return (join_free(str, new_char));
 }
 
-char	*handle_dollar(t_automato_expander *aut, t_data *data)
+static char	*handle_metachar(t_automato_expander *aut, t_data *data)
 {
-	int		start;
-	int		len;
 	char	*tmp;
 	char	*result;
 
-
-	aut->i++;
+	if (aut->word[aut->i] == '(')
+	{
+		tmp = extract_subshell(aut);
+		result = execute_subshell(tmp, data);
+		free(tmp);
+		return (result);
+	}
 	if (aut->word[aut->i] == '?')
 	{
 		aut->i++;
@@ -76,6 +79,20 @@ char	*handle_dollar(t_automato_expander *aut, t_data *data)
 		aut->i++;
 		return (ft_itoa(getpid()));
 	}
+	return (ft_strdup(""));
+}
+
+char	*handle_dollar(t_automato_expander *aut, t_data *data)
+{
+	int		start;
+	int		len;
+	char	*tmp;
+	char	*result;
+
+	aut->i++;
+	if (aut->word[aut->i] == '(' || aut->word[aut->i] == '?'
+		|| aut->word[aut->i] == '$')
+		return (handle_metachar(aut, data));
 	start = aut->i;
 	len = 0;
 	while (aut->word[aut->i] && ((ft_isalnum(aut->word[aut->i])
