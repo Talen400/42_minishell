@@ -27,7 +27,7 @@ run_test() {
 
 	status_mini=$?
 
-	mem_err=0
+	mem_err=1
 	[ $status_mini -eq 42 ] && mem_err=1
 
 	diff out_bash out_mini > /dev/null

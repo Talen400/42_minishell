@@ -6,7 +6,7 @@
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/23 13:34:59 by tlavared          #+#    #+#             */
-/*   Updated: 2026/01/04 18:55:16 by tlavared         ###   ########.fr       */
+/*   Updated: 2026/01/05 18:43:42 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,10 +59,10 @@ static void	run_subshell_child(char *cmd, t_data *data, int fd_out)
 	dup2(fd_out, STDOUT_FILENO);
 	close(fd_out);
 	status = minishell(cmd, data);
-	exit(status);
+	data->is_running = 0;
 }
 
-static char	*read_subshell_out(int fd_in)
+char	*read_subshell_out(int fd_in)
 {
 	char	*result;
 	char	buffer[4096];
@@ -103,7 +103,8 @@ char	*execute_subshell(char *cmd, t_data *data)
 	}
 	close(fds[1]);
 	waitpid(pid, &status, 0);
-	result = read_subshell_out(fds[0]);
+	//(void *) read_subshell_out;
+	result = ft_strdup("SUB!");
 	close(fds[0]);
 	return (result);
 }
