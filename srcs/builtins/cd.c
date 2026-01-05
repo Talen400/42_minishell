@@ -35,7 +35,7 @@ int	cd(char **args, t_data *data)
 	if (chdir(args[1]) != 0)
 	{
 		perror("cd");
-		return (1);
+		return (1 * 256);
 	}
 	return (0);
 }

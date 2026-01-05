@@ -49,6 +49,7 @@ int	ft_exit(char **args, t_data *data)
 		exit_status = 2;
 		ft_putendl_fd("exit: argument should be a number", STDERR_FILENO);
 	}
+	exit_status *= 256;
 	data->exit_status = exit_status;
 	return (exit_status);
 }

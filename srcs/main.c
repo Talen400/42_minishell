@@ -49,10 +49,10 @@ int	minishell(char *line, t_data *data)
 	}
 	expand_ast(ast, data);
 	//print_ast(ast, 0);
-	data->exit_status = exec_ast(ast, data);
+	data->last_status = exec_ast(ast, data);
 	clear_ast(ast);
 	clear_parser(parser);
-	return (data->exit_status);
+	return (data->last_status);
 }
 
 int	main(int argc, char *argv[], char *envvars[])
@@ -68,11 +68,11 @@ int	main(int argc, char *argv[], char *envvars[])
 		line = ft_readline(&data);
 		if (!line)
 			break ;
-		data.exit_status = minishell(line, &data);
+		data.last_status = minishell(line, &data);
 		free(line);
 	}
 	clear_data(&data);
 	(void) argc;
 	(void) argv;
-	return (data.exit_status);
+	return (data.exit_status / 256);
 }
