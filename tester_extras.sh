@@ -290,6 +290,14 @@ commands=(
     "(ech hi || (echo carol > ./outfiles/outfile1 && echo bia)) | cat -e && echo bye"
     "((echo hi | cat -e) | cat -e)"
     "echo − -\$\$"
+	"oi | oi"
+	"oi |"
+	"{"
+	"}"
+	# verificar ctrl-c
+	# signal com python com ctrl-\
+	"ls < oi > a < banana" # arquivo nao existente
+	"echo \$123"
 )
 
 for cmd in "${commands[@]}"; do
