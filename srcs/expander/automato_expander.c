@@ -71,6 +71,7 @@ void	automato_expander(t_expandable_value *value, t_data *data,
 			aut->subshell_cmd = extract_subshell(aut);
 			aut->tmp = execute_subshell(aut->subshell_cmd, data);
 			value->processed = join_free(value->processed, aut->tmp);
+			free(aut->subshell_cmd);
 			continue ;
 		}
 		if (is_dollar_expansion(aut))
