@@ -6,7 +6,7 @@
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/23 13:34:59 by tlavared          #+#    #+#             */
-/*   Updated: 2026/01/04 18:55:16 by tlavared         ###   ########.fr       */
+/*   Updated: 2026/01/06 18:14:24 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static void	run_subshell_child(char *cmd, t_data *data, int fd_out)
 	dup2(fd_out, STDOUT_FILENO);
 	close(fd_out);
 	status = minishell(cmd, data);
-	exit(status);
+	data->is_running = 0;
 }
 
 static char	*read_subshell_out(int fd_in)
@@ -74,6 +74,8 @@ static char	*read_subshell_out(int fd_in)
 	while (nbytes > 0)
 	{
 		nbytes = read(fd_in, buffer, 4095);
+		if (nbytes == -1)
+			break ;
 		buffer[nbytes] = '\0';
 		result = join_free(result, ft_strdup(buffer));
 	}
