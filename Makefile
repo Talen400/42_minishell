@@ -34,6 +34,7 @@ SRCS := $(SRC_DIR)/main.c \
 		$(SRC_DIR)/lexer/debug.c \
 		$(SRC_DIR)/lexer/token_type.c \
 		$(SRC_DIR)/lexer/utils_lexer.c \
+		$(SRC_DIR)/lexer/checker_syntax.c \
 		$(SRC_DIR)/parser/helpers.c \
 		$(SRC_DIR)/parser/init.c \
 		$(SRC_DIR)/parser/parse_command.c \
@@ -149,5 +150,23 @@ fclean: clean
 	@echo "$(RED)Full clean completed!$(RESET)"
 
 re: fclean all
+
+readline.supp:
+	@echo '{' > $@
+	@echo '   ignore_libreadline_memory_errors' >> $@
+	@echo '   Memcheck:Leak' >> $@
+	@echo '   ...' >> $@
+	@echo '   obj:*/libreadline.so.*' >> $@
+	@echo '}' >> $@
+
+val: readline.supp all
+	@/bin/valgrind -q --suppressions=readline.supp \
+				--leak-check=full \
+				--show-leak-kinds=all \
+				--track-origins=yes \
+				--track-fds=yes \
+				--trace-children=yes \
+				--trace-children-skip='*/bin/*,*/sbin/*,/usr/bin/*' \
+				./${NAME}
 
 .PHONY: all clean fclean re bonus

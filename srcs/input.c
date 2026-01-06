@@ -6,7 +6,7 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 16:36:10 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/12/19 15:41:20 by fbenini-         ###   ########.fr       */
+/*   Updated: 2026/01/03 16:44:59 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,10 @@ char	*ft_readline(t_data *data)
 	// mode interative with terminal
 	prompt = get_prompt(data->user);
 	line = readline(prompt);
+	free(prompt);
 	if (!line)
 		return (handle_fail(data));
-	free(prompt);
+	//free(prompt);
 	add_history(line);
 	return (line);
 }

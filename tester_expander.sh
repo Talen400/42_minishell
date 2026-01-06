@@ -18,7 +18,7 @@ run_test() {
 	echo "$cmd" | valgrind --leak-check=full --error-exitcode=42 --quiet --log-file=valgrind_log.txt $MINISHELL > out_mini 2> err_mini
 	status_mini=$?
 
-	mem_err=1
+	mem_err=0
 	[ $status_mini -eq 42 ] && mem_err=1
 
 	diff out_bash out_mini > /dev/null
@@ -165,53 +165,5 @@ run_test "echo \"\$USER\"\$?"
 run_test "echo '\$USER'\$?"
 run_test "echo \$(echo \"\$USER\" | cat)"
 run_test "echo \"FINISH TEST\""
-
-# Operadores isolados
-run_test "true && echo 'deve imprimir'"
-run_test "false && echo 'NAO deve imprimir'"
-run_test "true || echo 'NAO deve imprimir'"
-run_test "false || echo 'deve imprimir'"
-run_test "echo hello && echo world"
-run_test "ls /non_existent && echo 'erro'"
-run_test "ls /non_existent || echo 'imprime depois do erro'"
-
-# Encadeamento (esquerda para a direita)
-run_test "true && true && echo 'ok'"
-run_test "true && false && echo 'nao'"
-run_test "false || false || echo 'ok'"
-run_test "true && false || echo 'imprime porque o anterior falhou'"
-run_test "false || true && echo 'imprime porque o anterior deu certo'"
-run_test "echo a && echo b && echo c || echo d"
-run_test "ls / && false || echo 'recuperou do erro'"
-
-# precedência
-run_test "(echo hello)"
-run_test "(true || false) && echo 'ok'"
-run_test "false && (echo 'nao') || echo 'sim'"
-run_test "(echo a && echo b) || (echo c && echo d)"
-run_test "echo a && (false || echo b)"
-run_test "(ls / && (echo interno && false)) || echo 'externo'"
-run_test "((echo nested))"
-run_test "(echo a && (echo b && (echo c)))"
-
-# Lógica com expansão
-run_test "echo \$USER && echo \$PWD"
-run_test "ls | grep a && echo 'encontrou a'"
-run_test "ls | grep 'nao_existe' || echo 'nao encontrou'"
-run_test "(echo \$USER && false) || echo \$HOME"
-run_test "export TEST=1 && echo \$TEST"
-run_test "unset TEST && echo \$TEST || echo 'vazio'"
-
-# erros sintáticos
-run_test "&& echo erro"
-run_test "echo erro &&"
-run_test "echo a ||"
-run_test "echo a || && echo b"
-run_test "(echo a && echo b"
-run_test "echo a && echo b)"
-run_test "() && echo a"
-run_test "echo a && ( )"
-run_test "&&&"
-run_test "|||"
 
 rm -f out_bash out_mini err_bash err_mini valgrind_log.txt 

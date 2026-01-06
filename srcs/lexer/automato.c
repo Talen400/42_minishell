@@ -6,7 +6,7 @@
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 18:02:01 by tlavared          #+#    #+#             */
-/*   Updated: 2025/12/23 15:04:19 by tlavared         ###   ########.fr       */
+/*   Updated: 2026/01/04 18:46:55 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,13 @@ int	automato(char *str, t_token **tokens)
 		if (aut.prev_state == 8 && str[aut.i] == '(')
 			handle_subshell(&aut, str);
 		aut.i++;
+	}
+	//print_tokens(*tokens);
+	if (check_syntax(*tokens))
+	{
+		token_clear_list(tokens);
+		*tokens = NULL;
+		return (FAILURE);
 	}
 	return (SUCESS);
 }

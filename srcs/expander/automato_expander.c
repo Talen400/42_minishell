@@ -6,7 +6,7 @@
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/21 18:10:39 by tlavared          #+#    #+#             */
-/*   Updated: 2025/12/23 14:27:06 by tlavared         ###   ########.fr       */
+/*   Updated: 2026/01/04 18:56:59 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@
  * state 0	=	0	1	2	0	0	0	0	0
  * state 1	=	1	0	1	3	1	1	1	0
  * state 2	=	2	2	0	2	2	2	2	0
- * state 2	=	3	3	3	3	3	0	3	0
  */
 
 static int	(*get_table_expander(void))[NUM_TYPE_EXPANDER]
@@ -35,8 +34,7 @@ static int	(*get_table_expander(void))[NUM_TYPE_EXPANDER]
 	static int	table[NUM_STATE_EXPANDER][NUM_TYPE_EXPANDER] = {
 	{0, 1, 2, 0, 0, 0, 0, 0},
 	{1, 0, 1, 1, 1, 1, 1, 0},
-	{2, 2, 0, 2, 2, 2, 2, 0},
-	{3, 3, 3, 3, 3, 0, 3, 0}
+	{2, 2, 0, 2, 2, 2, 2, 0}
 	};
 
 	return (table);

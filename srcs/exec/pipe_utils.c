@@ -38,18 +38,24 @@ static void	exec_cmd_pipe(t_ast_node *node, t_data *data)
 	t_cmd_node		cmd;
 	char			**args;
 	t_builtin_cmd	builtin;
+	t_redirect_args	redir_args;
 
+	redir_args.dup_stdin = -1;
+	redir_args.dup_stdout = -1;
 	if (node->type != NODE_CMD)
 		exit(1);
 	cmd = node->u_data.cmd;
 	args = convert_expandable(cmd.args);
 	if (!args || !args[0])
 		exit(1);
+	if (handle_redirects(node, &redir_args) == FAILURE)
+		return ;
 	builtin = get_builtin(args[0]);
 	if (builtin)
 		exec_from_builtin(builtin, args, data);
 	else
 		exec_from_path(args, data);
+	restore_std(&redir_args);
 }
 
 void	child_process(t_ast_node *node, t_data *data, t_pipe_args *args)

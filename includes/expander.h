@@ -6,7 +6,7 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/02 14:54:13 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/12/23 14:25:22 by tlavared         ###   ########.fr       */
+/*   Updated: 2026/01/04 18:56:04 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
  */
 
 # define NUM_TYPE_EXPANDER 8
-# define NUM_STATE_EXPANDER 4
+# define NUM_STATE_EXPANDER 3
 
 /*
  * i = pointer of str;

@@ -6,7 +6,7 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 11:36:54 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/12/23 15:03:15 by tlavared         ###   ########.fr       */
+/*   Updated: 2026/01/03 16:00:42 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ t_parser	*init_parser(char *str)
 		return (NULL);
 	tokens = NULL;
 	automato(str, &tokens);
-	//print_tokens(tokens);
 	if (!tokens)
 	{
 		free(res);

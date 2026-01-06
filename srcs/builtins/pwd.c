@@ -32,7 +32,7 @@ int	pwd(char **args, t_data *data)
 	if (!cwd)
 	{
 		perror("pwd");
-		return (1);
+		return (1 * 256);
 	}
 	ft_putendl_fd(cwd, STDOUT_FILENO);
 	free(cwd);

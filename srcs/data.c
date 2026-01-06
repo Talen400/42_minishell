@@ -17,6 +17,20 @@
 #define RESET "\e[0m"
 #define GRAY "\033[1m"
 
+static char	*handle_shlvl(char *og_value)
+{
+	int		value;
+	char	*value_str;
+	char	*res;
+
+	value = ft_atoi(og_value + 6);
+	value += 1;
+	value_str = ft_itoa(value);
+	res = ft_strjoin("SHLVL=", value_str);
+	free(value_str);
+	return (res);
+}
+
 static char	**init_envvars(char **envvars)
 {
 	size_t	i;
@@ -29,24 +43,16 @@ static char	**init_envvars(char **envvars)
 	i = 0;
 	while (envvars[i])
 	{
+		if (ft_strncmp(envvars[i], "SHLVL=", 6) == 0)
+		{
+			res[i] = handle_shlvl(envvars[i]);
+			i++;
+			continue ;
+		}
 		res[i] = ft_strdup(envvars[i]);
 		i++;
 	}
 	return (res);
-}
-
-void	clear_data(t_data *data)
-{
-	int	i;
-
-	i = 0;
-	while (data->envvars[i])
-	{
-		free(data->envvars[i]);
-		i++;
-	}
-	free(data->envvars);
-	free(data->user);
 }
 
 char	*get_prompt(char *user)
@@ -67,13 +73,30 @@ char	*get_prompt(char *user)
 	return (res);
 }
 
+static pid_t	get_pid(void)
+{
+	pid_t	pid;
+
+	pid = fork();
+	if (pid == -1)
+	{
+		perror("fork");
+		return (-1);
+	}
+	else if (pid == 0)
+		exit(0);
+	return (pid);
+}
+
 int	init_data(t_data *data, char **envvars)
 {
 	int		i;
 
+	data->pid = get_pid();
 	data->envvars = init_envvars(envvars);
 	data->user = NULL;
 	data->is_running = 1;
+	data->last_status = 0;
 	data->exit_status = 0;
 	i = 0;
 	while (envvars[i])

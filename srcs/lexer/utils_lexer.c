@@ -6,7 +6,7 @@
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/23 14:39:04 by tlavared          #+#    #+#             */
-/*   Updated: 2025/12/23 14:46:39 by tlavared         ###   ########.fr       */
+/*   Updated: 2026/01/03 13:55:44 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	update_state(t_automato *aut, char c)
 {
 	aut->prev_state = aut->state;
 	aut->state = get_state(aut, c);
-	if (aut->state == -1)
+	if (aut->state == -1 || aut->prev_state == -1)
 		return (FAILURE);
 	else if (aut->state != 0)
 		aut->lexeme_len += 1;

@@ -12,22 +12,19 @@ run_test="./minishell"
 run_test() {
 	local cmd="$1"
 	
-	echo "$cmd" | bash > out_bash 2> err_bash
+	echo "$cmd" | bash > out_bash 2> /dev/null
 	status_bash=$?
 
 	echo "$cmd" | valgrind --leak-check=full --error-exitcode=42 --quiet --log-file=valgrind_log.txt $MINISHELL > out_mini 2> err_mini
 	status_mini=$?
 
-	mem_err=1
+	mem_err=0
 	[ $status_mini -eq 42 ] && mem_err=1
 
 	diff out_bash out_mini > /dev/null
 	diff_out=$?
 
-	diff err_bash err_mini > /dev/null
-	diff_err=$?
-
-	if [ $status_bash -eq $status_mini ] && [ $diff_out -eq 0 ] && [ $diff_err -eq 0 ]; then
+	if [ $status_bash -eq $status_mini ] && [ $diff_out -eq 0 ]; then
 		echo -e "${GREEN}[OK]${NC} \"$cmd\""
 	else
 		echo -e "${RED}[KO]${NC} \"$cmd\""
@@ -41,10 +38,6 @@ run_test() {
 		if [ $diff_out -ne 0 ]; then
 			echo -e "	${RED}STDOUT Diff (-bash, +minishell):${NC}"
 			diff -u out_bash out_mini | tail -n +3 | sed 's/^/		/'
-		fi
-		if [ $diff_err -ne 0 ]; then
-			echo -e "	${RED}STDERR Diff (-bash, +minishell):${NC}"
-			diff -u err_bash err_mini | tail -n +3 | sed 's/^/		/'
 		fi
 		#[ $diff_out -ne 0 ] && echo "       -> diff in output"
 		#[ $status_bash -ne $status_mini ] && echo "      -> Status Bash: $status_bash | Mini: $status_mini "
@@ -213,5 +206,6 @@ run_test "() && echo a"
 run_test "echo a && ( )"
 run_test "&&&"
 run_test "|||"
+
 
 rm -f out_bash out_mini err_bash err_mini valgrind_log.txt 

@@ -13,18 +13,21 @@
 #ifndef DATA_H
 # define DATA_H
 
+# include <sys/types.h>
+
 typedef struct s_data {
 	char	**envvars;
 	char	*user;
 	char	*prompt;
 	int		is_running;
 	int		exit_status;
+	int		last_status;
+	pid_t	pid;
 }	t_data;
 
 int		init_data(t_data *data, char **envvars);
 void	delete_env(t_data *data, char *key);
 void	update_env(t_data *data, char *key, char *new_value);
-void	clear_data(t_data *data);
 void	init_readline_completion(void);
 
 #endif
