@@ -14,23 +14,36 @@
 #include <stddef.h>
 #include <unistd.h>
 
-static int	is_token_arg(t_token *token)
+static t_token	*get_first_arg_token(t_parser *parser)
 {
-	if (token->type == TOKEN_WORD
-		|| token->type == TOKEN_SQUOTE
-		|| token->type == TOKEN_DQUOTE
-		|| token->type == TOKEN_EXPANSER
-		|| token->type == TOKEN_SUB_CMD
-		|| token->type == TOKEN_OPEN_PAR)
-		return (1);
-	return (0);
+	t_token	*token;
+
+	token = parser_current(parser);
+	while (token)
+	{
+		if (is_token_arg(token))
+			return (token);
+		else if (is_redirect_token(token))
+		{
+			token = token->next;
+			if (token && is_token_arg(token))
+				token = token->next;
+			else
+			 	return (NULL);
+		}
+		else
+			return (NULL);
+	}
+	return (NULL);
 }
 
 static int	handle_redirect(t_ast_node *node, t_parser *parser,
-							t_token *token, int fd)
+							t_token *token)
 {
 	t_redirect_value	*redir_node;
+	int					fd;
 
+	fd = get_redirect_fd(token);
 	redir_node = create_redir_node(token);
 	parser_advance(parser);
 	token = parser_current(parser);
@@ -49,15 +62,7 @@ static int	handle_redirect(t_ast_node *node, t_parser *parser,
 	return (SUCESS);
 }
 
-static void	handle_args(t_parser *parser, t_ast_node *node, t_token *token)
-{
-	node->u_data.cmd.args[
-		node->u_data.cmd.argc++] = create_expandable_value(token);
-	node->u_data.cmd.args[node->u_data.cmd.argc] = NULL;
-	parser_advance(parser);
-}
-
-static void	loop_through_node(t_parser *parser, t_ast_node *node)
+size_t	count_args(t_parser *parser)
 {
 	t_token	*token;
 	size_t	arg_count;
@@ -66,52 +71,71 @@ static void	loop_through_node(t_parser *parser, t_ast_node *node)
 	arg_count = 0;
 	while (token)
 	{
-		if (!is_token_arg(token))
+		if (is_token_arg(token))
 		{
-			//ft_printf("%s\n", token->lexeme);
-			break ;
+			arg_count++;
+			token = token->next;
 		}
-		token = token->next;
-		arg_count++;
+		else if (is_redirect_token(token))
+		{
+			token = token->next;
+			if (token && is_token_arg(token))
+				token = token->next;
+			else
+				break ;
+		}
+		else
+			break ;
 	}
-	//ft_printf("%d\n", arg_count);
+	return (arg_count);
+}
+
+static void	parse_tokens(t_parser *parser, t_ast_node *node)
+{
+	t_token	*token;
+	
 	token = parser_current(parser);
-	free(node->u_data.cmd.args);
-	node->u_data.cmd.args = ft_calloc(arg_count + 1,
-			sizeof(t_expandable_value *));
 	while (token)
 	{
-		if (is_token_arg(token))
-			handle_args(parser, node, token);
+		if (is_redirect_token(token))
+		{
+			if (handle_redirect(node, parser, token) == FAILURE)
+				break ;
+		}
+		else if (is_token_arg(token))
+		{
+			node->u_data.cmd.args[
+				node->u_data.cmd.argc++] = create_expandable_value(token);
+			node->u_data.cmd.args[node->u_data.cmd.argc] = NULL;
+			parser_advance(parser);
+		}
 		else
 			break ;
 		token = parser_current(parser);
 	}
-	if (token && (token->type == TOKEN_REDIR_OUT
-			|| token->type == TOKEN_APPEND))
-		handle_redirect(node, parser, token, STDOUT_FILENO);
 }
 
 t_ast_node	*parse_command(t_parser *parser)
 {
 	t_token		*token;
 	t_ast_node	*res;
+	t_token		*first_arg_token;
+	size_t		arg_count;
 
 	token = parser_current(parser);
 	if (!token)
 		return (NULL);
 	res = create_node(NODE_CMD);
-	res->u_data.cmd.redirects = ft_calloc(4, sizeof(t_redirect_value *));
-	res->u_data.cmd.args = ft_calloc(1, sizeof(t_expandable_value *));
-	if (token->type == TOKEN_REDIR_IN || token->type == TOKEN_HEREDOC)
-		handle_redirect(res, parser, token, STDIN_FILENO);
-	token = parser_current(parser);
-	if (!token)
+	res->u_data.cmd.redirects = ft_calloc(16, sizeof(t_redirect_value *));
+	arg_count = count_args(parser);
+	res->u_data.cmd.args = ft_calloc(arg_count + 1, sizeof(t_expandable_value *));
+	first_arg_token = get_first_arg_token(parser);
+	parse_tokens(parser, res);
+	if (res->u_data.cmd.argc == 0)
 	{
 		clear_command_node(res, NODE_PIPE);
 		return (NULL);
 	}
-	res->u_data.cmd.cmd = create_expandable_value(token);
-	loop_through_node(parser, res);
+	res->u_data.cmd.cmd = create_expandable_value(first_arg_token);
 	return (res);
 }
