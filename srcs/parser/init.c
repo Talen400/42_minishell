@@ -68,7 +68,7 @@ t_expandable_value	*create_expandable_value(t_token *token)
 {
 	t_expandable_value	*res;
 
-	res = malloc(sizeof(t_expandable_value));
+	res = ft_calloc(1, sizeof(t_expandable_value));
 	res->type = LITERAL;
 	if (token->type == TOKEN_EXPANSER)
 	{
