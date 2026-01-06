@@ -23,12 +23,9 @@ int	exec_ast(t_ast_node *root, t_data *data)
 {
 	int				should_exec;
 	int				status;
-	t_redirect_args	redir_args;
 
 	if (!root || !data->is_running)
 		return (1);
-	redir_args.dup_stdin = -1;
-	redir_args.dup_stdout = -1;
 	status = 0;
 	if (root->type == NODE_LOGICAL)
 	{
@@ -38,12 +35,9 @@ int	exec_ast(t_ast_node *root, t_data *data)
 		if (should_exec)
 			status = exec_ast(root->u_data.logical.right, data);
 	}
-	if (handle_redirects(root, &redir_args) == FAILURE)
-		return (1);
 	if (root->type == NODE_CMD)
 		status = exec_cmd(root, data);
 	if (root->type == NODE_PIPE)
 		status = exec_pipe(root, data);
-	restore_std(&redir_args);
 	return (status / 256);
 }
