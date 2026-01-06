@@ -30,9 +30,11 @@ t_builtin_cmd	get_builtin(char *cmd)
 
 	i = 0;
 	len = sizeof(commands) / sizeof(t_dict_builtin);
+	cmd_len = ft_strlen(cmd);
+	if (cmd_len == 0)
+		return (NULL);
 	while (i < len)
 	{
-		cmd_len = ft_strlen(cmd);
 		if (ft_strncmp(cmd, commands[i].id, cmd_len) == 0)
 			return (commands[i].function);
 		i++;
