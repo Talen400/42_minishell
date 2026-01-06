@@ -6,7 +6,7 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 10:46:49 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/12/02 18:48:11 by fbenini-         ###   ########.fr       */
+/*   Updated: 2026/01/06 18:38:26 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,8 @@ typedef struct s_logical_node
 	t_ast_node				*left;
 	t_ast_node				*right;
 }							t_logical_node;
+
+// ast
 
 struct						s_ast_node
 {
