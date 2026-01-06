@@ -45,5 +45,5 @@ int	exec_ast(t_ast_node *root, t_data *data)
 	if (root->type == NODE_PIPE)
 		status = exec_pipe(root, data);
 	restore_std(&redir_args);
-	return (status);
+	return (status / 256);
 }

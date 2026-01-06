@@ -72,7 +72,7 @@ static char	*handle_metachar(t_automato_expander *aut, t_data *data)
 	if (aut->word[aut->i] == '?')
 	{
 		aut->i++;
-		return (ft_itoa(data->exit_status));
+		return (ft_itoa(data->last_status));
 	}
 	if (aut->word[aut->i] == '$')
 	{

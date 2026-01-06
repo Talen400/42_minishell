@@ -21,6 +21,7 @@ typedef struct s_data {
 	char	*prompt;
 	int		is_running;
 	int		exit_status;
+	int		last_status;
 	pid_t	pid;
 }	t_data;
 
