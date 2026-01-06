@@ -14,33 +14,27 @@
 #include <stddef.h>
 #include <unistd.h>
 
-static int	is_token_arg(t_token *token)
+static t_token	*get_first_arg_token(t_parser *parser)
 {
-	if (token->type == TOKEN_WORD
-		|| token->type == TOKEN_SQUOTE
-		|| token->type == TOKEN_DQUOTE
-		|| token->type == TOKEN_EXPANSER
-		|| token->type == TOKEN_SUB_CMD
-		|| token->type == TOKEN_OPEN_PAR)
-		return (1);
-	return (0);
-}
+	t_token	*token;
 
-static int	is_redirect_token(t_token *token)
-{
-	if (token->type == TOKEN_REDIR_IN
-		|| token->type == TOKEN_REDIR_OUT
-		|| token->type == TOKEN_HEREDOC
-		|| token->type == TOKEN_APPEND)
-		return (1);
-	return (0);
-}
-
-static int	get_redirect_fd(t_token *token)
-{
-	if (token->type == TOKEN_REDIR_IN || token->type == TOKEN_HEREDOC)
-		return (STDIN_FILENO);
-	return (STDOUT_FILENO);
+	token = parser_current(parser);
+	while (token)
+	{
+		if (is_token_arg(token))
+			return (token);
+		else if (is_redirect_token(token))
+		{
+			token = token->next;
+			if (token && is_token_arg(token))
+				token = token->next;
+			else
+			 	return (NULL);
+		}
+		else
+			return (NULL);
+	}
+	return (NULL);
 }
 
 static int	handle_redirect(t_ast_node *node, t_parser *parser,
@@ -96,14 +90,6 @@ size_t	count_args(t_parser *parser)
 	return (arg_count);
 }
 
-static void	handle_args(t_parser *parser, t_ast_node *node, t_token *token)
-{
-	node->u_data.cmd.args[
-		node->u_data.cmd.argc++] = create_expandable_value(token);
-	node->u_data.cmd.args[node->u_data.cmd.argc] = NULL;
-	parser_advance(parser);
-}
-
 static void	parse_tokens(t_parser *parser, t_ast_node *node)
 {
 	t_token	*token;
@@ -117,7 +103,12 @@ static void	parse_tokens(t_parser *parser, t_ast_node *node)
 				break ;
 		}
 		else if (is_token_arg(token))
-			handle_args(parser, node,token);
+		{
+			node->u_data.cmd.args[
+				node->u_data.cmd.argc++] = create_expandable_value(token);
+			node->u_data.cmd.args[node->u_data.cmd.argc] = NULL;
+			parser_advance(parser);
+		}
 		else
 			break ;
 		token = parser_current(parser);
@@ -128,6 +119,7 @@ t_ast_node	*parse_command(t_parser *parser)
 {
 	t_token		*token;
 	t_ast_node	*res;
+	t_token		*first_arg_token;
 	size_t		arg_count;
 
 	token = parser_current(parser);
@@ -137,12 +129,13 @@ t_ast_node	*parse_command(t_parser *parser)
 	res->u_data.cmd.redirects = ft_calloc(16, sizeof(t_redirect_value *));
 	arg_count = count_args(parser);
 	res->u_data.cmd.args = ft_calloc(arg_count + 1, sizeof(t_expandable_value *));
+	first_arg_token = get_first_arg_token(parser);
 	parse_tokens(parser, res);
 	if (res->u_data.cmd.argc == 0)
 	{
 		clear_command_node(res, NODE_PIPE);
 		return (NULL);
 	}
-	res->u_data.cmd.cmd = res->u_data.cmd.args[0];
+	res->u_data.cmd.cmd = create_expandable_value(first_arg_token);
 	return (res);
 }
