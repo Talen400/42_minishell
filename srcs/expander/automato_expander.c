@@ -6,7 +6,7 @@
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/21 18:10:39 by tlavared          #+#    #+#             */
-/*   Updated: 2026/01/04 18:56:59 by tlavared         ###   ########.fr       */
+/*   Updated: 2026/01/07 19:21:51 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,14 +62,6 @@ void	automato_expander(t_expandable_value *value, t_data *data,
 		if (skip_quote(aut))
 		{
 			aut->i++;
-			continue ;
-		}
-		if (is_subshell(aut))
-		{
-			aut->subshell_cmd = extract_subshell(aut);
-			aut->tmp = execute_subshell(aut->subshell_cmd, data);
-			value->processed = join_free(value->processed, aut->tmp);
-			free(aut->subshell_cmd);
 			continue ;
 		}
 		if (is_dollar_expansion(aut))

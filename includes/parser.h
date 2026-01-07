@@ -120,6 +120,9 @@ t_expandable_value			*create_expandable_value(t_token *token);
 // parser/helpers.c
 t_token						*parser_current(t_parser *parser);
 void						parser_advance(t_parser *parser);
+int							is_token_arg(t_token *token);
+int							is_redirect_token(t_token *token);
+int							get_redirect_fd(t_token *token);
 
 t_ast_node					*parse_command(t_parser *parser);
 t_ast_node					*parse_generic(t_parser *parser,
