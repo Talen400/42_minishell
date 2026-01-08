@@ -15,8 +15,8 @@
 int	check_if_should_exec(int type, int status)
 {
 	if (type == TOKEN_OR)
-		return (status);
-	return (!status);
+		return (!status);
+	return (status);
 }
 
 int	exec_ast(t_ast_node *root, t_data *data)
@@ -31,9 +31,10 @@ int	exec_ast(t_ast_node *root, t_data *data)
 	{
 		status = exec_ast(root->u_data.logical.left, data);
 		should_exec = check_if_should_exec(root->u_data.logical.op,
-				status);
+				data->last_status);
 		if (should_exec)
 			status = exec_ast(root->u_data.logical.right, data);
+		data->last_status = status / 256;
 	}
 	if (root->type == NODE_CMD)
 		status = exec_cmd(root, data);
