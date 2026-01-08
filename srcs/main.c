@@ -74,5 +74,5 @@ int	main(int argc, char *argv[], char *envvars[])
 	clear_data(&data);
 	(void) argc;
 	(void) argv;
-	return (data.exit_status / 256);
+	return (data.last_status);
 }

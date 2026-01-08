@@ -16,18 +16,10 @@
 
 int	pwd(char **args, t_data *data)
 {
-	int		i;
 	char	*cwd;
 
-	i = 1;
 	(void)data;
-	while (args[i])
-		i++;
-	if (i > 1)
-	{
-		ft_putendl_fd("pwd: too many arguments", STDERR_FILENO);
-		return (1);
-	}
+	(void)args;
 	cwd = getcwd(NULL, 0);
 	if (!cwd)
 	{
