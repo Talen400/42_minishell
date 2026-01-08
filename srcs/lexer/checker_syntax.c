@@ -6,7 +6,7 @@
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/04 18:45:59 by tlavared          #+#    #+#             */
-/*   Updated: 2026/01/04 19:02:11 by tlavared         ###   ########.fr       */
+/*   Updated: 2026/01/07 21:15:11 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,7 @@ int	check_list(t_token *tokens)
 		}
 		if (is_logical_or_pipe(tmp->type))
 		{
-			if (!tmp->next || is_logical_or_pipe(tmp->next->type)
-				|| tmp->next->type == TOKEN_OPEN_PAR)
+			if (!tmp->next || is_logical_or_pipe(tmp->next->type))
 				return (print_syntax_error(tmp->lexeme));
 		}
 		tmp = tmp->next;
