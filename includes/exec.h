@@ -16,7 +16,7 @@
 # include "minishell.h"
 # include "parser.h"
 
-int		exec_ast(t_ast_node *root, t_data *data);
+int		exec_ast(t_ast_node *root, t_data *data, int status);
 
 int		exec_cmd(t_ast_node *node, t_data *data);
 char	**convert_expandable(t_expandable_value **values);

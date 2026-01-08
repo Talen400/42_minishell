@@ -12,33 +12,40 @@
 
 #include "../../includes/exec.h"
 
+int	get_exit_code(int exit_code)
+{
+	return (exit_code / 256);
+}
+
 int	check_if_should_exec(int type, int status)
 {
 	if (type == TOKEN_OR)
-		return (!status);
-	return (status);
+		return (status != 0);
+	return (status == 0);
 }
 
-int	exec_ast(t_ast_node *root, t_data *data)
+int	exec_ast(t_ast_node *root, t_data *data, int status)
 {
-	int				should_exec;
-	int				status;
+	int	should_exec;
+	int	exit_code;
 
 	if (!root || !data->is_running)
-		return (1);
-	status = 0;
+		return (status);
 	if (root->type == NODE_LOGICAL)
 	{
-		status = exec_ast(root->u_data.logical.left, data);
+		status = exec_ast(root->u_data.logical.left, data, status);
+		exit_code = get_exit_code(status);
 		should_exec = check_if_should_exec(root->u_data.logical.op,
-				data->last_status);
+				exit_code);
 		if (should_exec)
-			status = exec_ast(root->u_data.logical.right, data);
-		data->last_status = status / 256;
+			status = exec_ast(root->u_data.logical.right, data, status);
+		data->last_status = get_exit_code(status);
+		return (status);
 	}
 	if (root->type == NODE_CMD)
 		status = exec_cmd(root, data);
 	if (root->type == NODE_PIPE)
 		status = exec_pipe(root, data);
-	return (status / 256);
+	data->last_status = get_exit_code(status);
+	return (status);
 }
