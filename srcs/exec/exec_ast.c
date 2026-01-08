@@ -34,7 +34,7 @@ int	exec_ast(t_ast_node *root, t_data *data)
 				data->last_status);
 		if (should_exec)
 			status = exec_ast(root->u_data.logical.right, data);
-		data->last_status = status;
+		data->last_status = status / 256;
 	}
 	if (root->type == NODE_CMD)
 		status = exec_cmd(root, data);

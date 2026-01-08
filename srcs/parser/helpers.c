@@ -36,3 +36,32 @@ void	parser_advance(t_parser *parser)
 		parser->pos += 1;
 	}
 }
+
+int	is_token_arg(t_token *token)
+{
+	if (token->type == TOKEN_WORD
+		|| token->type == TOKEN_SQUOTE
+		|| token->type == TOKEN_DQUOTE
+		|| token->type == TOKEN_EXPANSER
+		|| token->type == TOKEN_SUB_CMD
+		|| token->type == TOKEN_OPEN_PAR)
+		return (1);
+	return (0);
+}
+
+int	is_redirect_token(t_token *token)
+{
+	if (token->type == TOKEN_REDIR_IN
+		|| token->type == TOKEN_REDIR_OUT
+		|| token->type == TOKEN_HEREDOC
+		|| token->type == TOKEN_APPEND)
+		return (1);
+	return (0);
+}
+
+int	get_redirect_fd(t_token *token)
+{
+	if (token->type == TOKEN_REDIR_IN || token->type == TOKEN_HEREDOC)
+		return (STDIN_FILENO);
+	return (STDOUT_FILENO);
+}

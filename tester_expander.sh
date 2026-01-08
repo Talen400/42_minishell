@@ -15,7 +15,16 @@ run_test() {
 	echo "$cmd" | bash > out_bash 2> err_bash
 	status_bash=$?
 
-	echo "$cmd" | valgrind --leak-check=full --error-exitcode=42 --quiet --log-file=valgrind_log.txt $MINISHELL > out_mini 2> err_mini
+	echo "$cmd" | valgrind --leak-check=full \
+				--leak-check=full \
+				--show-leak-kinds=all \
+				--track-origins=yes \
+				--track-fds=yes \
+				--trace-children=yes \
+				--trace-children-skip='*/bin/*,*/sbin/*,/usr/bin/*' \
+				--quiet --log-file=valgrind_log.txt \
+				$MINISHELL > out_mini 2> err_mini
+	
 	status_mini=$?
 
 	mem_err=0
