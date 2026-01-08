@@ -10,7 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#ifndef AUTOCOMPLETE_H
+# define AUTOCOMPLETE_H
+# include "minishell.h"
 
 typedef struct s_autocomplete
 {
@@ -28,7 +30,10 @@ void			add_match(t_autocomplete *ac, const char *match);
 
 char			**command_completion(const char *text, int start, int end);
 
-void			scan_dir(t_autocomplete *ac, const char *dir, const char *text, int len);
+void			scan_dir(t_autocomplete *ac, const char *dir,
+					const char *text, int len);
 
 void			add_builtins(t_autocomplete *ac, const char *text);
 void			get_path_commands(t_autocomplete *ac, const char *text);
+
+#endif

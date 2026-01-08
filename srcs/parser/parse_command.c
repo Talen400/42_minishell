@@ -29,7 +29,7 @@ static t_token	*get_first_arg_token(t_parser *parser)
 			if (token && is_token_arg(token))
 				token = token->next;
 			else
-			 	return (NULL);
+				return (NULL);
 		}
 		else
 			return (NULL);
@@ -93,7 +93,7 @@ size_t	count_args(t_parser *parser)
 static void	parse_tokens(t_parser *parser, t_ast_node *node)
 {
 	t_token	*token;
-	
+
 	token = parser_current(parser);
 	while (token)
 	{
@@ -128,7 +128,8 @@ t_ast_node	*parse_command(t_parser *parser)
 	res = create_node(NODE_CMD);
 	res->u_data.cmd.redirects = ft_calloc(16, sizeof(t_redirect_value *));
 	arg_count = count_args(parser);
-	res->u_data.cmd.args = ft_calloc(arg_count + 1, sizeof(t_expandable_value *));
+	res->u_data.cmd.args = ft_calloc(arg_count + 1,
+			sizeof(t_expandable_value *));
 	first_arg_token = get_first_arg_token(parser);
 	parse_tokens(parser, res);
 	if (res->u_data.cmd.argc == 0)

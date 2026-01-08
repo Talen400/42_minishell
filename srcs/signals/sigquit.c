@@ -16,7 +16,7 @@
 
 // SIQGUIT (aka ctrl-\)
 
-void	setup_sigquit()
+void	setup_sigquit(void)
 {
 	struct sigaction	sa;
 
@@ -25,4 +25,3 @@ void	setup_sigquit()
 	sa.sa_flags = SA_RESTART;
 	sigaction(SIGQUIT, &sa, NULL);
 }
-
