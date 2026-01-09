@@ -39,7 +39,7 @@ static int	exec_from_path(char **args, t_data *data)
 		ft_putstr_fd("minishell: Command not found: ", STDERR_FILENO);
 		ft_putendl_fd(args[0], STDERR_FILENO);
 		free_splitted(args);
-		return (127);
+		return (127 * 256);
 	}
 	pid = fork();
 	if (pid == 0)

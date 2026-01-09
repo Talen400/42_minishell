@@ -31,18 +31,10 @@ static char	*copy_key(char *arg)
 	return (res);
 }
 
-/*
- * But to export ARG="test"
- *
- * => ARG=test" (" leak in env)
- */
-
 static void	export_aux(t_data *data, char *arg, char *new_value)
 {
 	char	*key;
-	//char	*new_value;
 
-	//new_value = ft_strchr(arg, '=');
 	key = copy_key(arg);
 	if (!new_value)
 		update_env(data, key, "");

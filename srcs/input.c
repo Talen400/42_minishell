@@ -16,7 +16,6 @@
 
 char	*handle_fail(t_data *data)
 {
-	// handle for EOF aka Ctrl-D
 	ft_putstr_fd("exit\n", STDOUT_FILENO);
 	data->is_running = 0;
 	return (NULL);
@@ -28,7 +27,6 @@ char	*ft_readline(t_data *data)
 	char	*prompt;
 	size_t	len;
 
-	// mode pipes to terminal to terminal
 	if (!isatty(STDIN_FILENO))
 	{
 		line = get_next_line(STDIN_FILENO);
@@ -40,13 +38,11 @@ char	*ft_readline(t_data *data)
 		}
 		return (line);
 	}
-	// mode interative with terminal
 	prompt = get_prompt(data->user);
 	line = readline(prompt);
 	free(prompt);
 	if (!line)
 		return (handle_fail(data));
-	//free(prompt);
 	add_history(line);
 	return (line);
 }

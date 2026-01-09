@@ -6,7 +6,7 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/19 15:28:15 by fbenini-          #+#    #+#             */
-/*   Updated: 2026/01/06 19:03:48 by tlavared         ###   ########.fr       */
+/*   Updated: 2026/01/09 18:46:47 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,7 @@ int	minishell(char *line, t_data *data)
 		return (2);
 	}
 	expand_ast(ast, data);
-	print_ast(ast, 0);
-	data->last_status = exec_ast(ast, data);
+	exec_ast(ast, data, 0);
 	clear_ast(ast);
 	clear_parser(parser);
 	return (data->last_status);
@@ -74,5 +73,5 @@ int	main(int argc, char *argv[], char *envvars[])
 	clear_data(&data);
 	(void) argc;
 	(void) argv;
-	return (data.exit_status / 256);
+	return (data.last_status);
 }

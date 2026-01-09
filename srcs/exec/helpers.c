@@ -62,7 +62,7 @@ char	*get_path_of_cmd(char *cmd, t_data *data)
 			free(res);
 	}
 	free_splitted(paths);
-	if (access(cmd, F_OK) == 0)
+	if (access(cmd, X_OK) == 0)
 		return (ft_strdup(cmd));
 	return (NULL);
 }

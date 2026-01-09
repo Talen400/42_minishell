@@ -59,7 +59,7 @@ int	match_exists(t_autocomplete *ac, const char *cmd)
 {
 	int		i;
 	size_t	len;
-	
+
 	if (!ac || !cmd)
 		return (0);
 	i = 0;

@@ -17,6 +17,8 @@ static int	is_numeric(char *str)
 	int	i;
 
 	i = 0;
+	if (str[i] == '+' || str[i] == '-')
+		i++;
 	while (str[i])
 	{
 		if (!ft_isdigit(str[i]))
@@ -49,7 +51,6 @@ int	ft_exit(char **args, t_data *data)
 		exit_status = 2;
 		ft_putendl_fd("exit: argument should be a number", STDERR_FILENO);
 	}
-	exit_status *= 256;
-	data->exit_status = exit_status;
-	return (exit_status);
+	data->last_status = exit_status * 256;
+	return (exit_status * 256);
 }

@@ -27,11 +27,11 @@ enum e_node_type
 
 enum e_expander_type
 {
-	LITERAL, // cmd
-	PAREN, // $(cmd) or $USER
-	QUOTED, // "cmd with $expansion"
-	SIMPLE_VAR, // $SIMPLE_VAR
-	WILDCARD, // WILDCARDS *.c
+	LITERAL,
+	PAREN,
+	QUOTED,
+	SIMPLE_VAR,
+	WILDCARD,
 };
 
 typedef struct s_expandable_value

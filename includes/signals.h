@@ -16,7 +16,7 @@
 void	setup_signals(void);
 
 void	setup_sigint(void);
-void	setup_sigquit();
+void	setup_sigquit(void);
 void	restore_sigint(void);
 
 #endif

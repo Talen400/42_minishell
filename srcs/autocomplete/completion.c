@@ -41,7 +41,7 @@ static char	*command_generator(const char *text, int state)
 char	**command_completion(const char *text, int start, int end)
 {
 	char	**matches;
-	
+
 	matches = NULL;
 	(void)end;
 	if (start == 0)
