@@ -6,7 +6,7 @@
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 18:02:01 by tlavared          #+#    #+#             */
-/*   Updated: 2026/01/07 21:12:39 by tlavared         ###   ########.fr       */
+/*   Updated: 2026/01/09 17:30:47 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ int	state_final(t_automato *aut, char *str, t_token **tokens)
  * test : 
  * ((echo << "here" && (cat Makefile | wc -l)) >> code.txt)
  * || ( echo ":>" > teste.txt)
+ * debug: dprintf(2, "[%d] state: %d, prev: %d, char: %c", aut.i, aut.state, aut.prev_state, str[aut.i]);
  */
 
 int	automato(char *str, t_token **tokens)
@@ -89,12 +90,17 @@ int	automato(char *str, t_token **tokens)
 	aut.table = get_table();
 	while (aut.i <= aut.str_len)
 	{
+		if (aut.state != 4 && str[aut.i] == '$' && str[aut.i + 1] == '(')
+		{
+			if (aut.state == 0 && aut.prev_state != 0)
+				handle_state_final(&aut, str, tokens);
+			handle_subshell(&aut, str);
+			continue ;
+		}
 		if (update_state(&aut, str[aut.i]))
 			return (FAILURE);
 		if (aut.state == 0 && aut.prev_state != 0)
 			handle_state_final(&aut, str, tokens);
-		if (aut.prev_state == 8 && str[aut.i] == '(')
-			handle_subshell(&aut, str);
 		aut.i++;
 	}
 	print_tokens(*tokens);
