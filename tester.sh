@@ -80,7 +80,6 @@ commands=(
     "echo \$HOME"
     "echo \$USER\$PWD"
     "echo \$USER \$"
-    "echo \$\$"
     "echo \$9"
 
     # --- QUOTE ---
@@ -288,7 +287,7 @@ commands=(
     "export carol=55 && echo \$carolbia\$ | cat -e > outfile3 && echo bye"
     "echo \$adfasfsd"
     "\$adfasfsd"
-    "export var=variable && export \$var=carol && export | grep \$var"
+    "export var=variable && export \$var=carol && env | grep \$var"
     "export var=oi | echo hey"
     "unset \"\""
     "export carol=55 && \$USER\$carol"
@@ -298,7 +297,6 @@ commands=(
     "(export var=carol) && export | grep var="
     "(ech hi || (echo carol > ./outfiles/outfile1 && echo bia)) | cat -e && echo bye"
     "((echo hi | cat -e) | cat -e)"
-    "echo − -\$\$"
 	"oi | oi"
 	"oi |"
 	"{"

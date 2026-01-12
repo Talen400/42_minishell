@@ -6,7 +6,7 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 14:00:35 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/12/26 04:23:53 by fbenini-         ###   ########.fr       */
+/*   Updated: 2026/01/11 22:53:29 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "../../includes/exec.h"
 #include "../../includes/signals.h"
 #include <time.h>
+#include <errno.h>
 
 static void	handle_child(char **args, t_data *data, char *path)
 {
@@ -21,6 +22,27 @@ static void	handle_child(char **args, t_data *data, char *path)
 
 	restore_sigint();
 	status = execve(path, args, data->envvars);
+	/*
+	 * Forçando a saida se o execve executar um CMD
+	 * ou ARGS errado
+	 * 
+	 * EACCES = Encontrou o arquivo, mas não tinha acesso ou não podia executar;
+	 * ENOENT = Não encontrou o arquivo;
+	 */
+	if (status == -1)
+	{
+		if (errno == EACCES)
+		{
+			ft_putstr_fd("minishell: Command not found: ", STDERR_FILENO);
+			exit(126);
+		}
+		if (errno == ENOENT)
+		{
+			ft_putstr_fd("minishell: Command not found: ", STDERR_FILENO);
+			exit(127);
+		}
+	}
+	// tlavared
 	free(path);
 	free_splitted(args);
 	exit(status);
@@ -66,9 +88,19 @@ int	exec_cmd(t_ast_node *node, t_data *data)
 	if (node->type != NODE_CMD)
 		return (1);
 	cmd = node->u_data.cmd;
-	args = convert_expandable(cmd.args);
+	args = convert_expandable(cmd.args);	
+	/*
+	 * Multipliquei por 256 por conta do get_exit_code.
+	 *
+	 * Quando faz 1/256, em operações de inteiros, ele devolve 0
+	 *
+	 * E para args=NULL, retorna 0
+	 */
+	if (!args || !args[0] || args[0][0] == '\0')
+		return (0);
 	if (handle_redirects(node, &redir_args) == FAILURE)
-		return (1);
+		return (1 * 256);
+	// tlavared
 	builtin = get_builtin(args[0]);
 	if (builtin)
 		status = exec_from_builtin(builtin, args, data);

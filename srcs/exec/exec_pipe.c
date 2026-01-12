@@ -6,7 +6,7 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 20:39:27 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/12/18 16:26:46 by fbenini-         ###   ########.fr       */
+/*   Updated: 2026/01/11 22:36:35 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,23 @@ static int	handle_fork_error(t_pipe_args *args)
 	return (1);
 }
 
+/*
+ * A função wait() não retorna o status como um número
+ * mas como um número com várias info. e tem que
+ * fazer bitwise para capturar o status
+ *
+ * Felizmente, tem as macros WIFEXITED e WIFSIGNALED :>
+ *
+ * Pra isso, eu vou pegar o status do ultimo comando :>
+ */
+
 int	exec_pipe(t_ast_node *node, t_data *data)
 {
 	t_pipe_args	args;
 	int			i;
+	pid_t		last_pid;
+	int			last_status;
+	int			w_status;
 
 	args.pipe_node = node->u_data.pipe;
 	args.fd_in = STDIN_FILENO;
@@ -43,10 +56,21 @@ int	exec_pipe(t_ast_node *node, t_data *data)
 			child_process(args.pipe_node.commands[i], data, &args);
 		else
 			father_process(&args);
+		last_pid = args.pid;
 		i++;
 	}
 	i = 0;
 	while (args.pipe_node.commands[i++])
-		wait(&args.status);
-	return (args.status);
+	{
+		w_status = wait(&args.status);
+		if (w_status == last_pid)
+		{
+			if (WIFEXITED(args.status))
+				last_status = WEXITSTATUS(args.status);
+			else if (WIFSIGNALED(args.status))
+				last_status = 128 + WTERMSIG(args.status);
+		}
+	}
+	data->last_status = last_status * 256;
+	return (data->last_status);
 }
