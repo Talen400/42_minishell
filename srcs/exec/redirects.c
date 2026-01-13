@@ -17,17 +17,13 @@
 
 t_redirect_value	*find_redirect(t_cmd_node *cmd, int type)
 {
-	int					i;
 	t_redirect_value	*res;
 
 	res = NULL;
-	i = 0;
-	while (cmd->redirects[i])
-	{
-		if (cmd->redirects[i]->og_fd == type)
-			res = cmd->redirects[i];
-		i++;
-	}
+	if (!cmd->redirects[type])
+		return (NULL);
+	if (cmd->redirects[type]->og_fd == type)
+		res = cmd->redirects[type];
 	return (res);
 }
 

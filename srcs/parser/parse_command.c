@@ -57,8 +57,7 @@ static int	handle_redirect(t_ast_node *node, t_parser *parser,
 	redir_node->target = create_expandable_value(token);
 	redir_node->og_fd = fd;
 	parser_advance(parser);
-	node->u_data.cmd.redirects[node->u_data.cmd.redirect_count++] = redir_node;
-	node->u_data.cmd.redirects[node->u_data.cmd.redirect_count] = NULL;
+	node->u_data.cmd.redirects[fd] = redir_node;
 	return (SUCESS);
 }
 
