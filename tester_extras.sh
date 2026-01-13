@@ -116,7 +116,7 @@ commands=(
 	"echo hi | echo >>./outfiles/outfile01 bye >./test_files/invalid_permission"
 	"cat <minishell.h>./outfiles/outfile"
 	"cat <minishell.h|ls"
-
+	"< infile"
 	// EXTRAS
 	""
 	"\$PWD"

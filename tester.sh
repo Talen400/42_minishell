@@ -305,6 +305,7 @@ commands=(
 	# signal com python com ctrl-\
 	"ls < oi > a < banana" # arquivo nao existente
 	"echo \$123"
+	"rm out outfile3 err_mini out_bash out_mini outfile3 valgrind_log.txt"
 )
 
 for cmd in "${commands[@]}"; do
