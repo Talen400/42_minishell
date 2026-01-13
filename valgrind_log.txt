@@ -1,5 +1,0 @@
-==1085518== FILE DESCRIPTORS: 4 open (3 std) at exit.
-==1085518== Open file descriptor 3: /home/fbenini-/Desktop/minishell/valgrind_log.txt
-==1085518==    <inherited from parent>
-==1085518== 
-==1085518== 
