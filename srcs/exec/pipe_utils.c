@@ -73,7 +73,7 @@ void	child_process(t_ast_node *node, t_data *data, t_pipe_args *args)
 		close(args->fd[1]);
 	}
 	exec_cmd_pipe(node, data);
-	exit(1);
+	exit(0);
 }
 
 void	father_process(t_pipe_args *args)
