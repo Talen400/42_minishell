@@ -32,25 +32,29 @@ int	ft_exit(char **args, t_data *data)
 {
 	int	i;
 	int	exit_status;
+	int	is_valid;
 
 	i = 0;
 	exit_status = 0;
-	ft_putendl_fd("exit", STDOUT_FILENO);
-	data->is_running = 0;
+	is_valid = 1;
+	ft_putendl_fd("exit", STDERR_FILENO);
+	if (args[1] && is_numeric(args[1]))
+		exit_status = ft_atoi(args[1]);
 	while (args[i])
 		i++;
 	if (i > 2)
 	{
 		ft_putendl_fd("exit: too many arguments", STDERR_FILENO);
-		exit_status = 2;
+		is_valid = 0;
+		exit_status = 1;
 	}
-	if (args[1] && is_numeric(args[1]))
-		exit_status = ft_atoi(args[1]);
 	else if (args[1] && !is_numeric(args[1]))
 	{
 		exit_status = 2;
 		ft_putendl_fd("exit: argument should be a number", STDERR_FILENO);
 	}
+	if (is_valid)
+		data->is_running = 0;
 	data->last_status = exit_status * 256;
 	return (exit_status * 256);
 }
