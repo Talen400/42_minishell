@@ -6,7 +6,7 @@
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 18:02:01 by tlavared          #+#    #+#             */
-/*   Updated: 2026/01/11 20:18:20 by tlavared         ###   ########.fr       */
+/*   Updated: 2026/01/13 20:48:43 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,29 @@ int	state_final(t_automato *aut, char *str, t_token **tokens)
  * debug: dprintf(2, "[%d] state: %d, prev: %d, char: %c", aut.i, aut.state, aut.prev_state, str[aut.i]);
  */
 
+static void	handle_parens(t_automato *aut, char *str, t_token **tokens)
+{
+	int	depth;
+
+	depth = 0;
+	while (str[aut->i])
+	{
+		if (str[aut->i] == '(')
+			depth++;
+		else if (str[aut->i] == ')')
+			depth--;
+		aut->lexeme_len++;
+		aut->i++;
+		if (depth == 0)
+			break ;
+	}
+	aut->lexeme = ft_substr(str, aut->i - aut->lexeme_len, aut->lexeme_len);
+	add_front_token(tokens, aut->lexeme, TOKEN_SUB_CMD);
+	aut->lexeme_len = 0;
+	aut->state = 0;
+	aut->prev_state = 0;
+}
+
 int	automato(char *str, t_token **tokens)
 {
 	t_automato	aut;
@@ -95,6 +118,16 @@ int	automato(char *str, t_token **tokens)
 			if (aut.state == 0 && aut.prev_state != 0)
 				handle_state_final(&aut, str, tokens);
 			handle_subshell(&aut, str);
+			continue ;
+		}
+		if ((aut.state != 4 && aut.state != 5) && str[aut.i] == '(')
+		{
+			if (aut.lexeme_len > 0)
+			{
+				aut.prev_state = aut.state;
+				state_final(&aut, str, tokens);
+			}
+			handle_parens(&aut, str, tokens);
 			continue ;
 		}
 		if (update_state(&aut, str[aut.i]))
