@@ -13,7 +13,24 @@
 #include "../../includes/exec.h"
 #include "../../includes/signals.h"
 
-static int	exec_from_path(char **args, t_data *data)
+static int	grace_exit(int status, t_data *data)
+{
+	int	i;
+
+	i = 0;
+	while (data->envvars[i])
+	{
+		free(data->envvars[i]);
+		i++;
+	}
+	free(data->envvars);
+	free(data->user);
+	clear_ast((t_ast_node *)data->ast_ref);
+	clear_parser((t_parser *)data->parser_ref);
+	exit(status);
+}
+
+static int	exec_from_path(char **args, t_data *data, t_redirect_args *redir_args)
 {
 	char	*path;
 
@@ -23,14 +40,16 @@ static int	exec_from_path(char **args, t_data *data)
 		ft_putstr_fd("minishell: Command not found: ", STDERR_FILENO);
 		ft_putendl_fd(args[0], STDERR_FILENO);
 		free_splitted(args);
-		exit(127);
+		restore_std(redir_args);
+		return (grace_exit(127, data));
 	}
 	execve(path, args, data->envvars);
 	ft_putstr_fd("minishell: ", STDERR_FILENO);
 	perror(args[0]);
 	free(path);
 	free_splitted(args);
-	exit(126);
+	restore_std(redir_args);
+	return (grace_exit(126, data));
 }
 
 static void	exec_cmd_pipe(t_ast_node *node, t_data *data)
@@ -39,6 +58,7 @@ static void	exec_cmd_pipe(t_ast_node *node, t_data *data)
 	char			**args;
 	t_builtin_cmd	builtin;
 	t_redirect_args	redir_args;
+	int				status;
 
 	redir_args.dup_stdin = -1;
 	redir_args.dup_stdout = -1;
@@ -49,13 +69,16 @@ static void	exec_cmd_pipe(t_ast_node *node, t_data *data)
 	if (!args || !args[0])
 		exit(1);
 	if (handle_redirects(node, &redir_args) == FAILURE)
-		return ;
+		grace_exit(1, data);
 	builtin = get_builtin(args[0]);
 	if (builtin)
-		exec_from_builtin(builtin, args, data);
+	{
+		status = exec_from_builtin(builtin, args, data);
+		restore_std(&redir_args);
+		grace_exit(status, data);
+	}
 	else
-		exec_from_path(args, data);
-	restore_std(&redir_args);
+		exec_from_path(args, data, &redir_args);
 }
 
 void	child_process(t_ast_node *node, t_data *data, t_pipe_args *args)
@@ -73,7 +96,7 @@ void	child_process(t_ast_node *node, t_data *data, t_pipe_args *args)
 		close(args->fd[1]);
 	}
 	exec_cmd_pipe(node, data);
-	exit(1);
+	data->is_running = 0;
 }
 
 void	father_process(t_pipe_args *args)

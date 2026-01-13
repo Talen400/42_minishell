@@ -75,8 +75,11 @@ static void	print_pipe(t_ast_node *node, int indent)
 
 	i = 0;
 	dprintf(2, "Pipeline: \n");
-	while (node->u_data.pipe.commands[i++])
+	while (node->u_data.pipe.commands[i])
+	{
 		print_ast(node->u_data.pipe.commands[i], indent + 1);
+		i++;
+	}
 }
 
 void	print_ast(t_ast_node *node, int indent)

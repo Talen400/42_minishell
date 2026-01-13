@@ -98,6 +98,7 @@ int	init_data(t_data *data, char **envvars)
 	data->is_running = 1;
 	data->last_status = 0;
 	data->exit_status = 0;
+	data->ast_ref = NULL;
 	i = 0;
 	while (envvars[i])
 	{

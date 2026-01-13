@@ -23,27 +23,34 @@ static int	handle_fork_error(t_pipe_args *args)
 	return (1);
 }
 
-/*
- * A função wait() não retorna o status como um número
- * mas como um número com várias info. e tem que
- * fazer bitwise para capturar o status
- *
- * Felizmente, tem as macros WIFEXITED e WIFSIGNALED :>
- *
- * Pra isso, eu vou pegar o status do ultimo comando :>
- */
+static int wait_pids(int last_pid)
+{
+	pid_t	wpid;
+	int		tmp_status;
+	int		status;
+
+	status = 0;
+	while (1)
+	{
+		wpid = wait(&tmp_status);
+		if (wpid == -1)
+			break ;
+		if (wpid == last_pid)
+			status = tmp_status;
+	}
+	return (status);
+}
 
 int	exec_pipe(t_ast_node *node, t_data *data)
 {
 	t_pipe_args	args;
 	int			i;
 	pid_t		last_pid;
-	int			last_status;
-	int			w_status;
 
 	args.pipe_node = node->u_data.pipe;
 	args.fd_in = STDIN_FILENO;
 	i = 0;
+	last_pid = -1;
 	while (args.pipe_node.commands[i])
 	{
 		args.is_last = (args.pipe_node.commands[i + 1] == NULL);
@@ -55,22 +62,13 @@ int	exec_pipe(t_ast_node *node, t_data *data)
 		if (args.pid == 0)
 			child_process(args.pipe_node.commands[i], data, &args);
 		else
+		{
+			if (args.is_last)
+				last_pid = args.pid;
 			father_process(&args);
+		}
 		last_pid = args.pid;
 		i++;
 	}
-	i = 0;
-	while (args.pipe_node.commands[i++])
-	{
-		w_status = wait(&args.status);
-		if (w_status == last_pid)
-		{
-			if (WIFEXITED(args.status))
-				last_status = WEXITSTATUS(args.status);
-			else if (WIFSIGNALED(args.status))
-				last_status = 128 + WTERMSIG(args.status);
-		}
-	}
-	data->last_status = last_status * 256;
-	return (data->last_status);
+	return (wait_pids(last_pid));
 }

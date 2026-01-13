@@ -42,13 +42,15 @@ int	minishell(char *line, t_data *data)
 	if (!parser)
 		return (2);
 	ast = parse_sequence(parser);
+	data->ast_ref = ast;
+	data->parser_ref = parser;
 	if (!ast)
 	{
 		clear_parser(parser);
 		return (2);
 	}
 	expand_ast(ast, data);
-	//print_ast(ast, 0);
+	// print_ast(ast, 0);
 	exec_ast(ast, data, 0);
 	clear_ast(ast);
 	clear_parser(parser);

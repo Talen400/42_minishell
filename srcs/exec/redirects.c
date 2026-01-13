@@ -48,7 +48,7 @@ static int	redirect_handler(t_redirect_value *redir,
 		open_fd = open(redir->target->processed, flag, 0777);
 	if (open_fd < 0)
 	{
-		perror("minishell");
+		perror(redir->target->processed);
 		restore_std(args);
 		return (FAILURE);
 	}
@@ -90,12 +90,6 @@ int	handle_redirects(t_ast_node *node, t_redirect_args *args)
 	{
 		stdin_file = find_redirect(&node->u_data.cmd, STDIN_FILENO);
 		stdout_file = find_redirect(&node->u_data.cmd, STDOUT_FILENO);
-	}
-	if (node->type == NODE_PIPE)
-	{
-		stdin_file = find_redirect(&node->u_data.pipe.commands[0]->u_data.cmd,
-				STDIN_FILENO);
-		stdout_file = find_last_pipex_cmd_stdout(node);
 	}
 	if (stdin_file && redirect_handler(stdin_file, args, STDIN_FILENO))
 		return (FAILURE);

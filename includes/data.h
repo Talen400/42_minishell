@@ -23,6 +23,8 @@ typedef struct s_data {
 	int		exit_status;
 	int		last_status;
 	pid_t	pid;
+	void	*ast_ref;
+	void	*parser_ref;
 }	t_data;
 
 int		init_data(t_data *data, char **envvars);
