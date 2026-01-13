@@ -37,17 +37,15 @@ int	minishell(char *line, t_data *data)
 	t_ast_node	*ast;
 
 	if (!line || !*line)
-		return (1);
-	parser = init_parser(line);
-	if (!parser)
-		return (2);
+		return (0);
+	parser = init_parser(line, data);
 	ast = parse_sequence(parser);
 	data->ast_ref = ast;
 	data->parser_ref = parser;
 	if (!ast)
 	{
 		clear_parser(parser);
-		return (2);
+		return (data->last_status);
 	}
 	expand_ast(ast, data);
 	// print_ast(ast, 0);
@@ -59,8 +57,8 @@ int	minishell(char *line, t_data *data)
 
 int	main(int argc, char *argv[], char *envvars[])
 {
-	char		*line;
-	t_data		data;
+	char	*line;
+	t_data	data;
 
 	init_data(&data, envvars);
 	setup_signals();

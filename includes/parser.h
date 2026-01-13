@@ -13,6 +13,7 @@
 #ifndef PARSER_H
 # define PARSER_H
 
+#include "data.h"
 # include "lexer.h"
 # include "minishell.h"
 
@@ -115,7 +116,7 @@ typedef struct s_node_insert
 
 //  parser/init.c
 t_ast_node					*create_node(int type);
-t_parser					*init_parser(char *str);
+t_parser					*init_parser(char *str, t_data *data);
 t_redirect_value			*create_redir_node(t_token *token);
 t_expandable_value			*create_expandable_value(t_token *token);
 

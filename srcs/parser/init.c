@@ -28,24 +28,24 @@ static size_t	count_tokens(t_token **tokens)
 	return (count);
 }
 
-t_parser	*init_parser(char *str)
+t_parser	*init_parser(char *str, t_data *data)
 {
 	t_parser	*res;
 	t_token		*tokens;
 
 	res = malloc(sizeof(t_parser));
-	if (!res)
-		return (NULL);
 	tokens = NULL;
 	automato(str, &tokens);
 	if (check_syntax(tokens))
 	{
 		token_clear_list(&tokens);
+		data->last_status = 2;
 		return (NULL);
 	}
 	if (!tokens)
 	{
 		free(res);
+		data->last_status = 0;
 		return (NULL);
 	}
 	res->pos = 0;
