@@ -47,11 +47,11 @@ static void	create_arg(t_expandable_value *value, char **args, int *j)
 		free(splitted);
 		return ;
 	}
-	if (value->processed)
+	if (value->processed[0] != '\0')
+	{
 		args[*j] = ft_strdup(value->processed);
-	else
-		args[*j] = ft_strdup(value->raw);
-	*j += 1;
+		*j += 1;
+	}
 }
 
 char	**convert_expandable(t_expandable_value **values)
