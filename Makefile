@@ -36,6 +36,7 @@ SRCS := $(SRC_DIR)/main.c \
 		$(SRC_DIR)/lexer/utils_lexer.c \
 		$(SRC_DIR)/checker/checker_syntax.c \
 		$(SRC_DIR)/checker/helpers.c \
+		$(SRC_DIR)/checker/utils.c \
 		$(SRC_DIR)/parser/helpers.c \
 		$(SRC_DIR)/parser/init.c \
 		$(SRC_DIR)/parser/parse_command.c \
