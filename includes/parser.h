@@ -57,6 +57,7 @@ typedef struct s_cmd_node
 	size_t					arg_capacity;
 	t_redirect_value		**redirects;
 	size_t					redirect_count;
+	int						is_paren;
 }							t_cmd_node;
 
 typedef struct s_pipe_node
@@ -138,6 +139,7 @@ t_ast_node					*parse_sequence(t_parser *parser);
 
 void						clear_parser(t_parser *parser);
 void						clear_ast(t_ast_node *head);
+void						clear_expandable_value(t_expandable_value *value);
 void						clear_command_node(t_ast_node *node, int type);
 
 void						print_ast(t_ast_node *node, int indent);

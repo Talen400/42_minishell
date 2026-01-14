@@ -24,6 +24,32 @@ int	check_if_should_exec(int type, int status)
 	return (status == 0);
 }
 
+int	handle_paren(char *cmd, t_data *data)
+{
+	char	*str;
+	int		status;
+	size_t	len;
+	void	*saved_ast;
+	void	*saved_parser;
+
+	saved_parser = data->parser_ref;
+	saved_ast = data->ast_ref;
+	data->parser_ref = NULL;
+	data->ast_ref = NULL;
+	str = ft_strdup(cmd);
+	len = ft_strlen(str);
+	status = 0;
+	if (str[0] == '(')
+		ft_memmove(str, str + 1, len - 1);
+	if (str[len - 1] == ')')
+		str[len - 2] = '\0';
+	status = minishell(str, data);
+	free(str);
+	data->parser_ref = saved_parser;
+	data->ast_ref = saved_ast;
+	return (status);
+}
+
 int	exec_ast(t_ast_node *root, t_data *data, int status)
 {
 	int	should_exec;
@@ -43,7 +69,12 @@ int	exec_ast(t_ast_node *root, t_data *data, int status)
 		return (status);
 	}
 	if (root->type == NODE_CMD)
-		status = exec_cmd(root, data);
+	{
+		if (root->u_data.cmd.is_paren)
+			status = handle_paren(root->u_data.cmd.args[0]->raw, data);
+		else
+			status = exec_cmd(root, data);
+	}
 	if (root->type == NODE_PIPE)
 		status = exec_pipe(root, data);
 	data->last_status = get_exit_code(status);

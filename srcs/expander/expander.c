@@ -48,12 +48,10 @@ void	expand_cmd(t_ast_node *node, t_data *data)
 		expand_var(node->u_data.cmd.args[i], data);
 		i++;
 	}
-	i = 0;
-	while (node->u_data.cmd.redirects[i])
-	{
-		expand_var(node->u_data.cmd.redirects[i]->target, data);
-		i++;
-	}
+	if (node->u_data.cmd.redirects[0])
+		expand_var(node->u_data.cmd.redirects[0]->target, data);
+	if (node->u_data.cmd.redirects[1])
+		expand_var(node->u_data.cmd.redirects[1]->target, data);
 	expand_var(node->u_data.cmd.cmd, data);
 }
 
