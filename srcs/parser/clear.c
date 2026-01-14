@@ -46,11 +46,14 @@ void	clear_command_node(t_ast_node *node, int type)
 	}
 	free(node->u_data.cmd.args);
 	i = 0;
-	while (node->u_data.cmd.redirects[i])
+	while (i < 2)
 	{
-		clear_expandable_value(node->u_data.cmd.redirects[i]->target);
-		free(node->u_data.cmd.redirects[i]->type);
-		free(node->u_data.cmd.redirects[i]);
+		if (node->u_data.cmd.redirects[i])
+		{
+			clear_expandable_value(node->u_data.cmd.redirects[i]->target);
+			free(node->u_data.cmd.redirects[i]->type);
+			free(node->u_data.cmd.redirects[i]);
+		}
 		i++;
 	}
 	free(node->u_data.cmd.redirects);

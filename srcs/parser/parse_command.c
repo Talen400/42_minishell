@@ -44,6 +44,12 @@ static int	handle_redirect(t_ast_node *node, t_parser *parser,
 	int					fd;
 
 	fd = get_redirect_fd(token);
+	if (node->u_data.cmd.redirects[fd])
+	{
+		clear_expandable_value(node->u_data.cmd.redirects[fd]->target);
+		free(node->u_data.cmd.redirects[fd]->type);
+		free(node->u_data.cmd.redirects[fd]);
+	}
 	redir_node = create_redir_node(token);
 	parser_advance(parser);
 	token = parser_current(parser);
@@ -128,7 +134,7 @@ t_ast_node	*parse_command(t_parser *parser)
 		return (NULL);
 	res = create_node(NODE_CMD);
 	res->u_data.cmd.is_paren = 0;
-	res->u_data.cmd.redirects = ft_calloc(16, sizeof(t_redirect_value *));
+	res->u_data.cmd.redirects = ft_calloc(3, sizeof(t_redirect_value *));
 	arg_count = count_args(parser);
 	res->u_data.cmd.args = ft_calloc(arg_count + 1,
 			sizeof(t_expandable_value *));
