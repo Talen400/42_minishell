@@ -106,6 +106,8 @@ static void	parse_tokens(t_parser *parser, t_ast_node *node)
 			node->u_data.cmd.args[
 				node->u_data.cmd.argc++] = create_expandable_value(token);
 			node->u_data.cmd.args[node->u_data.cmd.argc] = NULL;
+			if (token->type == TOKEN_SUB_CMD)
+				node->u_data.cmd.is_paren = 1;
 			parser_advance(parser);
 		}
 		else
@@ -125,6 +127,7 @@ t_ast_node	*parse_command(t_parser *parser)
 	if (!token)
 		return (NULL);
 	res = create_node(NODE_CMD);
+	res->u_data.cmd.is_paren = 0;
 	res->u_data.cmd.redirects = ft_calloc(16, sizeof(t_redirect_value *));
 	arg_count = count_args(parser);
 	res->u_data.cmd.args = ft_calloc(arg_count + 1,

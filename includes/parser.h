@@ -57,6 +57,7 @@ typedef struct s_cmd_node
 	size_t					arg_capacity;
 	t_redirect_value		**redirects;
 	size_t					redirect_count;
+	int						is_paren;
 }							t_cmd_node;
 
 typedef struct s_pipe_node

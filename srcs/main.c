@@ -48,7 +48,7 @@ int	minishell(char *line, t_data *data)
 		return (data->last_status);
 	}
 	expand_ast(ast, data);
-	// print_ast(ast, 0);
+	//print_ast(ast, 0);
 	exec_ast(ast, data, 0);
 	clear_ast(ast);
 	clear_parser(parser);
