@@ -6,14 +6,14 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 10:46:49 by fbenini-          #+#    #+#             */
-/*   Updated: 2026/01/06 18:38:26 by tlavared         ###   ########.fr       */
+/*   Updated: 2026/01/14 19:39:15 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSER_H
 # define PARSER_H
 
-#include "data.h"
+# include "data.h"
 # include "lexer.h"
 # include "minishell.h"
 

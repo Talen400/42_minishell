@@ -6,7 +6,7 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/02 14:54:13 by fbenini-          #+#    #+#             */
-/*   Updated: 2026/01/04 18:56:04 by tlavared         ###   ########.fr       */
+/*   Updated: 2026/01/14 19:39:38 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,12 @@ typedef struct s_automato_expander
 enum e_char_type_expanser
 {
 	LETTER_EXPANSER,
-	D_QUOTE_EXPANSER, // "
-	S_QUOTE_EXPANSER, // '
-	DOLLAR_EXPANSER, // $
-	OPEN_PAR_EXPANSER, // (
-	CLOSE_PAR_EXPANSER, // )
-	WILDCARD_EXPANSER, // *
+	D_QUOTE_EXPANSER,
+	S_QUOTE_EXPANSER,
+	DOLLAR_EXPANSER,
+	OPEN_PAR_EXPANSER,
+	CLOSE_PAR_EXPANSER,
+	WILDCARD_EXPANSER,
 	NUl,
 };
 
@@ -63,13 +63,13 @@ void	expand_ast(t_ast_node *root, t_data *data);
 char	*wildcard(char *pattern);
 
 // table_driven_expander.c
-int	get_char_type_expander(char c);
+int		get_char_type_expander(char c);
 
 // automato_expander.c
-int	is_expander(t_expandable_value *value, t_data *data);
+int		is_expander(t_expandable_value *value, t_data *data);
 
 // table_driven_expander.c
-int	get_state_expander(t_automato_expander *aut, char character);
+int		get_state_expander(t_automato_expander *aut, char character);
 
 // utils_expander.c
 char	*get_env_expander(t_data *data, char *str);
@@ -78,7 +78,7 @@ char	*append_char(char *str, char character);
 char	*handle_dollar(t_automato_expander *aut, t_data *data);
 
 // wildcard_utils.c
-int	ft_strcmp(const char *s1, const char *s2);
+int		ft_strcmp(const char *s1, const char *s2);
 void	free_split(char **split);
 
 // subshell.c
@@ -87,8 +87,8 @@ char	*execute_subshell(char *cmd, t_data *data);
 
 // helpers.c
 
-int	skip_quote(t_automato_expander *aut);
-int	is_subshell(t_automato_expander *aut);
-int	is_dollar_expansion(t_automato_expander *aut);
+int		skip_quote(t_automato_expander *aut);
+int		is_subshell(t_automato_expander *aut);
+int		is_dollar_expansion(t_automato_expander *aut);
 
 #endif
