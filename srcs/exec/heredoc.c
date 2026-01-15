@@ -24,7 +24,7 @@ static void	write_loop(const char *eof, int fd)
 		line = readline("heredoc> ");
 		if (!line)
 			break ;
-		if (strcmp(line, eof) == 0)
+		if (ft_strcmp(line, eof) == 0)
 		{
 			free(line);
 			break ;
