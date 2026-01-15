@@ -43,7 +43,6 @@ SRCS := $(SRC_DIR)/main.c \
 		$(SRC_DIR)/parser/parse_pipeline.c \
 		$(SRC_DIR)/parser/parse_sequence.c \
 		$(SRC_DIR)/parser/clear.c \
-		$(SRC_DIR)/parser/debug.c \
 		$(SRC_DIR)/builtins/get_builtin.c \
 		$(SRC_DIR)/builtins/pwd.c \
 		$(SRC_DIR)/builtins/cd.c \
