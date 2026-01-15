@@ -6,7 +6,7 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 16:05:14 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/12/19 15:32:40 by fbenini-         ###   ########.fr       */
+/*   Updated: 2026/01/15 17:58:30 by fbenini-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ char	*get_prompt(char *user)
 	char	*tmp;
 
 	pwd = getcwd(NULL, 0);
+	if (!pwd)
+		pwd = ft_strdup("");
 	res = ft_strjoin(user, RESET"@"BLUE"minishell"RESET GRAY" ");
 	tmp = ft_strjoin(res, pwd);
 	free(pwd);

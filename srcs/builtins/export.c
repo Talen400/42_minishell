@@ -6,7 +6,7 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/08 17:45:32 by fbenini-          #+#    #+#             */
-/*   Updated: 2026/01/11 21:48:45 by tlavared         ###   ########.fr       */
+/*   Updated: 2026/01/15 17:17:00 by fbenini-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,12 +72,8 @@ int	ft_export(char **args, t_data *data)
 {
 	size_t	i;
 
-	/*
-	 * Caso o export sem args retorna status 0;
-	 */
 	if (!args[0])
 		return (0);
-	// tlavared
 	if (!args[1])
 	{
 		ft_putendl_fd("export: not enough arguments", 2);
@@ -86,21 +82,6 @@ int	ft_export(char **args, t_data *data)
 	i = 1;
 	while (args[i])
 	{
-		/*
-		 * O export tem validação de id.
-		 * Por exemplo: export Aasd***6#@#=test
-		 *
-		 * Isso não passa e retorna (1)
-		 * Mesmo se a anterior for valida e ainda imprimida.
-		 *
-		 * Sim, o export ainda coloca os ARGS validas na env
-		 * mesmo se a ultima for invalida.
-		 * 
-		 * Tipo:
-		 * export ARG="test" Aasd***6#@#=test
-		 *
-		 * E ainda retorna (1)
-		 */
 		if (!is_valid_id(args[i]))
 		{
 			ft_putstr_fd("minishell: export: '", 2);

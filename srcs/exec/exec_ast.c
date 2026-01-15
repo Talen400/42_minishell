@@ -6,7 +6,7 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/11 13:16:34 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/12/18 18:33:12 by fbenini-         ###   ########.fr       */
+/*   Updated: 2026/01/15 17:28:19 by fbenini-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,17 @@ int	handle_paren(char *cmd, t_data *data)
 	return (status);
 }
 
+static int	handle_cmd(t_ast_node *root, t_data *data)
+{
+	int	status;
+
+	if (root->u_data.cmd.is_paren)
+		status = handle_paren(root->u_data.cmd.args[0]->raw, data);
+	else
+		status = exec_cmd(root, data);
+	return (status);
+}
+
 int	exec_ast(t_ast_node *root, t_data *data, int status)
 {
 	int	should_exec;
@@ -69,12 +80,7 @@ int	exec_ast(t_ast_node *root, t_data *data, int status)
 		return (status);
 	}
 	if (root->type == NODE_CMD)
-	{
-		if (root->u_data.cmd.is_paren)
-			status = handle_paren(root->u_data.cmd.args[0]->raw, data);
-		else
-			status = exec_cmd(root, data);
-	}
+		status = handle_cmd(root, data);
 	if (root->type == NODE_PIPE)
 		status = exec_pipe(root, data);
 	data->last_status = get_exit_code(status);

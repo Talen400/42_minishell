@@ -6,7 +6,7 @@
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 18:02:01 by tlavared          #+#    #+#             */
-/*   Updated: 2026/01/13 20:48:43 by tlavared         ###   ########.fr       */
+/*   Updated: 2026/01/15 17:55:00 by fbenini-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,13 +72,6 @@ int	state_final(t_automato *aut, char *str, t_token **tokens)
 	return (SUCESS);
 }
 
-/*
- * test : 
- * ((echo << "here" && (cat Makefile | wc -l)) >> code.txt)
- * || ( echo ":>" > teste.txt)
- * debug: dprintf(2, "[%d] state: %d, prev: %d, char: %c", aut.i, aut.state, aut.prev_state, str[aut.i]);
- */
-
 static void	handle_parens(t_automato *aut, char *str, t_token **tokens)
 {
 	int	depth;
@@ -102,6 +95,28 @@ static void	handle_parens(t_automato *aut, char *str, t_token **tokens)
 	aut->prev_state = 0;
 }
 
+static int	handle_special_cases(t_automato *aut, char *str, t_token **tokens)
+{
+	if (aut->state != 4 && str[aut->i] == '$' && str[aut->i + 1] == '(')
+	{
+		if (aut->state == 0 && aut->prev_state != 0)
+			handle_state_final(aut, str, tokens);
+		handle_subshell(aut, str);
+		return (1);
+	}
+	if ((aut->state != 4 && aut->state != 5) && str[aut->i] == '(')
+	{
+		if (aut->lexeme_len > 0)
+		{
+			aut->prev_state = aut->state;
+			state_final(aut, str, tokens);
+		}
+		handle_parens(aut, str, tokens);
+		return (1);
+	}
+	return (0);
+}
+
 int	automato(char *str, t_token **tokens)
 {
 	t_automato	aut;
@@ -113,29 +128,13 @@ int	automato(char *str, t_token **tokens)
 	aut.table = get_table();
 	while (aut.i <= aut.str_len)
 	{
-		if (aut.state != 4 && str[aut.i] == '$' && str[aut.i + 1] == '(')
-		{
-			if (aut.state == 0 && aut.prev_state != 0)
-				handle_state_final(&aut, str, tokens);
-			handle_subshell(&aut, str);
+		if (handle_special_cases(&aut, str, tokens))
 			continue ;
-		}
-		if ((aut.state != 4 && aut.state != 5) && str[aut.i] == '(')
-		{
-			if (aut.lexeme_len > 0)
-			{
-				aut.prev_state = aut.state;
-				state_final(&aut, str, tokens);
-			}
-			handle_parens(&aut, str, tokens);
-			continue ;
-		}
 		if (update_state(&aut, str[aut.i]))
 			return (FAILURE);
 		if (aut.state == 0 && aut.prev_state != 0)
 			handle_state_final(&aut, str, tokens);
 		aut.i++;
 	}
-	//print_tokens(*tokens);
 	return (SUCESS);
 }

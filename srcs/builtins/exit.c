@@ -6,7 +6,7 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/11 13:19:22 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/12/11 13:31:03 by fbenini-         ###   ########.fr       */
+/*   Updated: 2026/01/15 17:19:40 by fbenini-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,12 @@ static int	is_numeric(char *str)
 		i++;
 	}
 	return (1);
+}
+
+static int	handle_not_num(void)
+{
+	ft_putendl_fd("exit: argument should be a number", STDERR_FILENO);
+	return (2);
 }
 
 int	ft_exit(char **args, t_data *data)
@@ -49,10 +55,7 @@ int	ft_exit(char **args, t_data *data)
 		exit_status = 1;
 	}
 	else if (args[1] && !is_numeric(args[1]))
-	{
-		exit_status = 2;
-		ft_putendl_fd("exit: argument should be a number", STDERR_FILENO);
-	}
+		return (handle_not_num());
 	if (is_valid)
 		data->is_running = 0;
 	data->last_status = exit_status * 256;

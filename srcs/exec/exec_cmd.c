@@ -6,7 +6,7 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 14:00:35 by fbenini-          #+#    #+#             */
-/*   Updated: 2026/01/15 17:13:12 by fbenini-         ###   ########.fr       */
+/*   Updated: 2026/01/15 17:47:17 by fbenini-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ int	exec_cmd(t_ast_node *node, t_data *data)
 	if (node->type != NODE_CMD)
 		return (1);
 	cmd = node->u_data.cmd;
-	args = convert_expandable(cmd.args);	
+	args = convert_expandable(cmd.args);
 	if (handle_redirects(node, &redir_args) == FAILURE)
 	{
 		free_splitted(args);

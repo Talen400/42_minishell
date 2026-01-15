@@ -6,7 +6,7 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 13:53:53 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/12/26 04:28:47 by fbenini-         ###   ########.fr       */
+/*   Updated: 2026/01/15 17:57:15 by fbenini-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ static int	grace_exit(int status, t_data *data)
 	exit(status);
 }
 
-static int	exec_from_path(char **args, t_data *data, t_redirect_args *redir_args)
+static int	exec_from_path(char **args, t_data *data,
+		t_redirect_args *redir_args)
 {
 	char	*path;
 
@@ -52,6 +53,20 @@ static int	exec_from_path(char **args, t_data *data, t_redirect_args *redir_args
 	return (grace_exit(126, data));
 }
 
+static void	handle_pipe_paren(t_redirect_args *redir_args, t_ast_node *node,
+		t_data *data)
+{
+	t_cmd_node	cmd;
+	int			status;
+
+	cmd = node->u_data.cmd;
+	if (handle_redirects(node, redir_args) == FAILURE)
+		grace_exit(1, data);
+	status = handle_paren(cmd.args[0]->raw, data);
+	restore_std(redir_args);
+	grace_exit(status, data);
+}
+
 static void	exec_cmd_pipe(t_ast_node *node, t_data *data)
 {
 	t_cmd_node		cmd;
@@ -64,13 +79,7 @@ static void	exec_cmd_pipe(t_ast_node *node, t_data *data)
 		exit(1);
 	cmd = node->u_data.cmd;
 	if (cmd.is_paren)
-	{
-		if (handle_redirects(node, &redir_args) == FAILURE)
-			grace_exit(1, data);
-		status = handle_paren(cmd.args[0]->raw, data);
-		restore_std(&redir_args);
-		grace_exit(status, data);
-	}
+		handle_pipe_paren(&redir_args, node, data);
 	args = convert_expandable(cmd.args);
 	if (!args || !args[0])
 		exit(1);
@@ -103,15 +112,4 @@ void	child_process(t_ast_node *node, t_data *data, t_pipe_args *args)
 	}
 	exec_cmd_pipe(node, data);
 	data->is_running = 0;
-}
-
-void	father_process(t_pipe_args *args)
-{
-	if (args->fd_in != STDIN_FILENO)
-		close(args->fd_in);
-	if (!args->is_last)
-	{
-		close(args->fd[1]);
-		args->fd_in = args->fd[0];
-	}
 }

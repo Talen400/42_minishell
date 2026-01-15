@@ -6,7 +6,7 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 14:26:15 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/12/26 23:00:46 by fbenini-         ###   ########.fr       */
+/*   Updated: 2026/01/15 17:45:28 by fbenini-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ typedef struct s_pipe_args
 	pid_t		pid;
 	int			status;
 	int			is_last;
+	int			i;
+	pid_t		last_pid;
 }	t_pipe_args;
 
 typedef struct s_redirect_args
