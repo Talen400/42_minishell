@@ -60,8 +60,6 @@ static void	exec_cmd_pipe(t_ast_node *node, t_data *data)
 	t_redirect_args	redir_args;
 	int				status;
 
-	redir_args.dup_stdin = -1;
-	redir_args.dup_stdout = -1;
 	if (node->type != NODE_CMD)
 		exit(1);
 	cmd = node->u_data.cmd;

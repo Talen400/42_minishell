@@ -75,8 +75,6 @@ int	exec_cmd(t_ast_node *node, t_data *data)
 	int				status;
 	t_redirect_args	redir_args;
 
-	redir_args.dup_stdin = -1;
-	redir_args.dup_stdout = -1;
 	if (node->type != NODE_CMD)
 		return (1);
 	cmd = node->u_data.cmd;

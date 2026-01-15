@@ -42,8 +42,6 @@ typedef struct s_redirect_args
 {
 	int	og_stdout;
 	int	og_stdin;
-	int	dup_stdout;
-	int	dup_stdin;
 }	t_redirect_args;
 
 void	child_process(t_ast_node *node, t_data *data, t_pipe_args *args);
