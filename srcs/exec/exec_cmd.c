@@ -22,13 +22,6 @@ static void	handle_child(char **args, t_data *data, char *path)
 
 	restore_sigint();
 	status = execve(path, args, data->envvars);
-	/*
-	 * Forçando a saida se o execve executar um CMD
-	 * ou ARGS errado
-	 * 
-	 * EACCES = Encontrou o arquivo, mas não tinha acesso ou não podia executar;
-	 * ENOENT = Não encontrou o arquivo;
-	 */
 	if (status == -1)
 	{
 		if (errno == EACCES)
@@ -42,7 +35,6 @@ static void	handle_child(char **args, t_data *data, char *path)
 			exit(127);
 		}
 	}
-	// tlavared
 	free(path);
 	free_splitted(args);
 	exit(status);
@@ -89,18 +81,11 @@ int	exec_cmd(t_ast_node *node, t_data *data)
 		return (1);
 	cmd = node->u_data.cmd;
 	args = convert_expandable(cmd.args);	
-	/*
-	 * Multipliquei por 256 por conta do get_exit_code.
-	 *
-	 * Quando faz 1/256, em operações de inteiros, ele devolve 0
-	 *
-	 * E para args=NULL, retorna 0
-	 */
-	if (!args || !args[0] || args[0][0] == '\0')
-		return (0);
 	if (handle_redirects(node, &redir_args) == FAILURE)
+	{
+		free_splitted(args);
 		return (1 * 256);
-	// tlavared
+	}
 	builtin = get_builtin(args[0]);
 	if (builtin)
 		status = exec_from_builtin(builtin, args, data);

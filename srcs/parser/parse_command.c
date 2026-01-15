@@ -135,16 +135,14 @@ t_ast_node	*parse_command(t_parser *parser)
 	res = create_node(NODE_CMD);
 	res->u_data.cmd.is_paren = 0;
 	res->u_data.cmd.redirects = ft_calloc(3, sizeof(t_redirect_value *));
+	res->u_data.cmd.cmd = NULL;
 	arg_count = count_args(parser);
 	res->u_data.cmd.args = ft_calloc(arg_count + 1,
 			sizeof(t_expandable_value *));
 	first_arg_token = get_first_arg_token(parser);
 	parse_tokens(parser, res);
 	if (res->u_data.cmd.argc == 0)
-	{
-		clear_command_node(res, NODE_PIPE);
-		return (NULL);
-	}
+		return (res);
 	res->u_data.cmd.cmd = create_expandable_value(first_arg_token);
 	return (res);
 }

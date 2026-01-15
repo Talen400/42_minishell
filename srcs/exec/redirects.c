@@ -78,8 +78,8 @@ int	handle_redirects(t_ast_node *node, t_redirect_args *args)
 
 	args->dup_stdin = -1;
 	args->dup_stdout = -1;
-	args->og_stdin = dup(STDIN_FILENO);
-	args->og_stdout = dup(STDOUT_FILENO);
+	args->og_stdin = -1;
+	args->og_stdout = -1;
 	stdin_file = NULL;
 	stdout_file = NULL;
 	if (node->type == NODE_CMD)
@@ -87,6 +87,10 @@ int	handle_redirects(t_ast_node *node, t_redirect_args *args)
 		stdin_file = find_redirect(&node->u_data.cmd, STDIN_FILENO);
 		stdout_file = find_redirect(&node->u_data.cmd, STDOUT_FILENO);
 	}
+	if (stdin_file)
+		args->og_stdin = dup(STDIN_FILENO);
+	if (stdout_file)
+		args->dup_stdout = dup(STDOUT_FILENO);
 	if (stdin_file && redirect_handler(stdin_file, args, STDIN_FILENO))
 		return (FAILURE);
 	if (stdout_file && redirect_handler(stdout_file, args, STDOUT_FILENO))

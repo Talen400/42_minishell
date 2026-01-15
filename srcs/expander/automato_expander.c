@@ -79,6 +79,8 @@ int	is_expander(t_expandable_value *value, t_data *data)
 {
 	t_automato_expander	aut;
 
+	if (!value)
+		return (FALSE);
 	ft_memset(&aut, 0, sizeof(t_automato_expander));
 	aut.word = value->raw;
 	value->processed = ft_strdup("");
