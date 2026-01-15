@@ -6,7 +6,7 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 14:00:35 by fbenini-          #+#    #+#             */
-/*   Updated: 2026/01/11 22:53:29 by tlavared         ###   ########.fr       */
+/*   Updated: 2026/01/15 17:13:12 by fbenini-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,12 @@ static void	handle_child(char **args, t_data *data, char *path)
 	exit(status);
 }
 
+static int	handle_no_args(char **args, int status)
+{
+	free_splitted(args);
+	return (status);
+}
+
 static int	exec_from_path(char **args, t_data *data)
 {
 	char	*path;
@@ -47,6 +53,8 @@ static int	exec_from_path(char **args, t_data *data)
 	pid_t	pid;
 
 	status = 0;
+	if (!args || !args[0])
+		return (handle_no_args(args, status));
 	path = get_path_of_cmd(args[0], data);
 	if (!path)
 	{
