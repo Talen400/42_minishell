@@ -55,7 +55,7 @@ int	ft_exit(char **args, t_data *data)
 		exit_status = 1;
 	}
 	else if (args[1] && !is_numeric(args[1]))
-		return (handle_not_num());
+		exit_status = handle_not_num();
 	if (is_valid)
 		data->is_running = 0;
 	data->last_status = exit_status * 256;
