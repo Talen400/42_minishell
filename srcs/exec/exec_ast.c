@@ -45,6 +45,8 @@ int	handle_paren(char *cmd, t_data *data)
 	if (str[len - 1] == ')')
 		str[len - 2] = '\0';
 	status = minishell(str, data);
+	if (status >= 0 && status < 256)
+		status = status * 256;
 	free(str);
 	data->parser_ref = saved_parser;
 	data->ast_ref = saved_ast;
