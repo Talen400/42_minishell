@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../includes/exec.h"
+#include "../../includes/expander.h"
 
 int	get_exit_code(int exit_code)
 {
@@ -70,10 +71,12 @@ int	exec_ast(t_ast_node *root, t_data *data, int status)
 		return (status);
 	if (root->type == NODE_LOGICAL)
 	{
+		expand_ast(root->u_data.logical.left, data);
 		status = exec_ast(root->u_data.logical.left, data, status);
 		exit_code = get_exit_code(status);
 		should_exec = check_if_should_exec(root->u_data.logical.op,
 				exit_code);
+		expand_ast(root->u_data.logical.right, data);
 		if (should_exec)
 			status = exec_ast(root->u_data.logical.right, data, status);
 		data->last_status = get_exit_code(status);

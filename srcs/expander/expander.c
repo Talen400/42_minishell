@@ -61,11 +61,6 @@ void	expand_ast(t_ast_node *root, t_data *data)
 
 	if (!root)
 		return ;
-	if (root->type == NODE_LOGICAL)
-	{
-		expand_ast(root->u_data.logical.left, data);
-		expand_ast(root->u_data.logical.right, data);
-	}
 	if (root->type == NODE_CMD)
 		expand_cmd(root, data);
 	if (root->type == NODE_PIPE)

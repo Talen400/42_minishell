@@ -57,6 +57,7 @@ run_test() {
 
 # Array com todos os casos de teste fornecidos
 commands=(
+	"export TESTE=teste && echo \$TESTE"
 	"echo \"exit_code ->\$? user ->\$USER home -> \$HOME"
 	"export A-"
 	"export HELLO-=123"
