@@ -45,8 +45,13 @@ static void	handle_wildcard_match(char *path, char *name, char **parts,
 {
 	struct stat	st;
 	char		*full_path;
+	int			path_len;
 
-	full_path = join_free(ft_strjoin(path, "/"), ft_strdup(name));
+	path_len = ft_strlen(path);
+	if (path[path_len - 1] != '/')
+		full_path = join_free(ft_strjoin(path, "/"), ft_strdup(name));
+	else
+		full_path = ft_strjoin(path, name);
 	if (!parts[1])
 	{
 		*value = join_free(*value, ft_strdup(" "));
@@ -69,7 +74,7 @@ void	*get_wildcards_value_recursive(char *path, char **parts, char **value)
 	while (dir_entry != NULL)
 	{
 		if (ft_strcmp(dir_entry->d_name, ".") != 0
-			|| ft_strcmp(dir_entry->d_name, "..") != 0)
+			&& ft_strcmp(dir_entry->d_name, "..") != 0)
 		{
 			if (match_pattern(dir_entry->d_name, parts[0]))
 				handle_wildcard_match(path, dir_entry->d_name, parts, value);
@@ -102,17 +107,23 @@ char	*wildcard(char *pattern)
 	char	**parts;
 	char	*value;
 	char	*path;
-	int		path_len;
 
-	path = get_path(pattern);
-	path_len = ft_strlen(path);
-	parts = ft_split(pattern + path_len, '/');
-	value = ft_strdup("");
-	if (path_len == 0)
+	if (ft_strncmp(pattern, "./", 2) == 0)
 	{
-		free(path);
 		path = ft_strdup(".");
+		parts = ft_split(pattern + 2, '/');
 	}
+	else if (pattern[0] == '/')
+	{
+		path = ft_strdup("/");
+		parts = ft_split(pattern + 1, '/');
+	}
+	else
+	{
+		path = ft_strdup(".");
+		parts = ft_split(pattern, '/');
+	}
+	value = ft_strdup("");
 	get_wildcards_value_recursive(path, parts, &value);
 	free_split(parts);
 	free(path);
