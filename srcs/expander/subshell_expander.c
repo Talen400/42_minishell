@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../includes/expander.h"
+#include "../../includes/exec.h"
 
 static int	find_subshell_len(t_automato_expander *aut)
 {
@@ -59,7 +60,7 @@ static void	run_subshell_child(char *cmd, t_data *data, int fd_out)
 	dup2(fd_out, STDOUT_FILENO);
 	close(fd_out);
 	status = minishell(cmd, data);
-	data->is_running = 0;
+	exit(status);
 }
 
 static char	*read_subshell_out(int fd_in)

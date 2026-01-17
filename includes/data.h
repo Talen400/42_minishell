@@ -22,6 +22,7 @@ typedef struct s_data {
 	int		is_running;
 	int		exit_status;
 	int		last_status;
+	int		should_exit;
 	pid_t	pid;
 	void	*ast_ref;
 	void	*parser_ref;

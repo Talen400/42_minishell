@@ -87,7 +87,7 @@ int	exec_cmd(t_ast_node *node, t_data *data)
 		return (1);
 	cmd = node->u_data.cmd;
 	args = convert_expandable(cmd.args);
-	if (handle_redirects(node, &redir_args) == FAILURE)
+	if (handle_redirects(node, &redir_args, data) == FAILURE)
 	{
 		free_splitted(args);
 		return (1 * 256);

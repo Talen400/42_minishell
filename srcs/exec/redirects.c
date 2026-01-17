@@ -28,7 +28,7 @@ t_redirect_value	*find_redirect(t_cmd_node *cmd, int type)
 	return (res);
 }
 
-static int	redirect_handler(t_redirect_value *redir, int type)
+static int	redirect_handler(t_redirect_value *redir, int type, t_data *data)
 {
 	int		flag;
 	int		open_fd;
@@ -39,7 +39,7 @@ static int	redirect_handler(t_redirect_value *redir, int type)
 	if (type == STDOUT_FILENO && ft_strncmp(redir->type, ">>\0", 3) == 0)
 		flag = O_WRONLY | O_CREAT | O_APPEND;
 	if (ft_strncmp(redir->type, "<<\0", 3) == 0)
-		open_fd = handle_heredoc(redir->target->processed);
+		open_fd = handle_heredoc(redir->target->processed, data);
 	else
 		open_fd = open(redir->target->processed, flag, 0777);
 	if (open_fd < 0)
@@ -63,7 +63,7 @@ int	handle_failure(t_redirect_args *args)
 	return (FAILURE);
 }
 
-int	handle_redirects(t_ast_node *node, t_redirect_args *args)
+int	handle_redirects(t_ast_node *node, t_redirect_args *args, t_data *data)
 {
 	t_redirect_value	*stdin_file;
 	t_redirect_value	*stdout_file;
@@ -81,9 +81,9 @@ int	handle_redirects(t_ast_node *node, t_redirect_args *args)
 		args->og_stdin = dup(STDIN_FILENO);
 	if (stdout_file)
 		args->og_stdout = dup(STDOUT_FILENO);
-	if (stdin_file && redirect_handler(stdin_file, STDIN_FILENO))
+	if (stdin_file && redirect_handler(stdin_file, STDIN_FILENO, data))
 		return (handle_failure(args));
-	if (stdout_file && redirect_handler(stdout_file, STDOUT_FILENO))
+	if (stdout_file && redirect_handler(stdout_file, STDOUT_FILENO, data))
 		return (handle_failure(args));
 	return (SUCESS);
 }

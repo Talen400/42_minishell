@@ -13,6 +13,7 @@
 #ifndef EXEC_H
 # define EXEC_H
 
+# include "data.h"
 # include "minishell.h"
 # include "parser.h"
 
@@ -49,9 +50,9 @@ typedef struct s_redirect_args
 void	child_process(t_ast_node *node, t_data *data, t_pipe_args *args);
 void	father_process(t_pipe_args *args);
 
-int		handle_redirects(t_ast_node *node, t_redirect_args *args);
+int		handle_redirects(t_ast_node *node, t_redirect_args *args, t_data *data);
 void	restore_std(t_redirect_args *args);
 
-int		handle_heredoc(const char *eof);
+int		handle_heredoc(const char *eof, t_data *data);
 
 #endif
