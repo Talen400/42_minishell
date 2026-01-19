@@ -6,7 +6,7 @@
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/23 13:34:59 by tlavared          #+#    #+#             */
-/*   Updated: 2026/01/06 18:14:24 by tlavared         ###   ########.fr       */
+/*   Updated: 2026/01/19 19:33:02 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,6 @@ static int	find_subshell_len(t_automato_expander *aut)
 	return (len);
 }
 
-static int	grace_exit(t_data *data)
-{
-	clear_ast((t_ast_node *)data->ast_ref);
-	clear_parser((t_parser *)data->parser_ref);
-	return (0);
-}
-
 char	*extract_subshell(t_automato_expander *aut)
 {
 	int		start;
@@ -66,7 +59,6 @@ static void	run_subshell_child(char *cmd, t_data *data, int fd_out)
 
 	dup2(fd_out, STDOUT_FILENO);
 	close(fd_out);
-	grace_exit(data);
 	status = minishell(cmd, data);
 	exit(status);
 }
