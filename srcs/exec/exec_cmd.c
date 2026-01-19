@@ -20,7 +20,7 @@ static void	handle_child(char **args, t_data *data, char *path)
 {
 	int	status;
 
-	restore_sigint();
+	restore_signals();
 	status = execve(path, args, data->envvars);
 	if (status == -1)
 	{

@@ -17,3 +17,9 @@ void	setup_signals(void)
 	setup_sigint();
 	setup_sigquit();
 }
+
+void	restore_signals(void)
+{
+	restore_sigquit();
+	restore_sigint();
+}

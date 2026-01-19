@@ -98,7 +98,7 @@ static void	exec_cmd_pipe(t_ast_node *node, t_data *data)
 
 void	child_process(t_ast_node *node, t_data *data, t_pipe_args *args)
 {
-	restore_sigint();
+	restore_signals();
 	if (args->fd_in != STDIN_FILENO)
 	{
 		dup2(args->fd_in, STDIN_FILENO);
