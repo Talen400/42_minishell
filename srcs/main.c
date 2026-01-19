@@ -6,7 +6,7 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/19 15:28:15 by fbenini-          #+#    #+#             */
-/*   Updated: 2026/01/15 17:16:17 by fbenini-         ###   ########.fr       */
+/*   Updated: 2026/01/19 20:30:37 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,17 +58,36 @@ int	main(int argc, char *argv[], char *envvars[])
 {
 	char	*line;
 	t_data	data;
+	int		is_arg;
 
 	init_data(&data, envvars);
 	setup_signals();
 	init_readline();
+	is_arg = 0;
+	if (argc == 3)
+	{
+		is_arg = FALSE;
+		if (ft_strncmp(argv[1], "-c", 2) == 0)
+			is_arg = TRUE;
+	}
 	while (data.is_running)
 	{
-		line = ft_readline(&data);
-		if (!line)
-			break ;
-		data.last_status = minishell(line, &data);
-		free(line);
+		if (is_arg)
+		{
+			line = argv[2];
+			if (!line)
+				break ;
+			data.last_status = minishell(line, &data);
+			data.is_running = FALSE;
+		}
+		else
+		{
+			line = ft_readline(&data);
+			if (!line)
+				break ;
+			data.last_status = minishell(line, &data);
+			free(line);
+		}
 	}
 	clear_data(&data);
 	(void) argc;
