@@ -6,7 +6,7 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/19 15:28:15 by fbenini-          #+#    #+#             */
-/*   Updated: 2026/01/19 20:30:37 by tlavared         ###   ########.fr       */
+/*   Updated: 2026/01/20 16:59:30 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,41 +54,46 @@ int	minishell(char *line, t_data *data)
 	return (data->last_status);
 }
 
-int	main(int argc, char *argv[], char *envvars[])
+void	is_running(t_data *data, char *argv[])
 {
 	char	*line;
-	t_data	data;
-	int		is_arg;
 
-	init_data(&data, envvars);
-	setup_signals();
-	init_readline();
-	is_arg = 0;
-	if (argc == 3)
+	while (data->is_running)
 	{
-		is_arg = FALSE;
-		if (ft_strncmp(argv[1], "-c", 2) == 0)
-			is_arg = TRUE;
-	}
-	while (data.is_running)
-	{
-		if (is_arg)
+		if (data->is_arg)
 		{
 			line = argv[2];
 			if (!line)
 				break ;
-			data.last_status = minishell(line, &data);
-			data.is_running = FALSE;
+			data->last_status = minishell(line, data);
+			data->is_running = FALSE;
 		}
 		else
 		{
-			line = ft_readline(&data);
+			line = ft_readline(data);
 			if (!line)
 				break ;
-			data.last_status = minishell(line, &data);
+			data->last_status = minishell(line, data);
 			free(line);
 		}
 	}
+}
+
+int	main(int argc, char *argv[], char *envvars[])
+{
+	t_data	data;
+
+	init_data(&data, envvars);
+	setup_signals();
+	init_readline();
+	data.is_arg = 0;
+	if (argc == 3)
+	{
+		data.is_arg = FALSE;
+		if (ft_strncmp(argv[1], "-c", 2) == 0)
+			data.is_arg = TRUE;
+	}
+	is_running(&data, argv);
 	clear_data(&data);
 	(void) argc;
 	(void) argv;
