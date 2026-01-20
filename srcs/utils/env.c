@@ -78,7 +78,7 @@ void	pop_from_env(t_data *data, size_t pos)
 	i = 0;
 	while (data->envvars[i])
 		i++;
-	new = ft_calloc(i, sizeof(char *));
+	new = ft_calloc(i + 1, sizeof(char *));
 	i = 0;
 	j = 0;
 	while (data->envvars[i])
