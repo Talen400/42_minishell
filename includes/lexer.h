@@ -6,7 +6,7 @@
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 17:06:46 by tlavared          #+#    #+#             */
-/*   Updated: 2026/01/04 19:10:51 by tlavared         ###   ########.fr       */
+/*   Updated: 2026/01/20 17:11:41 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ typedef struct s_token
 // table_driven.c
 int			get_char_type(char c);
 int			get_state(t_automato *aut, char character);
+int			is_space(char c);
 
 // automato.c
 int			state_is_final(int state);

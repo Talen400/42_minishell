@@ -6,7 +6,7 @@
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 19:36:38 by tlavared          #+#    #+#             */
-/*   Updated: 2026/01/14 19:39:05 by tlavared         ###   ########.fr       */
+/*   Updated: 2026/01/20 17:29:02 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,20 @@ int	check_operator_syntax(t_token *tmp)
 	return (0);
 }
 
+static int	is_void(char *lexeme)
+{
+	int		i;
+
+	i = 1;
+	while (lexeme[i] && lexeme[i + 1] != '\0')
+	{
+		if (!is_space(lexeme[i]))
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
 int	check_subshell_syntax(t_token *tmp, t_token *prev)
 {
 	int	len;
@@ -29,6 +43,8 @@ int	check_subshell_syntax(t_token *tmp, t_token *prev)
 	if (tmp->type != TOKEN_SUB_CMD)
 		return (0);
 	len = ft_strlen(tmp->lexeme);
+	if (is_void(tmp->lexeme))
+		return (print_syntax_error("()"));
 	if (len > 0 && tmp->lexeme[len - 1] != ')')
 		return (print_syntax_error("unclosed parenthesis"));
 	if (prev && is_word(prev->type))

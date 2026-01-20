@@ -6,13 +6,13 @@
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 17:59:14 by tlavared          #+#    #+#             */
-/*   Updated: 2025/12/23 14:49:14 by tlavared         ###   ########.fr       */
+/*   Updated: 2026/01/20 17:33:21 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/lexer.h"
 
-static int	is_space(char c)
+int	is_space(char c)
 {
 	return (c == ' ' || c == '\t' || c == '\n' || c == '\v' || c == '\f'
 		|| c == '\r');
@@ -47,10 +47,6 @@ int	get_char_type(char c)
 		return (D_QUOTE);
 	if (c == '$')
 		return (DOLLAR);
-	if (c == '{')
-		return (LBRACE);
-	if (c == '}')
-		return (RBRACE);
 	return (get_char_type_2(c));
 }
 
