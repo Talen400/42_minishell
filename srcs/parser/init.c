@@ -65,6 +65,7 @@ t_redirect_value	*create_redir_node(t_token *token)
 	if (!node)
 		return (NULL);
 	node->type = ft_strdup(token->lexeme);
+	node->tmp_fd_heredoc = -1;
 	return (node);
 }
 

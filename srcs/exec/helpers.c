@@ -25,6 +25,8 @@ static char	*get_path(t_data *data)
 			path = data->envvars[i];
 		i++;
 	}
+	if (!path)
+		return (NULL);
 	return (path + 5);
 }
 
@@ -33,9 +35,21 @@ void	free_splitted(char **splitted)
 	int	i;
 
 	i = 0;
-	while (splitted[i])
+	while (splitted && splitted[i])
 		free(splitted[i++]);
 	free(splitted);
+}
+
+static char	**split_paths(t_data *data)
+{
+	char	*path;
+	char	**splitted;
+
+	path = get_path(data);
+	if (!path)
+		return (NULL);
+	splitted = ft_split(path, ':');
+	return (splitted);
 }
 
 char	*get_path_of_cmd(char *cmd, t_data *data)
@@ -45,10 +59,10 @@ char	*get_path_of_cmd(char *cmd, t_data *data)
 	char	*formatted_path;
 	int		i;
 
-	paths = ft_split(get_path(data), ':');
+	paths = split_paths(data);
 	i = 0;
 	res = NULL;
-	while (paths[i])
+	while (paths && paths[i])
 	{
 		formatted_path = ft_strjoin(paths[i++], "/");
 		res = ft_strjoin(formatted_path, cmd);
