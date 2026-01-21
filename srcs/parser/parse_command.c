@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../includes/parser.h"
+#include "../../includes/exec.h"
 #include <stddef.h>
 #include <unistd.h>
 
@@ -38,7 +39,7 @@ static t_token	*get_first_arg_token(t_parser *parser)
 }
 
 static int	handle_redirect(t_ast_node *node, t_parser *parser,
-							t_token *token)
+							t_token *token, t_data *data)
 {
 	t_redirect_value	*redir_node;
 	int					fd;
@@ -62,6 +63,10 @@ static int	handle_redirect(t_ast_node *node, t_parser *parser,
 	}
 	redir_node->target = create_expandable_value(token);
 	redir_node->og_fd = fd;
+	if (ft_strcmp(redir_node->type, "<<") == 0)
+	{
+		redir_node->tmp_fd_heredoc = handle_heredoc(token->lexeme, data);
+	}
 	parser_advance(parser);
 	node->u_data.cmd.redirects[fd] = redir_node;
 	return (SUCESS);
@@ -104,7 +109,7 @@ static void	parse_tokens(t_parser *parser, t_ast_node *node)
 	{
 		if (is_redirect_token(token))
 		{
-			if (handle_redirect(node, parser, token) == FAILURE)
+			if (handle_redirect(node, parser, token, parser->data) == FAILURE)
 				break ;
 		}
 		else if (is_token_arg(token))

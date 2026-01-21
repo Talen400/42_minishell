@@ -60,7 +60,7 @@ static void	handle_pipe_paren(t_redirect_args *redir_args, t_ast_node *node,
 	int			status;
 
 	cmd = node->u_data.cmd;
-	if (handle_redirects(node, redir_args, data) == FAILURE)
+	if (handle_redirects(node, redir_args) == FAILURE)
 		grace_exit(1, data);
 	status = handle_paren(cmd.args[0]->raw, data);
 	restore_std(redir_args);
@@ -83,7 +83,7 @@ static void	exec_cmd_pipe(t_ast_node *node, t_data *data)
 	args = convert_expandable(cmd.args);
 	if (!args || !args[0])
 		exit(1);
-	if (handle_redirects(node, &redir_args, data) == FAILURE)
+	if (handle_redirects(node, &redir_args) == FAILURE)
 		grace_exit(1, data);
 	builtin = get_builtin(args[0]);
 	if (builtin)

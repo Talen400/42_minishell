@@ -47,6 +47,7 @@ typedef struct s_redirect_value
 	int						og_fd;
 	char					*type;
 	t_expandable_value		*target;
+	int						tmp_fd_heredoc;
 }							t_redirect_value;
 
 typedef struct s_cmd_node
@@ -93,6 +94,7 @@ typedef struct s_parser
 	size_t					count;
 	t_token					**tokens;
 	t_token					**head_of_tokens;
+	t_data					*data;
 }							t_parser;
 
 typedef t_ast_node			*(*t_parser_function)(t_parser *);

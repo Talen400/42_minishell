@@ -39,6 +39,7 @@ int	minishell(char *line, t_data *data)
 	if (!line || !*line)
 		return (0);
 	parser = init_parser(line, data);
+	parser->data = data;
 	ast = parse_sequence(parser);
 	data->ast_ref = ast;
 	data->parser_ref = parser;

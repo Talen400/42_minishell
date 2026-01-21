@@ -52,6 +52,8 @@ void	clear_command_node(t_ast_node *node, int type)
 		{
 			clear_expandable_value(node->u_data.cmd.redirects[i]->target);
 			free(node->u_data.cmd.redirects[i]->type);
+			if (node->u_data.cmd.redirects[i]->tmp_fd_heredoc >= 0)
+				close(node->u_data.cmd.redirects[i]->tmp_fd_heredoc);
 			free(node->u_data.cmd.redirects[i]);
 		}
 		i++;
