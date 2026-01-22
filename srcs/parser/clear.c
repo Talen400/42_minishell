@@ -6,7 +6,7 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/25 17:41:29 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/11/25 19:07:57 by fbenini-         ###   ########.fr       */
+/*   Updated: 2026/01/22 13:41:21 by fbenini-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,15 @@ void	clear_expandable_value(t_expandable_value *value)
 	free(value);
 }
 
+void	clear_redir_node(t_redirect_value *value)
+{
+	clear_expandable_value(value->target);
+	free(value->type);
+	if (value->tmp_fd_heredoc >= 0)
+		close(value->tmp_fd_heredoc);
+	free(value);
+}
+
 void	clear_command_node(t_ast_node *node, int type)
 {
 	size_t	i;
@@ -49,13 +58,7 @@ void	clear_command_node(t_ast_node *node, int type)
 	while (i < 2)
 	{
 		if (node->u_data.cmd.redirects[i])
-		{
-			clear_expandable_value(node->u_data.cmd.redirects[i]->target);
-			free(node->u_data.cmd.redirects[i]->type);
-			if (node->u_data.cmd.redirects[i]->tmp_fd_heredoc >= 0)
-				close(node->u_data.cmd.redirects[i]->tmp_fd_heredoc);
-			free(node->u_data.cmd.redirects[i]);
-		}
+			clear_redir_node(node->u_data.cmd.redirects[i]);
 		i++;
 	}
 	free(node->u_data.cmd.redirects);
@@ -64,21 +67,10 @@ void	clear_command_node(t_ast_node *node, int type)
 		free(node);
 }
 
-void	clear_pipe_node(t_ast_node *head)
+void	clear_ast(t_ast_node *head)
 {
 	size_t	i;
 
-	i = 0;
-	while (head->u_data.pipe.commands[i])
-	{
-		clear_command_node(head->u_data.pipe.commands[i], NODE_PIPE);
-		i++;
-	}
-	free(head->u_data.pipe.commands);
-}
-
-void	clear_ast(t_ast_node *head)
-{
 	if (!head)
 		return ;
 	if (head->type == NODE_LOGICAL)
@@ -89,6 +81,11 @@ void	clear_ast(t_ast_node *head)
 	if (head->type == NODE_CMD)
 		clear_command_node(head, NODE_CMD);
 	if (head->type == NODE_PIPE)
-		clear_pipe_node(head);
+	{
+		i = 0;
+		while (head->u_data.pipe.commands[i])
+			clear_command_node(head->u_data.pipe.commands[i++], NODE_PIPE);
+		free(head->u_data.pipe.commands);
+	}
 	free(head);
 }

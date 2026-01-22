@@ -37,7 +37,11 @@ static void	write_loop(const char *eof, int fd, t_data *data)
 		(void)data;
 		line = expand_readline(data);
 		if (!line)
+		{
+			ft_putendl_fd("Warning: here-document delimited by end-of-file",
+				STDERR_FILENO);
 			break ;
+		}
 		if (ft_strcmp(line, eof) == 0)
 		{
 			free(line);

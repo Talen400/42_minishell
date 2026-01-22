@@ -6,13 +6,14 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 15:01:10 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/12/21 16:05:15 by tlavared         ###   ########.fr       */
+/*   Updated: 2026/01/22 13:41:52 by fbenini-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/parser.h"
 #include "../../includes/exec.h"
 #include <stddef.h>
+#include <stdlib.h>
 #include <unistd.h>
 
 static t_token	*get_first_arg_token(t_parser *parser)
@@ -55,12 +56,7 @@ static int	handle_redirect(t_ast_node *node, t_parser *parser,
 	parser_advance(parser);
 	token = parser_current(parser);
 	if (!token || !is_token_arg(token))
-	{
-		free(redir_node->type);
-		free(redir_node->target);
-		free(redir_node);
-		return (FAILURE);
-	}
+		return (handle_redirect_failure(redir_node));
 	redir_node->target = create_expandable_value(token);
 	redir_node->og_fd = fd;
 	if (ft_strcmp(redir_node->type, "<<") == 0)
