@@ -6,7 +6,7 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 10:46:49 by fbenini-          #+#    #+#             */
-/*   Updated: 2026/01/19 20:31:24 by tlavared         ###   ########.fr       */
+/*   Updated: 2026/01/22 17:50:21 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,9 @@ void						parser_advance(t_parser *parser);
 int							is_token_arg(t_token *token);
 int							is_redirect_token(t_token *token);
 int							get_redirect_fd(t_token *token);
+
+int							handle_redirect_failure(
+								t_redirect_value *redir_node);
 
 t_ast_node					*parse_command(t_parser *parser);
 t_ast_node					*parse_generic(t_parser *parser,

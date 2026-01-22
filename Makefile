@@ -40,6 +40,7 @@ SRCS := $(SRC_DIR)/main.c \
 		$(SRC_DIR)/parser/helpers.c \
 		$(SRC_DIR)/parser/init.c \
 		$(SRC_DIR)/parser/parse_command.c \
+		$(SRC_DIR)/parser/parse_command_utils.c \
 		$(SRC_DIR)/parser/parse_generic.c \
 		$(SRC_DIR)/parser/parse_logical.c \
 		$(SRC_DIR)/parser/parse_pipeline.c \
