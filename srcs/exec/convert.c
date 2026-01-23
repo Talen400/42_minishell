@@ -6,7 +6,7 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 16:58:56 by fbenini-          #+#    #+#             */
-/*   Updated: 2025/12/09 18:43:33 by fbenini-         ###   ########.fr       */
+/*   Updated: 2026/01/23 17:19:05 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,25 +33,16 @@ static void	create_arg(t_expandable_value *value, char **args, int *j)
 	int		split_idx;
 
 	split_idx = 0;
-	if (value->type == WILDCARD)
+	splitted = ft_split(value->processed, ' ');
+	if (!splitted[0])
+		args[1] = ft_strdup(value->raw);
+	while (splitted[split_idx])
 	{
-		splitted = ft_split(value->processed, ' ');
-		if (!splitted[0])
-			args[1] = ft_strdup(value->raw);
-		while (splitted[split_idx])
-		{
-			args[*j] = splitted[split_idx];
-			split_idx++;
-			*j += 1;
-		}
-		free(splitted);
-		return ;
-	}
-	if (value->processed[0] != '\0')
-	{
-		args[*j] = ft_strdup(value->processed);
+		args[*j] = splitted[split_idx];
+		split_idx++;
 		*j += 1;
 	}
+	free(splitted);
 }
 
 char	**convert_expandable(t_expandable_value **values)
@@ -65,8 +56,7 @@ char	**convert_expandable(t_expandable_value **values)
 	count = 0;
 	while (values[i])
 	{
-		if (values[i]->type == WILDCARD)
-			count += count_wildcards(values[i]);
+		count += count_wildcards(values[i]);
 		i++;
 		count++;
 	}
