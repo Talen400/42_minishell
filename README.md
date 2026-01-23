@@ -1,6 +1,6 @@
 # minishell 🐢
 
-Minishell is a project from 42 School Common Core curriculum. It consists on creating a shell interpreter with basic features.
+Minishell is a project from 42 School Common Core curriculum. It consists on creating a shell with basic features.
 
 This project supports the following features:
 
