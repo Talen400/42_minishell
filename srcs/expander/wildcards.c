@@ -6,7 +6,7 @@
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/21 18:13:35 by tlavared          #+#    #+#             */
-/*   Updated: 2025/12/26 04:30:54 by fbenini-         ###   ########.fr       */
+/*   Updated: 2026/01/24 02:04:56 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,6 @@ static int	match_pattern(char *str, char *pattern)
 		return (match_pattern(str + 1, pattern + 1));
 	return (0);
 }
-
-/*
- *  
- *  It recursively the patterns separated by "/"
- *	
- *
- */
 
 static void	handle_wildcard_match(char *path, char *name, char **parts,
 		char **value)

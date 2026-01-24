@@ -6,20 +6,12 @@
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/21 15:32:37 by tlavared          #+#    #+#             */
-/*   Updated: 2025/12/21 15:36:30 by tlavared         ###   ########.fr       */
+/*   Updated: 2026/01/24 02:04:24 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/parser.h"
 #include "../../includes/expander.h"
-
-/*
- *
- *
- * Here is experimental automato expanser
- *
- *
- */
 
 void	expand_var(t_expandable_value *value, t_data *data)
 {

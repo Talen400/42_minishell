@@ -6,7 +6,7 @@
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/21 18:10:39 by tlavared          #+#    #+#             */
-/*   Updated: 2026/01/07 19:21:51 by tlavared         ###   ########.fr       */
+/*   Updated: 2026/01/24 02:04:36 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,6 @@ static void	get_state_helper(t_automato_expander *aut)
 	aut->prev_state = aut->state;
 	aut->state = get_state_expander(aut, aut->word[aut->i]);
 }
-
-/*
- * echo test'test'"test""$USER"'$USER'"$(echo $USER)" 
- *
- * ft_printf("[%d] prev: %d, state: %d, str: %c \n",
- * 		aut->i, aut->prev_state, aut->state, aut->word[aut->i]);
-*/
 
 void	automato_expander(t_expandable_value *value, t_data *data,
 		t_automato_expander*aut)

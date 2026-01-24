@@ -6,12 +6,13 @@
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 20:25:06 by tlavared          #+#    #+#             */
-/*   Updated: 2026/01/23 22:53:28 by tlavared         ###   ########.fr       */
+/*   Updated: 2026/01/24 02:03:45 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/lexer.h"
 
+/*
 void	print_tokens(t_token *tokens)
 {
 	t_token	*node;
@@ -23,3 +24,4 @@ void	print_tokens(t_token *tokens)
 		node = node->next;
 	}
 }
+*/

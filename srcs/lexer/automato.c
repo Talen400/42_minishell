@@ -6,7 +6,7 @@
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 18:02:01 by tlavared          #+#    #+#             */
-/*   Updated: 2026/01/24 02:00:16 by tlavared         ###   ########.fr       */
+/*   Updated: 2026/01/24 02:03:21 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,8 +128,6 @@ int	automato(char *str, t_token **tokens)
 	aut.table = get_table();
 	while (aut.i <= aut.str_len)
 	{
-	//	dprintf(2, "[%d] state: %d, prev: %d, lexeme_len: %d, char: %c \n",
-	//			aut.i, aut.state, aut.prev_state, aut.lexeme_len, str[aut.i]);
 		if (handle_special_cases(&aut, str, tokens))
 			continue ;
 		if (update_state(&aut, str[aut.i]))
@@ -138,6 +136,5 @@ int	automato(char *str, t_token **tokens)
 			handle_state_final(&aut, str, tokens);
 		aut.i++;
 	}
-	//print_tokens(*tokens);
 	return (SUCESS);
 }
