@@ -16,6 +16,7 @@
 #include "../includes/autocomplete.h"
 #include "../includes/exec.h"
 #include "../includes/signals.h"
+#include <termios.h>
 
 static void	clear_data(t_data *data)
 {
@@ -59,8 +60,10 @@ int	minishell(char *line, t_data *data)
 
 void	is_running(t_data *data, char *argv[])
 {
-	char	*line;
+	char			*line;
+	struct termios	term;
 
+	tcgetattr(STDIN_FILENO, &term);
 	while (data->is_running)
 	{
 		if (data->is_arg)
@@ -79,6 +82,7 @@ void	is_running(t_data *data, char *argv[])
 			data->last_status = minishell(line, data);
 			free(line);
 		}
+		tcsetattr(STDIN_FILENO, TCSANOW, &term);
 	}
 }
 
