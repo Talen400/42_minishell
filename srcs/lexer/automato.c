@@ -6,7 +6,7 @@
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 18:02:01 by tlavared          #+#    #+#             */
-/*   Updated: 2026/01/23 17:10:23 by tlavared         ###   ########.fr       */
+/*   Updated: 2026/01/23 22:09:23 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,43 +18,34 @@
  * ======================================
  *
  * states (complet tokens)
- * 0: SPACE (INIT)
+ * 0: INIT
  * 1: WORD
  * 2: OPERATOR
  * 3: D_OPERATOR
- * 4: S_QUOTE
- * 5: D_QUOTE
- * 6: END S_QUOTE
- * 7: END D_QUOTE
- * 8: EXPANSER
- * 9: END EXPANSER
+ * 4: ERROR
+ * 5:
  *
  *		 		SP	LET	|	&	<	>	(	)	'	"	$	{	}	\0
- * state 0	=	0	1	2	2	2	2	2	2	4	5	8	0	0	0
- * state 1	=	1	1	0	0	0	0	0	0	1	1	1	0	0	0
+ * state 0	=	0	1	2	2	2	2	2	2	1	1	1	0	0	0
+ * state 1	=	1	1	0	0	0	0	2	2	1	1	1	0	0	0
  * state 2	=	0	0	3	3	3	3	0	0	0	0	0	0	0	0
  * state 3	=	0	0	0	0	0	0	0	0	0	0	0	0	0	0
- * state 4	=	4	4	4	4	4	4	4	4	1	4	4	4	4	0
- * state 5	=	5	5	5	5	5	5	5	5	5	1	5	5	5	0
- * state 6  =	0	1	0	0	0	0	0	0	4	5	8	0	0	0
- * state 7  =	0	1	0	0	0	0	0	0	4	5	8	0	0	0
- * state 8  =	0	8	0	0	0	0	9	0	4	5	9	9	0	0
- * state 9	=	0	1	0	0	0	0	0	0	4	5	8	0	0	0
+ * state 4	=	0	0	0	0	0	0	0	0	0	0	0	0	0	0
  */
 
 static int	(*get_table(void))[NUM_TYPES]
 {
 	static int	table[NUM_STATE][NUM_TYPES] = {
-	{0, 1, 2, 2, 2, 2, 2, 2, 4, 5, 8, 0, 0, 0},
-	{1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0},
+	{0, 1, 2, 2, 2, 2, 2, 2, 1, 1, 1, 0, 0, 0},
+	{1, 1, 0, 0, 0, 0, 2, 2, 1, 1, 1, 0, 0, 0},
 	{0, 0, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0},
 	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-	{4, 4, 4, 4, 4, 4, 4, 4, 1, 4, 4, 4, 5, 0},
-	{5, 5, 5, 5, 5, 5, 5, 5, 5, 1, 5, 4, 5, 0},
-	{0, 1, 0, 0, 0, 0, 0, 0, 4, 5, 8, 0, 0, 0},
-	{0, 1, 0, 0, 0, 0, 0, 0, 4, 5, 8, 0, 0, 0},
-	{0, 8, 0, 0, 0, 0, 9, 0, 4, 5, 9, 9, 0, 0},
-	{0, 1, 0, 0, 0, 0, 0, 0, 4, 5, 8, 0, 0, 0}
+	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 	};
 
 	return (table);
@@ -83,30 +74,27 @@ static void	handle_parens(t_automato *aut, char *str, t_token **tokens)
 			depth++;
 		else if (str[aut->i] == ')')
 			depth--;
+		aut->lexeme_len++;
 		aut->i++;
 		if (depth == 0)
 			break ;
 	}
-	/*
 	aut->lexeme = ft_substr(str, aut->i - aut->lexeme_len, aut->lexeme_len);
 	add_front_token(tokens, aut->lexeme, TOKEN_SUB_CMD);
 	aut->lexeme_len = 0;
-	*/
 	aut->state = 0;
 	aut->prev_state = 0;
-	(void ) tokens;
+	//(void ) tokens;
 }
 
 int	handle_special_cases(t_automato *aut, char *str, t_token **tokens)
 {
-	if (aut->state != 4 && str[aut->i] == '$' && str[aut->i + 1] == '(')
+	if (aut->state == 1 && str[aut->i] == '$' && str[aut->i + 1] == '(')
 	{
-		if (aut->state == 0 && aut->prev_state != 0)
-			handle_state_final(aut, str, tokens);
 		handle_subshell(aut, str);
 		return (1);
 	}
-	if ((aut->state != 4 && aut->state != 5) && str[aut->i] == '(')
+	if ((aut->state != 1) && str[aut->i] == '(')
 	{
 		if (aut->lexeme_len > 0)
 		{
@@ -130,8 +118,8 @@ int	automato(char *str, t_token **tokens)
 	aut.table = get_table();
 	while (aut.i <= aut.str_len)
 	{
-		dprintf(2, "[%d] state: %d, prev: %d,  char: %c \n",
-				aut.i, aut.state, aut.prev_state, str[aut.i]);
+		dprintf(2, "[%d] state: %d, prev: %d, lexeme_len: %d, char: %c \n",
+				aut.i, aut.state, aut.prev_state, aut.lexeme_len, str[aut.i]);
 		if (handle_special_cases(&aut, str, tokens))
 			continue ;
 		if (update_state(&aut, str[aut.i]))
