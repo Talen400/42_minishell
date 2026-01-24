@@ -6,7 +6,7 @@
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/23 14:39:04 by tlavared          #+#    #+#             */
-/*   Updated: 2026/01/24 01:57:50 by tlavared         ###   ########.fr       */
+/*   Updated: 2026/01/24 06:22:15 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,5 +53,6 @@ void	handle_state_final(t_automato *aut, char *str, t_token **tokens)
 void	handle_subshell(t_automato *aut, char *str)
 {
 	handle_subshell_token(aut, str);
-	aut->state = 1;
+	if (aut->state != 5)
+		aut->state = 1;
 }
