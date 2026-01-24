@@ -6,7 +6,7 @@
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 17:59:14 by tlavared          #+#    #+#             */
-/*   Updated: 2026/01/20 17:33:21 by tlavared         ###   ########.fr       */
+/*   Updated: 2026/01/23 23:03:35 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	get_char_type(char c)
 		return (CLOSE_PAR);
 	if (c == '\'')
 		return (S_QUOTE);
-	if (c == '"')
+	if (c == '\"')
 		return (D_QUOTE);
 	if (c == '$')
 		return (DOLLAR);

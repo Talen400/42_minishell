@@ -6,7 +6,7 @@
 /*   By: tlavared <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/23 14:39:04 by tlavared          #+#    #+#             */
-/*   Updated: 2026/01/09 17:23:28 by tlavared         ###   ########.fr       */
+/*   Updated: 2026/01/24 01:57:50 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,19 @@ void	handle_subshell_token(t_automato *aut, char *str)
 {
 	int	depth;
 
-	depth = 1;
-	while (str[aut->i] && depth > 0)
+	depth = 0;
+	aut->lexeme_len++;
+	aut->i++;
+	while (str[aut->i])
 	{
 		if (str[aut->i] == '(')
 			depth++;
 		else if (str[aut->i] == ')')
 			depth--;
 		aut->lexeme_len++;
-		if (depth > 0)
-			aut->i++;
+		aut->i++;
+		if (depth == 0)
+			break ;
 	}
 }
 
