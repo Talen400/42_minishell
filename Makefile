@@ -31,7 +31,6 @@ SRCS := $(SRC_DIR)/main.c \
 		$(SRC_DIR)/lexer/automato.c \
 		$(SRC_DIR)/lexer/table_driven.c \
 		$(SRC_DIR)/lexer/token.c \
-		$(SRC_DIR)/lexer/debug.c \
 		$(SRC_DIR)/lexer/token_type.c \
 		$(SRC_DIR)/lexer/utils_lexer.c \
 		$(SRC_DIR)/checker/checker_syntax.c \
