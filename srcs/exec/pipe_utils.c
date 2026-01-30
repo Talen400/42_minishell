@@ -6,7 +6,7 @@
 /*   By: fbenini- <fbenini-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 13:53:53 by fbenini-          #+#    #+#             */
-/*   Updated: 2026/01/15 17:57:15 by fbenini-         ###   ########.fr       */
+/*   Updated: 2026/01/30 18:31:53 by tlavared         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,9 +82,16 @@ static void	exec_cmd_pipe(t_ast_node *node, t_data *data)
 		handle_pipe_paren(&redir_args, node, data);
 	args = convert_expandable(cmd.args);
 	if (!args || !args[0])
-		exit(1);
-	if (handle_redirects(node, &redir_args) == FAILURE)
+	{
+		if (args)
+			free_splitted(args);
 		grace_exit(1, data);
+	}
+	if (handle_redirects(node, &redir_args) == FAILURE)
+	{
+		free_splitted(args);
+		grace_exit(1, data);
+	}
 	builtin = get_builtin(args[0]);
 	if (builtin)
 	{
